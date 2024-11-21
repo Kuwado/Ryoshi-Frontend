@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bootstrap Demo</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div id="header"></div>
+  <div class="container mb-4">
+    
+    <!-- Button -->
+
+    <section class="my-4">
+      <h2>Button</h2>
+      <div class="button-wrapper">
+        <input type="checkbox" id="button" class="d-none">
+        <label for="button" class="btn d-flex align-items-center justify-content-center">Click Me</label>
+      </div>
+    </section>
+  <!-- Input -->
+
+    <section class="mb-4">
+      <h2>Input</h2>
+      <input type="text" class="form-control" placeholder="Enter text here">
+    </section>
+
+  <!-- Checkbox -->
+
+    <section class="mb-4">
+      <h2>Checkbox</h2>
+      <div class="checkbox-wrapper">
+        <input type="checkbox" id="checkbox" class="d-none">
+        <label for="checkbox" class="custom-checkbox"></label>
+      </div>
+    </section>
+    
+  <!-- Chips-->
+    <section class="mb-4">
+      <h2>Chips</h2>
+      <div class="chips-wrapper">
+        <input type="checkbox" id="chips" class="d-none">
+        <label for="chips">Example Chips</label>
+      </div>
+    </section>
+    
+      <!-- Selector/Dropdown -->
+    <section class="mb-4">
+      <h2>Dropdown Selector</h2>
+      <div class="selector-wrapper">
+        <div class="selector" onclick="toggleDropdown(this)">
+          Select an option
+        </div>
+        <div class="dropdown">
+          <div class="dropdown-item" tabindex="0" onclick="selectOption(this)">Option 1</div>
+          <div class="dropdown-item" tabindex="0" onclick="selectOption(this)">Option 2</div>
+          <div class="dropdown-item" tabindex="0" onclick="selectOption(this)">Option 3</div>
+        </div>
+      </div>
+    </section>
+    
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
