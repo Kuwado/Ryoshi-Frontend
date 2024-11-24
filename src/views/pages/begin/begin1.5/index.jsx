@@ -1,5 +1,6 @@
 import "./index.css";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Begin1_1 from "../../../../assets/images/begin1.1.png";
 import Begin1_2 from "../../../../assets/images/begin1.2.png";
 import Begin1_3 from "../../../../assets/images/begin1.3.png";
