@@ -160,31 +160,31 @@
 }
 
 @media only screen and (max-width: 430px) {
-  .register-wrap {
+  .login-wrap {
     width: 350px;
     padding: 10px;
   }
-  .register-header {
+  .login-header {
     margin: 10px 0 0;
   }
-  .register-form {
+  .login-form {
     width: 300px !important;
     margin-left: 20px !important;
   }
-  .register-btn,
-  .register-check,
-  .register-btn-regis,
+  .login-btn,
+  .login-check,
+  .login-btn-regis,
   #other-option-regis,
-  .register-other-option {
+  .login-other-option {
     margin-left: 0;
   }
-  .register-btn-regis {
+  .login-btn-regis {
     min-width: 300px;
   }
-  .register-other-option {
+  .login-other-option {
     margin-right: 100px;
   }
-  .register-form-item-mobile {
+  .login-form-item-mobile {
     margin: 0;
   }
 }
