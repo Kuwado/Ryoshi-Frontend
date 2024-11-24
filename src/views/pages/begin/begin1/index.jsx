@@ -1,10 +1,17 @@
 import "./index.css";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Begin1_1 from "../../../../assets/images/begin1.1.png";
 import Begin1_2 from "../../../../assets/images/begin1.2.png";
 import Begin1_3 from "../../../../assets/images/begin1.3.png";
 import Begin1_4 from "../../../../assets/images/begin1.4.png";
 function Begin1() {
+  const navigate = useNavigate();
+
+  const handleNextClick = () => {
+    navigate("/begin/1-5");
+  };
+
   return (
     <div className="begin1-container">
       <h1 className="begin1-title">個人情報を更新する</h1>
@@ -45,7 +52,11 @@ function Begin1() {
                 <option value="other">他の性別</option>
               </select>
             </div>
-            <button type="submit" className="begin1-submit-button">
+            <button
+              type="submit"
+              className="begin1-submit-button"
+              onClick={handleNextClick}
+            >
               次のステップ
             </button>
           </form>
