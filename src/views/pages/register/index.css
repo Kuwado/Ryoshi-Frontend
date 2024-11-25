@@ -120,6 +120,7 @@
   display: flex;
   justify-content: center; /* Căn giữa các biểu tượng */
   gap: 20px; /* Khoảng cách giữa các biểu tượng */
+  margin-bottom: 50px;
 }
 
 .social-button {
