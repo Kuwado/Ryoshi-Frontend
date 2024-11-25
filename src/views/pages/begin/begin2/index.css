@@ -1,0 +1,86 @@
+.begin1-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.begin1-title {
+  font-size: 36px;
+  color: black;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.begin1-subtitle {
+  font-size: 18px;
+  color: gray;
+  text-align: left;
+  margin-bottom: 50px;
+}
+
+.begin1-content {
+  display: flex;
+  gap: 100px;
+  padding: 0px 100px 0px 100px;
+}
+
+.begin1-form-section {
+  flex: 1;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Chia lưới 3 cột */
+  grid-gap: 20px;
+}
+
+.option-item {
+  border: 1px solid #0094da;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: white;
+  transition: all 0.3s;
+}
+
+.option-item.selected {
+  background-color: #0094da;
+  color: white;
+}
+
+.option-item:hover {
+  background-color: #0074a3;
+  color: white;
+}
+
+.begin1-submit-button {
+  display: block;
+  width: 100%;
+  background-color: #0094da;
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  margin-top: 40px;
+}
+
+.begin1-submit-button:hover {
+  background-color: #0074a3;
+}
+
+.image-section {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+
+.begin1-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
