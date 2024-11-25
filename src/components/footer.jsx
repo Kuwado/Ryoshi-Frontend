@@ -41,7 +41,7 @@ export default function Footer() {
                     </div>
                     <div className="contact-item">
                         <FontAwesomeIcon icon={faFacebook} className="contact-icon" />
-                        <span className="contact-text mx-3">https://www.facebook.com/tabikohohoho</span>
+                        <span className="contact-text">https://www.facebook.com/tabikohohoho</span>
                     </div>
                 </div>
             </div>
