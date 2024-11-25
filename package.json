@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fontsource/noto-sans": "^5.1.0",
+    "@fontsource/noto-sans-jp": "^5.1.0",
     "@fontsource/risque": "^5.1.0",
     "@fortawesome/free-brands-svg-icons": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
