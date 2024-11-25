@@ -2,12 +2,6 @@ import "./index.css";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faGoogle,
-  faFacebook,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
 import { Form, Input, Button } from "antd";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,7 +14,7 @@ function ForgotPasswordOne() {
   const navigate = useNavigate();
   const handleSubmit = (value) => {
     toast.success("リセットリンクが送信されました。");
-    navigate("/forgot-password-2");
+    navigate("/forgot-password-two");
   };
   return (
     <div

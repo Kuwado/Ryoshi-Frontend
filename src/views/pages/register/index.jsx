@@ -67,7 +67,6 @@ function Register() {
             layout="horizontal"
             style={{
               width: 600,
-              marginLeft: 10,
             }}
             className="register-form"
             onFinish={handleFinish}
