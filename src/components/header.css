@@ -1,222 +1,203 @@
 /* Header Styles */
 .header {
-    background: var(--blue);
-    color: var(--white);
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
+  background: var(--blue);
+  color: var(--white);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.logo {
+  width: 64px;
+  height: 40px;
+  mix-blend-mode: screen;
+  filter: brightness(1.2);
+}
+
+.menu {
+  display: flex;
+  gap: 0;
+  height: 100%;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  height: 100%;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+  background: transparent;
+}
+
+.menu-item:hover,
+.menu-item.active {
+  background: var(--white);
+  color: var(--orange);
+}
+
+.header:hover .menu-item:hover {
+  height: 100%;
+}
+
+.menu-letter {
+  font-family: 'Risque', sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 46.23px;
+}
+
+.menu-text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 18.75px;
+}
+
+.user-section {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.icon-heart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.heart-icon {
+  color: var(--white);
+  font-size: 18px;
+}
+
+.heart-bubble {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 15px;
+  height: 15px;
+  background: var(--orange);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 15px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.search-container {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.search-bar {
+  width: 100%;
+  height: 40px;
+  border-radius: 100px;
+  border: none;
+  background: var(--grey);
+  padding: 0 50px;
+  display: block;
+}
+
+.search-bar.collapsed {
+  display: none;
+}
+
+.icon-search {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+@media (max-width: 1096px) {
+  .search-container {
+    width: 40px;
   }
 
-/*TTA them code cho nay ne*/
-  #header .container-fluid {
-    display: flex; /* Sử dụng Flexbox */
-    align-items: center; /* Căn giữa các thành phần theo chiều dọc */
-    justify-content: space-between; /* Phân bổ khoảng cách giữa các thành phần */
-    flex-wrap: nowrap; /* Không cho các phần tử xuống hàng */
-}
-  
-  .logo {
-    width: 64px;
-    height: 40px;
-    mix-blend-mode: screen;
-    filter: brightness(1.2);
-  }
-  
-/*Day nua ne*/
-  .menu {
-    display: flex;
-    gap: 0;
-    height: 100%;
-    justify-content: center;
-    flex-grow: 1;
-  }
-  
-  .menu-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    height: 100%;
-    cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease;
-    background: transparent;
-  }
-  
-  .menu-item:hover,
-  .menu-item.active {
-    background: var(--white);
-    color: var(--orange);
-  }
-  
-  .header:hover .menu-item:hover {
-    height: 100%;
-  }
-  
-  .menu-letter {
-    font-family: 'Risque', sans-serif;
-    font-size: 40px;
-    font-weight: 400;
-    line-height: 46.23px;
-  }
-  
-  .menu-text {
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 18.75px;
-  }
-  
-  .icon-heart {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-  }
-  
-  .heart-icon {
-    color: var(--white);
-    font-size: 18px;
-  }
-  
-  .heart-bubble {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    width: 15px;
-    height: 15px;
-    background: var(--orange);
-    color: var(--white);
-    font-size: 10px;
-    font-weight: bold;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 15px;
-  }
-  
-  .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  /*Day nua*/
-  .search-container {
-    display: flex;
-    align-items: center;
-    position: relative;
-    transition: all 0.3s ease;
-  }
-  
   .search-bar {
-    width: 100%;
-    height: 40px;
-    border-radius: 100px;
-    border: none;
-    background: var(--grey);
-    padding: 0 10px;
-    display: block;
-  }
-  
-  .search-bar.collapsed {
     display: none;
   }
-  
-  .icon-search {
+
+  .search-container.expanded {
+    width: 100%;
     position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    cursor: pointer;
+    top: 100%;
+    left: 0;
+    padding: 10px;
+    border-radius: 8px;
+    z-index: 1000;
   }
 
-  /*Day nua nhe*/
-  .user-section {
+  .search-bar.expanded {
+    display: block;
+    width: 100%;
+    height: 40px;
+    background: var(--white);
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0 15px;
+  }
+
+  .menu {
     display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  @media (max-width: 1096px) {
-    .search-container {
-      width: 40px;
-    }
-  
-    .search-bar {
-      display: none;
-    }
-  
-    .search-container.expanded {
-      width: 100%;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      padding: 10px;
-      border-radius: 8px;
-      z-index: 1000;
-    }
-  
-    .search-bar.expanded {
-      display: block;
-      width: 100%;
-      height: 40px;
-      background: var(--white);
-      border-radius: 5px;
-      padding: 5px 10px;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .header {
-      flex-wrap: nowrap;
-      justify-content: space-between;
-      padding: 0 15px;
-    }
-  
-    .menu {
-      display: flex;
-      gap: 8px;
-    }
-  
-    .menu-item {
-      padding: 5px 10px;
-    }
-  
-    .menu-letter {
-      font-size: 35px;
-      line-height: 40px;
-    }
-  
-    .menu-text {
-      font-size: 14px;
-      line-height: 16px;
-    }
-  
-    .logo {
-      width: 55px;
-      height: 35px;
-    }
-  
-    .user-section {
-      gap: 12px;
-    }
-  
-    .icon-heart {
-      width: 22px;
-      height: 22px;
-    }
-  
-    .avatar {
-      width: 35px;
-      height: 35px;
-    }
+    gap: 8px;
   }
 
+  .menu-item {
+    padding: 5px 10px;
+  }
 
+  .menu-letter {
+    font-size: 35px;
+    line-height: 40px;
+  }
 
-  
+  .menu-text {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .logo {
+    width: 55px;
+    height: 35px;
+  }
+
+  .user-section {
+    gap: 12px;
+  }
+
+  .icon-heart {
+    width: 22px;
+    height: 22px;
+  }
+
+  .avatar {
+    width: 35px;
+    height: 35px;
+  }
+}
