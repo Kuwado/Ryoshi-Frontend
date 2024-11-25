@@ -240,7 +240,7 @@
     border-radius: 20px; /* Bo tròn ô tìm kiếm */
     padding: 5px 10px; /* Khoảng cách trong ô tìm kiếm */
     gap: 10px; /* Khoảng cách giữa input và icon */
-    margin-left: 100px; /* Khoảng cách với menu */
+    margin-left: 50px; /* Khoảng cách với menu */
     margin-right: 150px; /* Khoảng cách với user section */
 }
 
