@@ -94,6 +94,10 @@ function Register() {
                   type: "email",
                   message: "無効なメールです!",
                 },
+                {
+                  required: true,
+                  message: "メールを入力してください！",
+                },
               ]}
             >
               <Input
@@ -121,7 +125,12 @@ function Register() {
                   message:
                     "パスワードは、少なくとも1つの大文字、1つの数字、1つの特殊文字を含み、6〜20文字でなければなりません！",
                 },
+                {
+                  required: true,
+                  message: "パスワードを入力してください！",
+                }
               ]}
+              required
               hasFeedback
             >
               <Input
@@ -154,6 +163,10 @@ function Register() {
                     );
                   },
                 }),
+                {
+                  required: true,
+                  message: "パスワードを再入力してください！",
+                }
               ]}
             >
               <Input
@@ -167,7 +180,7 @@ function Register() {
                 />
             </Form.Item>
             <Form.Item style={{ textAlign: "center" }}>
-              <Button label="登録" className="register-btn-regis" onClick={handleFinish}>
+              <Button label="登録" className="register-btn-regis" onClick=" ">
 
               </Button>
             </Form.Item>

@@ -99,6 +99,7 @@ function Login() {
                   message: "無効なメールです!",
                 },
               ]}
+              required
             >
               <Input
               type="text"
@@ -121,6 +122,7 @@ function Login() {
                 },
               ]}
               hasFeedback
+              required
             >
               <Input
               type="password"
