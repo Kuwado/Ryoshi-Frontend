@@ -1,4 +1,5 @@
 import "./index.css";
+import axios from "axios";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
@@ -20,7 +21,27 @@ import Input from "../../../components/input";
 
 function Login() {
   const navigate = useNavigate();
-  const handleSubmit = (value) => {};
+  const handleSubmit = async (values) => {
+    try {
+      const response = await axios.post("http://localhost:8000/api/v1/login", {
+        email: values.email,
+        password: values.password,
+      });
+      // console.log(response)
+
+      // Xử lý khi đăng nhập thành công
+      if (response.status === 200) {
+        toast.success("ログイン成功！");
+        sessionStorage.setItem("authToken", response.data.token);
+        navigate("/testpage");
+      }
+    } catch (error) {
+      // Xử lý lỗi từ server
+      console.log(error.response.data.error);
+      toast.error(error.response.data.error)
+    }
+  };
+
   return (
     <div
       className="login-container"

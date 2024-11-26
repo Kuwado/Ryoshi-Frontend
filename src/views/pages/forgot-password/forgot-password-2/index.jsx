@@ -1,6 +1,7 @@
 import "./index.css";
+import axios from "axios";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { KeyOutlined } from "@ant-design/icons";
 import { Form } from "antd";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,9 +14,16 @@ import Input from "../../../../components/input";
 
 function ForgotPasswordTwo() {
   const navigate = useNavigate();
-  const handleSubmit = (value) => {
-    toast.success("リセットリンクが送信されました。");
-    navigate("/forgot-password-three");
+  const location = useLocation();
+  const [codeSent] = React.useState("123456")
+  const handleSubmit = async (value) => {
+    console.log(location.state.email);
+    if (value.code === codeSent) {
+      toast.success("コードが確認されました！");
+      navigate("/forgot-password-3", { state: { email: location.state.email } }); 
+    } else {
+      toast.error("確認コードが間違っています！");
+    }
   };
   return (
     <div
@@ -54,10 +62,10 @@ function ForgotPasswordTwo() {
           >
             <Form.Item
               className="forgot-form-item-mobile"
-              name="email"
+              name="code"
               rules={[
                 {
-                  type: "email",
+                  required: true,
                   message: "無効なコードです!",
                 },
               ]}

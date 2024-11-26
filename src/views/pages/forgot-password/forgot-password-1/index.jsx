@@ -1,4 +1,5 @@
 import "./index.css";
+import axios from "axios";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
@@ -13,10 +14,22 @@ import Input from "../../../../components/input";
 
 function ForgotPasswordOne() {
   const navigate = useNavigate();
-  const handleSubmit = (value) => {
-    toast.success("リセットリンクが送信されました。");
-    navigate("/forgot-password-two");
+  const handleSubmit = async (value) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/checkEmail",
+        { email: value.email }
+      );
+      if (response.status === 200) {
+        toast.success("リセットリンクが送信されました。");
+        navigate("/forgot-password-2", { state: { email: value.email } }); // Chuyển email đến bước tiếp theo
+      }
+    } catch (error) {
+      toast.error(error.response.data.error);
+      console.log(error.response.data.error)
+    }
   };
+
   return (
     <div
       className="forgot-container"
