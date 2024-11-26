@@ -1,5 +1,5 @@
 import "./index.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Begin1_1 from "../../../../assets/images/begin1.1.png";
 import Begin1_2 from "../../../../assets/images/begin1.2.png";
@@ -14,26 +14,40 @@ function Begin2() {
 
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const options = [
-    "エコツーリズム",
-    "文化旅行",
-    "リゾート",
-    "\n",
-    "レクリエーション",
-    "スポーツ",
-    "探検",
-    "冒険",
-    "\n",
-    "コンビネーション",
-    "家族旅行",
-    "団体旅行",
-    "\n",
-    "個人旅行",
-    "ビーチ",
-    "山",
-    "都市",
-    "田舎",
-  ];
+  // const options = [
+  //   "エコツーリズム",
+  //   "文化旅行",
+  //   "リゾート",
+  //   "\n",
+  //   "レクリエーション",
+  //   "スポーツ",
+  //   "探検",
+  //   "冒険",
+  //   "\n",
+  //   "コンビネーション",
+  //   "家族旅行",
+  //   "団体旅行",
+  //   "\n",
+  //   "個人旅行",
+  //   "ビーチ",
+  //   "山",
+  //   "都市",
+  //   "田舎",
+  // ];
+ 
+  const [options, setOptions] = useState([]);
+  useEffect(() => {
+    const fetchOptions = async () => {
+      const options = await getTagsList();
+      if (options) {
+        setOptions(options);
+      }
+    };
+
+    fetchOptions(); // Gọi hàm bất đồng bộ
+  }, []);
+
+  console.log(options);
 
   const rows = [];
   let currentRow = [];
@@ -159,6 +173,36 @@ function Begin2() {
       </div>
     </div>
   );
+}
+
+async function getTagsList() {
+  try {
+    // Gửi yêu cầu POST đến API
+    const response = await fetch('http://localhost:8000/api/v1/tags', {
+      method: 'GET',
+    });
+
+    // Kiểm tra phản hồi từ server
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    // Nếu gửi thành công, trả về danh sách
+    return data.tags.flatMap(tag => {
+      const cleanedName = tag.name.replace(/\n/g, ''); // Xóa tất cả \n
+      const names = [cleanedName]; // Khởi tạo mảng với tên đã làm sạch
+    
+      // Nếu tag.name chứa \n, thêm một phần tử mới chứa \n
+      if (tag.name.includes('\n')) {
+        names.push('\n');
+      }
+    
+      return names; // Trả về mảng các tên
+    });
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    return null;
+  }
 }
 
 export default Begin2;
