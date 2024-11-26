@@ -1,6 +1,7 @@
 import "./index.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "../../../../components/button";
 
 async function getCityList() {
   try {
@@ -284,10 +285,9 @@ function Begin1_6() {
                 </div>
               ))}
             </div>
-            <div class="button-wrapper begin1-6-submit-button" onClick={handleNextClick}>
-              <input type="checkbox" id="button" class="d-none"/>
-              <label for="button" class="btn d-flex align-items-center justify-content-center">次のステップ</label>
-            </div>
+
+            <Button label="次のステップ" className="begin1-6-submit-button" onClick={handleNextClick}>
+            </Button>
           </div>
         </div>
       </div>

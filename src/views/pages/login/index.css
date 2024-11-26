@@ -76,6 +76,7 @@
 }
 
 .login-btn-regis {
+  width: 360px;
   background-color: #ff9000 !important;
   color: white;
 }

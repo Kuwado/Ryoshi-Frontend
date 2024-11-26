@@ -5,6 +5,7 @@ import Begin1_1 from "../../../../assets/images/begin1.1.png";
 import Begin1_2 from "../../../../assets/images/begin1.2.png";
 import Begin1_3 from "../../../../assets/images/begin1.3.png";
 import Begin1_4 from "../../../../assets/images/begin1.4.png";
+import Button from "../../../../components/button";
 
 function Begin1() {
   const navigate = useNavigate();
@@ -105,13 +106,8 @@ function Begin1() {
                 <option value="other">他の性別</option>
               </select>
             </div>
-            <button
-              type="submit"
-              className="begin1-submit-button"
-              onClick={handleNextClick}
-            >
-              次のステップ
-            </button>
+            <Button label="次のステップ" className="begin1-submit-button" onClick={handleNextClick}>
+            </Button>
           </form>
         </div>
 
