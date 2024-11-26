@@ -49,14 +49,6 @@ function Login() {
   const handlePassChange = (e) => {
     const password = e.target.value;
     setValues({ ...values, password: password }); // Cập nhật trường password
-
-    // Kiểm tra mật khẩu theo yêu cầu
-    const passwordRequirements = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,20}$/;
-    if (!passwordRequirements.test(password)) {
-        setPassError('パスワードは、少なくとも1つの大文字、1つの数字、1つの特殊文字を含み、6〜20文字でなければなりません！');
-    } else {
-        setPassError(''); // Xóa thông báo lỗi nếu mật khẩu hợp lệ
-    }
   };
 
   const handleSubmit = async ()=> {

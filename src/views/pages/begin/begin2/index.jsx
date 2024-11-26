@@ -5,6 +5,7 @@ import Begin1_1 from "../../../../assets/images/begin1.1.png";
 import Begin1_2 from "../../../../assets/images/begin1.2.png";
 import Begin1_3 from "../../../../assets/images/begin1.3.png";
 import Begin1_4 from "../../../../assets/images/begin1.4.png";
+import Button from "../../../../components/button";
 
 function Begin2() {
   const navigate = useNavigate();
@@ -149,10 +150,9 @@ function Begin2() {
               ))}
                   
               </div>
-              <div class="button-wrapper begin2-submit-button" onClick={handleNextClick}>
-                <input type="checkbox" id="button" class="d-none"/>
-                <label for="button" class="btn d-flex align-items-center justify-content-center">探検を始めよう！</label>
-              </div>
+
+              <Button label="探検を始めよう！" className="begin2-submit-button" onClick={handleNextClick}>
+            </Button>
             </div>
           </div>
         </div>
