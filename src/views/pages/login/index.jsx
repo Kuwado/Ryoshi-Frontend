@@ -36,6 +36,13 @@ function Login() {
       if (response.status === 200) {
         toast.success("ログイン成功！");
         sessionStorage.setItem("authToken", response.data.token);
+
+        //Xử lý token
+        const parts = response.data.token.split('.'); // Tách token thành 3 phần
+        const payload = parts[1];
+        const decodedPayload = JSON.parse(atob(payload)); // Giải mã Base64
+        
+        sessionStorage.setItem("auth", JSON.stringify(decodedPayload));
         navigate("/user/begin1");
       }
     } catch (error) {
