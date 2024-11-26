@@ -88,15 +88,11 @@
   gap: 8px;
   padding: 20px;
 }
-.register-btn-regis:hover {
-  background-color: #0094da !important;
-  color: white;
-}
 
 .register-to-login {
   text-align: center;
   font-size: 16px;
-  margin-left: 35px;
+  margin-left: 70px;
 }
 
 .register-link {
