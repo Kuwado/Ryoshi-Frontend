@@ -16,16 +16,32 @@ function Begin1_5() {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3MzI1NDU3OTQsImV4cCI6MTczNTEzNzc5NH0.OAkbvzKUhceuKw_PbMPhTtDOVqSHJ2_6Y-wksCpydBg";
   const userId = 1;
 
+  const base64ToBlob = (base64Data, contentType = '') => {
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Uint8Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    return new Blob([byteNumbers], { type: contentType });
+  };
+
   const handleNextClick = async (e) => {
     e.preventDefault();
 
     if (!selectedImage) {
-      message.error("Please upload an image before proceeding.");
+      navigate("/user/begin1.6");
       return;
     }
 
+    // Tách phần 'data:image/png;base64,' ra để lấy dữ liệu Base64
+    const base64String = selectedImage.split(',')[1]; // Lấy phần sau dấu phẩy
+    const contentType = selectedImage.split(';')[0].split(':')[1]; // Lấy content type
+
+    // Chuyển đổi Base64 sang Blob
+    const blob = base64ToBlob(base64String, contentType);
+
     const formData = new FormData();
-    formData.append("file", selectedImage);
+    formData.append("file", blob, 'avatar.png');
 
     try {
       const response = await fetch(

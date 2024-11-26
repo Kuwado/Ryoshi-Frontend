@@ -9,9 +9,9 @@ export default function Testpage() {
     return(
         <div>
             <h1>Test Page</h1>
-            <Button label="Click me"
+            {/* <Button label="Click me"
             className=""
-            onClick={() => alert("Button clicked")} />  
+            onClick={() => alert("Button clicked")} />   */}
         </div>
     )
 }

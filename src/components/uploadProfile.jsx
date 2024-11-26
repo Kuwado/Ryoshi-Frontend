@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import "./uploadProfile.css";
 
 function UploadProfile({ onImageSelect }) {
-  const [src, setsrc] = useState(false);
+  const [src, setsrc] = useState(null);
   const [imagecrop, setimagecrop] = useState(false);
   const [pview, setpview] = useState(null);
 
