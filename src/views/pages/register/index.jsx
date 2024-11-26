@@ -161,8 +161,10 @@ function Register() {
               className=""
               placeholder="パスワードを確認する"
               icon={<LockOutlined />} 
-              value=""
-              onChange=""/>
+              value={values.password}
+              onChange={(e) =>
+                setValues({ ...values, password: e.target.value })}
+                />
             </Form.Item>
             <Form.Item style={{ textAlign: "center" }}>
               <Button label="登録" className="register-btn-regis" onClick={handleFinish}>
