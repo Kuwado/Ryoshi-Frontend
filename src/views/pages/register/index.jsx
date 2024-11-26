@@ -180,7 +180,7 @@ function Register() {
                 />
             </Form.Item>
             <Form.Item style={{ textAlign: "center" }}>
-              <Button label="登録" className="register-btn-regis" onClick=" ">
+              <Button label="登録" className="register-btn-regis" onClick={handleFinish}>
 
               </Button>
             </Form.Item>
