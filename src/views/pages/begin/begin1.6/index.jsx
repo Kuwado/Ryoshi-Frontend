@@ -209,7 +209,7 @@ function Begin1_6() {
                     value={city ? city.id : ''} // Hiển thị id của city nếu có
                     onChange={handleCityChange} // Gọi hàm xử lý
                   >
-                    <option value="">県/市</option>
+                    <option value="" disabled selected hidden>県/市</option>
                     {nameCities.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.name}
@@ -224,7 +224,7 @@ function Begin1_6() {
                     value={ward ? ward.id : ''}
                     onChange={handleWardChange} // Cập nhật giá trị ward
                   >
-                    <option value="">区/郡</option>
+                    <option value="" disabled selected hidden>区/郡</option>
                     {nameWards.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.name}
@@ -239,7 +239,7 @@ function Begin1_6() {
                     value={town ? town.id : ''}
                     onChange={(e) => setTown(e.target.value)} // Cập nhật giá trị town
                   >
-                    <option value="">町/村</option>
+                    <option value="" disabled selected hidden>町/村</option>
                     {nameTowns.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.name}

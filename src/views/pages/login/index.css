@@ -45,19 +45,18 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
-  margin-top: 95px;
-  margin-bottom: 20px;
+  margin-top: 65px;
 }
 
 .login-image1 {
-  width: 237px;
+  width: 240px;
   object-fit: contain;
-  transform: translateX(40px);
+  transform: translateX(30px);
+  filter: brightness(1.2);
 }
 
 .login-image2 {
-  width: 313px;
-  height: 175px;
+  width: 310px;
   /* object-fit: contain; */
   transform: translateY(30px);
 }
@@ -69,10 +68,7 @@
   height: 45px;
   transform: translateX(-150px);
   margin-bottom: 20px;
-}
-
-.login-form-item-mobile {
-  transform: translateX(100px);
+  margin-top: -20px;
 }
 
 .login-icon {
@@ -80,51 +76,49 @@
 }
 
 .login-btn-regis {
-  min-width: 375px;
-  transform: translateX(85px);
-  background-color: #ff9000;
-  color: white;
-  border-radius: 12px;
-  gap: 8px;
-  padding: 20px;
-}
-.login-btn-regis:hover {
-  background-color: #0077b3 !important;
+  background-color: #ff9000 !important;
   color: white;
 }
 
+.login-btn-regis:hover {
+  background-color: #0077b3;
+  color: white;
+}
+
+.flex-full-width {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 .login-to-register-to-forgotpassword {
-  text-align: center;
+  width: 360px;
+  display: flex;
   font-size: 16px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin-left: 30px;
+  margin-top: 5px;
+}
+
+.underline {
+  text-decoration: underline; /* Kích hoạt gạch dưới */
+  text-decoration-thickness: 1px; /* Độ dày của gạch dưới */
+  text-underline-offset: 3px; /* Khoảng cách giữa chữ và gạch dưới */
 }
 
 .register-link {
   color: #fff;
-  font-weight: 400;
-  width: 160px;
-  margin-right: 27px;
+  font-weight: 100;
+  font-size: 14px;
 }
 
 .forgot-link {
   color: #fff;
-  font-weight: 400;
-  margin-left: 27px;
-}
-
-.other-login-methods {
-  text-align: center; /* Căn giữa nội dung */
-  margin-top: 30px; /* Khoảng cách từ phần đăng ký */
-}
-
-.other-login-text {
-  font-size: 16px;
-  color: #fff; /* Đặt màu chữ thành trắng */
-  margin-bottom: 15px; /* Khoảng cách giữa dòng chữ và các biểu tượng */
+  font-weight: 100;
+  font-size: 14px;
 }
 
 .social-icons {
@@ -160,6 +154,19 @@
   color: #1da1f2; /* Màu của Twitter khi hover */
 }
 
+.explain-error {
+  color: #ff4d4f;
+  font-size: 14px;
+  width: 360px;
+}
+
+.login-form-item-mobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 @media only screen and (max-width: 430px) {
   .login-wrap {
     width: 350px;
@@ -174,14 +181,11 @@
   }
   .login-btn,
   .login-check,
-  .login-btn-regis,
   #other-option-regis,
   .login-other-option {
     margin-left: 0;
   }
-  .login-btn-regis {
-    min-width: 300px;
-  }
+
   .login-other-option {
     margin-right: 100px;
   }
