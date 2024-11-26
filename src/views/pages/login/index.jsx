@@ -51,7 +51,8 @@ function Login() {
     setValues({ ...values, password: password }); // Cập nhật trường password
   };
 
-  const handleSubmit = async ()=> {
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Ngăn chặn hành vi mặc định của form
     try {
       const response = await axios.post("http://localhost:8000/api/v1/login", {
         email: values.email,

@@ -23,16 +23,17 @@
 }
 
 .begin1-form-item {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .input-field {
   width: 100%;
   border: none;
   border-bottom: 1px solid #0094da;
-  font-size: 16px;
+  font-size: 20px;
   padding: 5px;
   outline: none;
+  background-color: var(--white);
 }
 
 .input-field:focus {
@@ -40,17 +41,9 @@
 }
 
 .begin1-submit-button {
-  display: block;
-  width: 100%;
-  background-color: #0094da;
-  color: white;
-  padding: 15px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
   margin-top: 40px;
+  margin: 0 10%;
+  width: 80%;
 }
 
 .submit-button:hover {
