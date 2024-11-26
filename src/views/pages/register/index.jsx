@@ -24,21 +24,28 @@ function Register() {
     email: "",
     password: "",
   });
-  const handleFinish = (value) => {
-    toast.success("Đăng ký thành công!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-    setTimeout(() => {
-      navigate("/login");
-    }, 5000);
-    console.log("Received values of form: ", value);
+
+  const handleFinish = async ()=> {
+    try {
+      const response = await axios.post("http://localhost:8000/api/v1/register", {
+        email: values.email,
+        password: values.password,
+      });
+
+      // Xử lý khi đăng nhập thành công
+      if (response.status === 200) {
+        toast.success("ログイン成功！");
+        setTimeout(() => {
+          navigate("/login");
+        }, 5000);
+      }
+    } catch (error) {
+      // Xử lý lỗi từ server
+      console.log(error.response.data.error);
+      toast.error(error.response.data.error)
+    }
   };
+
   return (
     <div
       className="register-container"
