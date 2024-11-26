@@ -1,19 +1,44 @@
 import "./index.css";
+import axios from "axios";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LockOutlined } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Form, Input, Button } from "antd";
+import { Form } from "antd";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import backgroundImage from "../../../../assets/images/background.png";
-import registerQuote from "../../../../assets/images/register_quote.png";
 import ryoshi from "../../../../assets/images/ryoshi.png";
 import forgotImage from "../../../../assets/images/image2.png";
+import { useParams } from "react-router-dom";
+import Button from "../../../../components/button";
+import Input from "../../../../components/input";
 
 function ForgotPasswordThree() {
   const navigate = useNavigate();
-  const handleSubmit = (value) => {};
+  const location = useLocation();
+  const handleSubmit = async (value) => {
+    console.log(location.state.email);
+    console.log(value.password);
+    
+    try {
+      const response = await axios.put(
+        "http://localhost:8000/api/v1/users/forgotPassword",
+        {
+          email: location.state.email,
+          password: value.password, 
+        }
+      );
+      if (response.status === 200) {
+        toast.success("パスワードが正常にリセットされました。");
+        navigate("/login"); // Chuyển về trang đăng nhập
+      }
+    } catch (error) {
+      console.log(error);
+      
+      toast.error(error.response.data.error);
+    }
+  };
   return (
     <div
       className="forgot-container"
@@ -64,10 +89,11 @@ function ForgotPasswordThree() {
               ]}
               hasFeedback
             >
-              <Input.Password
-                placeholder="パスワード"
-                prefix={<LockOutlined className="register-icon" />}
-              />
+              <Input
+              type="password"
+              className=""
+              placeholder="パスワード"
+              icon={<LockOutlined />} />
             </Form.Item>
 
             <Form.Item
@@ -91,19 +117,15 @@ function ForgotPasswordThree() {
                 }),
               ]}
             >
-              <Input.Password
-                placeholder="パスワードを確認"
-                prefix={<LockOutlined className="register-icon" />}
-              />
+              <Input
+              type="password"
+              className=""
+              placeholder="パスワードを確認する"
+              icon={<LockOutlined />} />
             </Form.Item>
 
             <Form.Item style={{ textAlign: "center" }}>
-              <Button
-                type="primary"
-                className="forgot-btn-regis"
-                htmlType="submit"
-              >
-                リセット
+              <Button label="送る" className="forgot-btn-regis" onClick={handleSubmit}>
               </Button>
             </Form.Item>
           </Form>

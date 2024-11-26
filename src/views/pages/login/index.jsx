@@ -1,4 +1,5 @@
 import "./index.css";
+import axios from "axios";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
@@ -8,17 +9,39 @@ import {
   faFacebook,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import { Form, Input, Button } from "antd";
+import { Form } from "antd";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import backgroundImage from "../../../assets/images/background.png";
 import registerQuote from "../../../assets/images/register_quote.png";
 import ryoshi from "../../../assets/images/ryoshi.png";
 import loginImage from "../../../assets/images/image2.png";
+import Button from "../../../components/button";
+import Input from "../../../components/input";
 
 function Login() {
   const navigate = useNavigate();
-  const handleSubmit = (value) => {};
+  const handleSubmit = async (values) => {
+    try {
+      const response = await axios.post("http://localhost:8000/api/v1/login", {
+        email: values.email,
+        password: values.password,
+      });
+      // console.log(response)
+
+      // Xử lý khi đăng nhập thành công
+      if (response.status === 200) {
+        toast.success("ログイン成功！");
+        sessionStorage.setItem("authToken", response.data.token);
+        navigate("/testpage");
+      }
+    } catch (error) {
+      // Xử lý lỗi từ server
+      console.log(error.response.data.error);
+      toast.error(error.response.data.error)
+    }
+  };
+
   return (
     <div
       className="login-container"
@@ -68,9 +91,10 @@ function Login() {
               ]}
             >
               <Input
-                placeholder="メール"
-                prefix={<MailOutlined className="login-icon" />}
-              />
+              type="text"
+              className=""
+              placeholder="メール"
+              icon={<MailOutlined />}/>
             </Form.Item>
 
             <Form.Item
@@ -83,19 +107,15 @@ function Login() {
               ]}
               hasFeedback
             >
-              <Input.Password
-                placeholder="パスワード"
-                prefix={<LockOutlined className="login-icon" />}
-              />
+              <Input
+              type="password"
+              className=""
+              placeholder="パスワード"
+              icon={<LockOutlined />} />
             </Form.Item>
 
             <Form.Item style={{ textAlign: "center" }}>
-              <Button
-                type="primary"
-                className="login-btn-regis"
-                htmlType="submit"
-              >
-                ログイン
+              <Button label="ログイン" className="login-btn-regis" onClick={handleSubmit}>
               </Button>
             </Form.Item>
           </Form>

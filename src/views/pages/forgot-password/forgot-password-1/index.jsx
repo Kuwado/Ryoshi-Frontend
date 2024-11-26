@@ -1,21 +1,35 @@
 import "./index.css";
+import axios from "axios";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
-import { Form, Input, Button } from "antd";
+import { Form } from "antd";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import backgroundImage from "../../../../assets/images/background.png";
-import registerQuote from "../../../../assets/images/register_quote.png";
 import ryoshi from "../../../../assets/images/ryoshi.png";
 import forgotImage from "../../../../assets/images/image2.png";
+import Button from "../../../../components/button";
+import Input from "../../../../components/input";
 
 function ForgotPasswordOne() {
   const navigate = useNavigate();
-  const handleSubmit = (value) => {
-    toast.success("リセットリンクが送信されました。");
-    navigate("/forgot-password-two");
+  const handleSubmit = async (value) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/checkEmail",
+        { email: value.email }
+      );
+      if (response.status === 200) {
+        toast.success("リセットリンクが送信されました。");
+        navigate("/forgot-password-2", { state: { email: value.email } }); // Chuyển email đến bước tiếp theo
+      }
+    } catch (error) {
+      toast.error(error.response.data.error);
+      console.log(error.response.data.error)
+    }
   };
+
   return (
     <div
       className="forgot-container"
@@ -62,18 +76,15 @@ function ForgotPasswordOne() {
               ]}
             >
               <Input
-                placeholder="メール"
-                prefix={<MailOutlined className="forgot-icon" />}
-              />
+              type="text"
+              className=""
+              placeholder="メール"
+              icon={<MailOutlined />}/>
             </Form.Item>
 
             <Form.Item style={{ textAlign: "center" }}>
-              <Button
-                type="primary"
-                className="forgot-btn-regis"
-                htmlType="submit"
-              >
-                リセット
+              <Button label="送る" className="forgot-btn-regis" onClick={handleSubmit}>
+
               </Button>
             </Form.Item>
           </Form>

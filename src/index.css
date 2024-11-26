@@ -10,8 +10,8 @@
   body {
     font-family: 'Noto Sans JP', sans-serif !important;
     font-size: 16px;
-    background-color: var(--white);
-    color: var(--black);
+    background-color: var(--white) !important;
+    color: var(--black) !important;
   }
   
   .button-wrapper label {
@@ -207,3 +207,6 @@
     display: block;
   }
   
+  .forgot-message{
+    color: var(--white);
+  }

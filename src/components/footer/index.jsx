@@ -1,14 +1,14 @@
 import React from "react";
-import "./footer.css";
-import Logo from "../assets/images/image.png";
-import Ryoshi from "../assets/images/ryoshi.png";
-import FooterText from "../assets/images/footerText.png";
+import "./index.css";
+import Logo from "../../assets/images/image.png";
+import Ryoshi from "../../assets/images/ryoshi.png";
 import {
     faFacebook,
     faGoogle
 } from "@fortawesome/free-brands-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import FooterText from "../../assets/images/footerText.png";
 
 
 export default function Footer() {
