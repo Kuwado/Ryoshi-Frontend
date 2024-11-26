@@ -15,8 +15,11 @@ import Input from "../../../../components/input";
 function ForgotPasswordTwo() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [value, setValue] = React.useState({
+    code: "",
+  });
   const [codeSent] = React.useState("123456")
-  const handleSubmit = async (value) => {
+  const handleSubmit = async () => {
     console.log(location.state.email);
     if (value.code === codeSent) {
       toast.success("コードが確認されました！");
@@ -74,7 +77,10 @@ function ForgotPasswordTwo() {
               type="password"
               className=""
               placeholder="確認コード"
-              icon={<KeyOutlined />} />
+              icon={<KeyOutlined />} 
+              value={value.code}
+              onChange={(e) => setValue({ ...value, code: e.target.value })}
+              />
             </Form.Item>
 
             <Form.Item style={{ textAlign: "center" }}>

@@ -16,8 +16,11 @@ import Input from "../../../../components/input";
 
 function ForgotPasswordThree() {
   const navigate = useNavigate();
+  const [value, setValue] = React.useState({
+    password: "",
+  });
   const location = useLocation();
-  const handleSubmit = async (value) => {
+  const handleSubmit = async () => {
     console.log(location.state.email);
     console.log(value.password);
     
@@ -93,7 +96,10 @@ function ForgotPasswordThree() {
               type="password"
               className=""
               placeholder="パスワード"
-              icon={<LockOutlined />} />
+              icon={<LockOutlined />} 
+              value={value.password}
+              onChange={(e) => setValue({ ...value, password: e.target.value })}
+              />
             </Form.Item>
 
             <Form.Item
@@ -121,7 +127,10 @@ function ForgotPasswordThree() {
               type="password"
               className=""
               placeholder="パスワードを確認する"
-              icon={<LockOutlined />} />
+              icon={<LockOutlined />} 
+              value=""
+              onChange=""
+              />
             </Form.Item>
 
             <Form.Item style={{ textAlign: "center" }}>

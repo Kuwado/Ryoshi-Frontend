@@ -20,6 +20,10 @@ import Input from "../../../components/input";
 
 function Register() {
   const navigate = useNavigate();
+  const [values, setValues] = React.useState({
+    email: "",
+    password: "",
+  });
   const handleFinish = (value) => {
     toast.success("Đăng ký thành công!", {
       position: "top-right",
@@ -87,7 +91,12 @@ function Register() {
               type="text"
               className=""
               placeholder="メール"
-              icon={<MailOutlined />}/>
+              icon={<MailOutlined />}
+              value={values.email}
+              onChange={(e) =>
+                setValues({ ...values, email: e.target.value })
+              }
+              />
             </Form.Item>
 
             <Form.Item
@@ -110,7 +119,11 @@ function Register() {
               type="password"
               className=""
               placeholder="パスワード"
-              icon={<LockOutlined />} />
+              icon={<LockOutlined />} 
+              value={values.password}
+              onChange={(e) =>
+                setValues({ ...values, password: e.target.value })}
+              />
             </Form.Item>
 
             <Form.Item
@@ -138,7 +151,9 @@ function Register() {
               type="password"
               className=""
               placeholder="パスワードを確認する"
-              icon={<LockOutlined />} />
+              icon={<LockOutlined />} 
+              value=""
+              onChange=""/>
             </Form.Item>
             <Form.Item style={{ textAlign: "center" }}>
               <Button label="登録" className="register-btn-regis" onClick={handleFinish}>
