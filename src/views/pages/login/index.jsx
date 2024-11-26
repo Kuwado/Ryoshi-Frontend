@@ -21,13 +21,16 @@ import Input from "../../../components/input";
 
 function Login() {
   const navigate = useNavigate();
-  const handleSubmit = async (values) => {
+  const [values, setValues] = React.useState({
+    email: "",
+    password: "",
+  });
+  const handleSubmit = async ()=> {
     try {
       const response = await axios.post("http://localhost:8000/api/v1/login", {
         email: values.email,
         password: values.password,
       });
-      // console.log(response)
 
       // Xử lý khi đăng nhập thành công
       if (response.status === 200) {
@@ -94,7 +97,12 @@ function Login() {
               type="text"
               className=""
               placeholder="メール"
-              icon={<MailOutlined />}/>
+              icon={<MailOutlined />}
+              value={values.email}
+              onChange={(e) =>
+                setValues({ ...values, email: e.target.value })
+              }
+              />
             </Form.Item>
 
             <Form.Item
@@ -111,7 +119,12 @@ function Login() {
               type="password"
               className=""
               placeholder="パスワード"
-              icon={<LockOutlined />} />
+              icon={<LockOutlined />}
+              value={values.password} 
+              onChange={(e) =>
+                setValues({ ...values, password: e.target.value })
+              }
+              />
             </Form.Item>
 
             <Form.Item style={{ textAlign: "center" }}>
