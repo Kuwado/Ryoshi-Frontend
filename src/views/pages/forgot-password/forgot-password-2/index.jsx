@@ -84,7 +84,7 @@ function ForgotPasswordTwo() {
             </Form.Item>
 
             <Form.Item style={{ textAlign: "center" }}>
-              <Button label="リセット" className="forgot-btn-regis" onClick={handleSubmit}>
+              <Button label="リセット" className="forgot-btn-regis" type="submit">
 
               </Button>
             </Form.Item>

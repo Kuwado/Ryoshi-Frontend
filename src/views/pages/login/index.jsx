@@ -137,7 +137,7 @@ function Login() {
             </Form.Item>
 
             <Form.Item style={{ textAlign: "center" }}>
-              <Button label="ログイン" className="login-btn-regis" onClick={handleSubmit}>
+              <Button label="ログイン" className="login-btn-regis" type="submit">
               </Button>
             </Form.Item>
           </Form>

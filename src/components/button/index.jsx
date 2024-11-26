@@ -1,16 +1,13 @@
 import React from "react";
+import "./index.css";
 
-export default function Button({ label, className, onClick }) {
+export default function Button({ label, className, type, onClick }) {
     return(
-        <div class="button-wrapper">
-        <input type="checkbox" id="button" class="d-none" />
-        <label
-            htmlFor={label} 
-            for="button" 
-            className={`btn d-flex align-items-center justify-content-center ${className}`}
-            onClick={onClick}>
-                {label}
-        </label>
-      </div>
+        <button 
+        className={`custom-button ${className}`}
+        type={type} 
+        onClick={onClick}>
+            {label}
+        </button>
     )
 }
