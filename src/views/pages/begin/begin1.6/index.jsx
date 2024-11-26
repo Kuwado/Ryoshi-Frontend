@@ -1,10 +1,133 @@
 import "./index.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+async function getCityList() {
+  try {
+    // Gửi yêu cầu POST đến API
+    const response = await fetch('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1', {
+      method: 'GET',
+    });
+
+    // Kiểm tra phản hồi từ server
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    // Nếu gửi thành công, trả về danh sách
+    return data.data.data.map(city => ({
+      name: city.name,
+      id: city.code,
+    }));
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    return null;
+  }
+}
+
+async function getWardList(cityId) {
+  let url = 'https://vn-public-apis.fpo.vn/districts/getAll?limit=-1'
+
+  if(cityId != null){
+    url = `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${cityId}&limit=-1`
+  }
+
+  try {
+    // Gửi yêu cầu POST đến API
+    const response = await fetch(url, {
+      method: 'GET',
+    });
+
+    // Kiểm tra phản hồi từ server
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    // Nếu gửi thành công, trả về danh sách
+    return data.data.data.map(ward => ({
+      name: ward.name,
+      id: ward.code,
+    }));
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    return null;
+  }
+}
+
+async function getTownList(wardId) {
+  let url = 'https://vn-public-apis.fpo.vn/wards/getAll?limit=-1'
+
+  if(wardId != null){
+    url = `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${wardId}&limit=-1`
+  }
+
+  try {
+    // Gửi yêu cầu POST đến API
+    const response = await fetch(url, {
+      method: 'GET',
+    });
+
+    // Kiểm tra phản hồi từ server
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    // Nếu gửi thành công, trả về danh sách
+    return data.data.data.map(town => ({
+      name: town.name,
+      id: town.code,
+    }));
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    return null;
+  }
+}
 
 function Begin1_6() {
   const navigate = useNavigate();
 
+  //Lấy danh sách thành phố
+  const [nameCities, setNameCities] = useState([]);
+  useEffect(() => {
+    const fetchCities = async () => {
+      const cities = await getCityList();
+      if (cities) {
+        setNameCities(cities);
+      }
+    };
+
+    fetchCities(); // Gọi hàm bất đồng bộ
+  }, []);
+
+  let cityId = null
+  //Lấy danh sách quận huyện
+  const [nameWards, setNameWards] = useState([]);
+  useEffect(() => {
+    const fetchWards = async () => {
+      const wards = await getWardList(cityId);
+      if (wards) {
+        setNameWards(wards);
+      }
+    };
+
+    fetchWards(); // Gọi hàm bất đồng bộ
+  }, []);
+
+  let wardId = null
+  //Lấy danh sách phường/xã
+  const [nameTowns, setNameTowns] = useState([]);
+  useEffect(() => {
+    const fetchTowns = async () => {
+      const towns = await getTownList(wardId);
+      if (towns) {
+        setNameTowns(towns);
+      }
+    };
+
+    fetchTowns(); // Gọi hàm bất đồng bộ
+  }, []);
+
+  console.log(nameCities, nameWards, nameTowns)
   const [children_ages, setChildrenAges] = useState([]); // Trạng thái chứa giá trị của các chip đã chọn
 
   const handleChipClick = (ageRange) => {
