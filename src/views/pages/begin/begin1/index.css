@@ -63,6 +63,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
   max-width: 530px;
+  min-width: 390px;
 }
 
 .item-1 {
