@@ -17,19 +17,6 @@
   margin-bottom: 30px;
 }
 
-.input-field {
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid #0094da;
-  font-size: 16px;
-  padding: 5px;
-  outline: none;
-}
-
-.input-field:focus {
-  border-bottom: 2px solid #0094da;
-}
-
 .begin1-6-submit-button {
   margin-top: 40px;
   width: 360px;

@@ -17,6 +17,7 @@ import ryoshi from "../../../assets/images/ryoshi.png";
 import registerImage from "../../../assets/images/image2.png";
 import Button from "../../../components/button";
 import Input from "../../../components/input";
+import axios from "axios";
 
 function Register() {
   const navigate = useNavigate();
@@ -73,21 +74,27 @@ function Register() {
     }
   };
 
-  const handleFinish = (value) => {
-    toast.success("Đăng ký thành công!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-    setTimeout(() => {
-      navigate("/login");
-    }, 5000);
-    console.log("Received values of form: ", value);
+  const handleFinish = async (e) => {
+    e.preventDefault(); // Ngăn chặn hành vi mặc định của form
+    try {
+      console.log(values.email);
+      const response = await axios.post("http://localhost:8000/api/v1/register", {
+        email: values.email,
+        password: values.password2,
+      });
+
+      // Xử lý khi đăng nhập thành công
+      if (response.status === 200) {
+        toast.success("ログイン成功！");
+        navigate("/login");
+      }
+    } catch (error) {
+      // Xử lý lỗi từ server
+      console.log(error.response.data.error);
+      toast.error(error.response.data.error)
+    }
   };
+
   return (
     <div
       className="register-container"
@@ -158,8 +165,8 @@ function Register() {
           </Button>
 
         </form>
-        <div class="flex-full-width">
-          <div class="login-to-register-to-forgotpassword justi-center">
+        <div className="flex-full-width">
+          <div className="login-to-register-to-forgotpassword justi-center">
             <Link className="register-link underline" to="/login">
               アカウントがあった？
             </Link>
