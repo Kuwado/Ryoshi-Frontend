@@ -14,7 +14,10 @@ import Input from "../../../../components/input";
 
 function ForgotPasswordOne() {
   const navigate = useNavigate();
-  const handleSubmit = async (value) => {
+  const [value, setValue] = React.useState({
+    email: "",
+  });
+  const handleSubmit = async () => {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/checkEmail",
@@ -79,7 +82,12 @@ function ForgotPasswordOne() {
               type="text"
               className=""
               placeholder="メール"
-              icon={<MailOutlined />}/>
+              icon={<MailOutlined />}
+              value={value.email}
+              onChange={(e) =>
+                setValue({ ...value, email: e.target.value })
+              }
+              />
             </Form.Item>
 
             <Form.Item style={{ textAlign: "center" }}>
