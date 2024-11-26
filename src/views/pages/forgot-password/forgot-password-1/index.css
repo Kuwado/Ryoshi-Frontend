@@ -3,7 +3,6 @@
   padding: 0;
   position: relative;
   display: flex;
-  font-family: Arial, Helvetica, sans-serif;
   justify-content: center;
   align-items: center;
   background-attachment: fixed;
@@ -86,11 +85,18 @@
   color: white;
   border-radius: 12px;
   gap: 8px;
-  padding: 20px;
+  padding: 10px;
+  height: fit-content;
 }
 .forgot-btn-regis:hover {
   background-color: #0077b3 !important;
   color: white;
+}
+
+:where(.css-dev-only-do-not-override-1x0dypw).ant-input-affix-wrapper {
+  min-width: 375px;
+  border-radius: 12px;
+  padding: 10px;
 }
 
 @media only screen and (max-width: 430px) {

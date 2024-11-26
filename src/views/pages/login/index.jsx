@@ -74,7 +74,6 @@ function Login() {
             layout="horizontal"
             style={{
               width: 600,
-              marginLeft: 10,
             }}
             className="login-form"
             onFinish={handleSubmit}
@@ -127,7 +126,7 @@ function Login() {
             アカウントがない？
           </Link>
 
-          <Link className="forgot-link" to="/forgot-password">
+          <Link className="forgot-link" to="/forgot-password-one">
             パスワードを忘れた？
           </Link>
         </div>

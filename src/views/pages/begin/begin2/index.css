@@ -1,0 +1,79 @@
+.begin1-content {
+  display: flex;
+  gap: 100px;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.begin2-form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.options-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+}
+
+.options-row {
+  display: flex;
+  flex-direction: row; /* Hàng */
+  gap: 10px;
+}
+
+.option-item {
+  border: 1px solid #0094da;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: white;
+  transition: all 0.3s;
+}
+
+.option-item.selected {
+  background-color: #0094da;
+  color: white;
+}
+
+.option-item:hover {
+  background-color: #0074a3;
+  color: white;
+}
+
+.begin2-submit-button {
+  margin-top: 40px;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.flex-2cols {
+  display: flex;
+}
+
+.flex-item2 {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-self: flex-end;
+}

@@ -3,7 +3,6 @@ import axios from "axios";
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { KeyOutlined } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, Input, Button } from "antd";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

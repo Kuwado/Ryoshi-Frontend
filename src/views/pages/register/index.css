@@ -88,14 +88,11 @@
   gap: 8px;
   padding: 20px;
 }
-.register-btn-regis:hover {
-  background-color: #0094da !important;
-  color: white;
-}
 
 .register-to-login {
   text-align: center;
   font-size: 16px;
+  margin-left: 70px;
 }
 
 .register-link {
@@ -106,6 +103,7 @@
 .other-login-methods {
   text-align: center; /* Căn giữa nội dung */
   margin-top: 30px; /* Khoảng cách từ phần đăng ký */
+  margin-left: 35px;
 }
 
 .other-login-text {
@@ -118,6 +116,7 @@
   display: flex;
   justify-content: center; /* Căn giữa các biểu tượng */
   gap: 20px; /* Khoảng cách giữa các biểu tượng */
+  margin-bottom: 50px;
 }
 
 .social-button {

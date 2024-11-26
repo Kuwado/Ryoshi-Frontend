@@ -1,15 +1,3 @@
-.begin1-container {
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.begin1-title {
-  font-size: 36px;
-  color: black;
-  text-align: left;
-  margin-bottom: 70px;
-}
-
 .begin1-content {
   display: flex;
   gap: 100px;
@@ -53,13 +41,6 @@
 
 .submit-button:hover {
   background-color: #0074a3;
-}
-
-.image-section {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
 }
 
 .begin1-image {
