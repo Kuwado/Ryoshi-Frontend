@@ -95,6 +95,7 @@ function Register() {
                   message: "無効なメールです!",
                 },
               ]}
+              required
             >
               <Input
               type="text"
@@ -122,6 +123,7 @@ function Register() {
                     "パスワードは、少なくとも1つの大文字、1つの数字、1つの特殊文字を含み、6〜20文字でなければなりません！",
                 },
               ]}
+              required
               hasFeedback
             >
               <Input
@@ -155,6 +157,7 @@ function Register() {
                   },
                 }),
               ]}
+              required
             >
               <Input
               type="password"

@@ -11,7 +11,6 @@ export default function Input({ type, className, placeholder, icon, value, onCha
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
-                required
             />
             
         </div>
