@@ -1,36 +1,33 @@
-.begin1-container {
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.begin1-title {
-  font-size: 36px;
-  color: black;
-  text-align: left;
-  margin-bottom: 20px;
-}
-
-.begin1-subtitle {
-  font-size: 18px;
-  color: gray;
-  text-align: left;
-  margin-bottom: 50px;
-}
-
 .begin1-content {
   display: flex;
   gap: 100px;
-  padding: 0px 100px 0px 100px;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
 }
 
-.begin1-form-section {
+.begin2-form-section {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
 }
 
-.options-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Chia lưới 3 cột */
-  grid-gap: 20px;
+.options-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+}
+
+.options-row {
+  display: flex;
+  flex-direction: row; /* Hàng */
+  gap: 10px;
 }
 
 .option-item {
@@ -54,33 +51,29 @@
   color: white;
 }
 
-.begin1-submit-button {
-  display: block;
-  width: 100%;
-  background-color: #0094da;
-  color: white;
-  padding: 15px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+.begin2-submit-button {
   margin-top: 40px;
 }
 
-.begin1-submit-button:hover {
-  background-color: #0074a3;
+.flex-row {
+  display: flex;
+  flex-direction: row;
 }
 
-.image-section {
+.flex-col {
   flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
-.begin1-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.flex-2cols {
+  display: flex;
+}
+
+.flex-item2 {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-self: flex-end;
 }
