@@ -26,15 +26,9 @@ async function getCityList() {
 }
 
 async function getWardList(cityId) {
-  let url = 'https://vn-public-apis.fpo.vn/districts/getAll?limit=-1'
-
-  if(cityId != null){
-    url = `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${cityId}&limit=-1`
-  }
-
   try {
     // Gửi yêu cầu POST đến API
-    const response = await fetch(url, {
+    const response = await fetch(`https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${cityId}&limit=-1`, {
       method: 'GET',
     });
 
@@ -55,15 +49,9 @@ async function getWardList(cityId) {
 }
 
 async function getTownList(wardId) {
-  let url = 'https://vn-public-apis.fpo.vn/wards/getAll?limit=-1'
-
-  if(wardId != null){
-    url = `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${wardId}&limit=-1`
-  }
-
   try {
     // Gửi yêu cầu POST đến API
-    const response = await fetch(url, {
+    const response = await fetch(`https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${wardId}&limit=-1`, {
       method: 'GET',
     });
 
@@ -86,8 +74,17 @@ async function getTownList(wardId) {
 function Begin1_6() {
   const navigate = useNavigate();
 
-  //Lấy danh sách thành phố
+  const [city, setCity] = useState(null); // Khởi tạo city với null
+  const [ward, setWard] = useState(null); 
+  const [town, setTown] = useState(null); 
+
   const [nameCities, setNameCities] = useState([]);
+  const [nameWards, setNameWards] = useState([]);
+  const [nameTowns, setNameTowns] = useState([]);
+
+  const [cityId, setCityId] = useState('');
+
+  //Lấy danh sách thành phố
   useEffect(() => {
     const fetchCities = async () => {
       const cities = await getCityList();
@@ -99,35 +96,49 @@ function Begin1_6() {
     fetchCities(); // Gọi hàm bất đồng bộ
   }, []);
 
-  let cityId = null
-  //Lấy danh sách quận huyện
-  const [nameWards, setNameWards] = useState([]);
+  const handleCityChange = (e) => {
+    const selectedId = e.target.value; // Lấy id đã chọn
+    const selectedCity = nameCities.find(city => city.id === selectedId); // Tìm đối tượng thành phố dựa trên id
+
+    setCity(selectedCity); // Cập nhật city với object
+    setCityId(selectedId); // Cập nhật cityId
+  };
+
+  // useEffect để lấy danh sách quận huyện khi cityId thay đổi
   useEffect(() => {
     const fetchWards = async () => {
-      const wards = await getWardList(cityId);
-      if (wards) {
-        setNameWards(wards);
+      if (cityId) { // Kiểm tra cityId có giá trị
+        const wards = await getWardList(cityId);
+        if (wards) {
+          setNameWards(wards); // Cập nhật danh sách quận huyện
+        }
       }
     };
 
     fetchWards(); // Gọi hàm bất đồng bộ
-  }, []);
+  }, [cityId]); // Chạy lại effect khi cityId thay đổi
 
-  let wardId = null
-  //Lấy danh sách phường/xã
-  const [nameTowns, setNameTowns] = useState([]);
+  const handleWardChange = (e) => {
+    const selectedId = e.target.value; // Lấy id đã chọn
+    const selectedWard = nameWards.find(ward => ward.id === selectedId); 
+
+    setWard(selectedWard); // Cập nhật ward
+  };
+
+  // useEffect để lấy danh sách phường/xã khi wardId thay đổi
   useEffect(() => {
     const fetchTowns = async () => {
-      const towns = await getTownList(wardId);
-      if (towns) {
-        setNameTowns(towns);
+      if (ward) { // Kiểm tra ward có giá trị
+        const towns = await getTownList(ward.id); // Sử dụng ward.id để lấy danh sách phường/xã
+        if (towns) {
+          setNameTowns(towns); // Cập nhật danh sách phường/xã
+        }
       }
     };
 
     fetchTowns(); // Gọi hàm bất đồng bộ
-  }, []);
+  }, [ward]); // Chạy lại effect khi ward thay đổi
 
-  console.log(nameCities, nameWards, nameTowns)
   const [children_ages, setChildrenAges] = useState([]); // Trạng thái chứa giá trị của các chip đã chọn
 
   const handleChipClick = (ageRange) => {
@@ -144,9 +155,6 @@ function Begin1_6() {
   ];
 
   // State để lưu giá trị input
-  const [city, setCity] = useState('');
-  const [ward, setWard] = useState('');
-  const [town, setTown] = useState('');
   const [address, setAddress] = useState('');
 
   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3MzI1NDU3OTQsImV4cCI6MTczNTEzNzc5NH0.OAkbvzKUhceuKw_PbMPhTtDOVqSHJ2_6Y-wksCpydBg'; // Thay thế bằng token thực tế
@@ -195,23 +203,52 @@ function Begin1_6() {
           <div className="begin1-6-form-section">
             <form>
               <div className="begin1-6-form-item">
-                <input type="text" placeholder="県/市" className="input-field" 
-                value={city}
-                  onChange={(e) => setCity(e.target.value)} // Cập nhật giá trị city
-                />
+                <div class="begin1-6-form-item">
+                  <select
+                    className="input-field"
+                    value={city ? city.id : ''} // Hiển thị id của city nếu có
+                    onChange={handleCityChange} // Gọi hàm xử lý
+                  >
+                    <option value="">県/市</option>
+                    {nameCities.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div class="begin1-6-form-item">
+                  <select
+                    className="input-field"
+                    value={ward ? ward.id : ''}
+                    onChange={handleWardChange} // Cập nhật giá trị ward
+                  >
+                    <option value="">区/郡</option>
+                    {nameWards.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div class="begin1-6-form-item">
+                  <select
+                    className="input-field"
+                    value={town ? town.id : ''}
+                    onChange={(e) => setTown(e.target.value)} // Cập nhật giá trị town
+                  >
+                    <option value="">町/村</option>
+                    {nameTowns.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <div className="begin1-6-form-item">
-                <input type="text" placeholder="区/郡" className="input-field" 
-                value={ward}
-                  onChange={(e) => setWard(e.target.value)} // Cập nhật giá trị ward
-                />
-              </div>
-              <div className="begin1-6-form-item">
-                <input type="text" placeholder="町/村" className="input-field" 
-                value={town}
-                  onChange={(e) => setTown(e.target.value)} // Cập nhật giá trị town
-                />
-              </div>
+
               <div className="begin1-6-form-item">
                 <input
                   type="text"

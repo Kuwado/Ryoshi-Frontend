@@ -74,11 +74,8 @@ function Begin2() {
       if (prevSelected.includes(item)) {
         return prevSelected.filter((selectedItem) => selectedItem !== item);
       } else {
-        // Nếu chip chưa được chọn, thêm vào danh sách nếu số lượng chưa vượt quá 5
-        if (prevSelected.length < 5) {
-          return [...prevSelected, item];
-        }
-        return prevSelected; // Không thêm nếu đã đạt tối đa 5 chip
+        // Nếu chip chưa được chọn, thêm vào danh sách
+        return [...prevSelected, item];
       }
     });
   };
