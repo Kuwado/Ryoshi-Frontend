@@ -116,10 +116,10 @@ function Begin1() {
         </div>
 
         <div className="image-section">
-          <img src={Begin1_1} className="begin1-image" alt="Begin 1" />
-          <img src={Begin1_2} className="begin1-image" alt="Begin 2" />
-          <img src={Begin1_3} className="begin1-image" alt="Begin 3" />
-          <img src={Begin1_4} className="begin1-image" alt="Begin 4" />
+          <img src={Begin1_1} className="begin1-image item-1" />
+          <img src={Begin1_2} className="begin1-image item-2" />
+          <img src={Begin1_3} className="begin1-image item-3" />
+          <img src={Begin1_4} className="begin1-image item-4" />
         </div>
       </div>
     </div>
