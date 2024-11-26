@@ -36,7 +36,7 @@ function Login() {
       if (response.status === 200) {
         toast.success("ログイン成功！");
         sessionStorage.setItem("authToken", response.data.token);
-        navigate("/testpage");
+        navigate("/user/begin1");
       }
     } catch (error) {
       // Xử lý lỗi từ server
