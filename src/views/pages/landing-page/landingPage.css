@@ -13,6 +13,14 @@ html, body {
   overflow: hidden;
 }
 
+.landing-content {
+  padding: 30px 105px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+}
+
 .background {
   background: url("../../../assets/images/landingpage.png") no-repeat center center/cover;
   width: 100%;
@@ -34,9 +42,6 @@ html, body {
 }
 
 .group-image {
-  position: absolute;
-  top: 23px;
-  left: 85px;
   width: 337px;
   height: 120.31px;
   mix-blend-mode: screen;
@@ -45,7 +50,7 @@ html, body {
 
 .landing-image {
   position: absolute;
-  top: 219px;
+  top: 235px;
   left: 85px;
   width: 533px;
   height: 126px;
@@ -53,20 +58,18 @@ html, body {
 
 .description {
   position: absolute;
-  top: 370px;
+  top: 350px;
   left: 85px;
-  width: 617px;
+  width: 670px;
   font-size: 16px;
   font-weight: 400;
   line-height: 18.75px;
   color: #ffffff;
-  padding: 10px 15px;
+  padding: 10px 30px;
 }
 
 .btn-login,
 .btn-register {
-  position: absolute;
-  top: 64px;
   width: 152px;
   height: 48px;
   border-radius: 12px;
@@ -99,12 +102,11 @@ html, body {
   background: #cc7400;
 }
 .footer-icons {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
   display: flex;
   gap: 15px;
   align-items: center;
+  align-self: self-end;
+  z-index: 10;
 }
 
 .landing2-image {
@@ -212,4 +214,20 @@ html, body {
   }
 }
 
+.landing-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.landing-flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.follow-label {
+  color: var(--white);
+  font-weight: 600;
+}
