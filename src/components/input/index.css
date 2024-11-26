@@ -1,0 +1,27 @@
+.input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+  
+  .input-wrapper .input-icon {
+    position: absolute;
+    top: 50%;
+    left: 12px; /* Khoảng cách icon bên trái */
+    transform: translateY(-50%);
+    pointer-events: none; /* Không cho phép click vào icon */
+    color: #6c5dd3; /* Màu icon */
+    font-size: 1.2rem;
+  }
+  
+  .input-wrapper .form-control {
+    width: 100%;
+    padding-left: 40px; /* Tạo khoảng trống cho icon */
+    box-sizing: border-box;
+  }
+  
+  .input-wrapper .form-control:focus {
+    outline: none;
+    border-color: #007bff; /* Màu viền khi focus */
+  }
+  
