@@ -17,6 +17,7 @@ import ryoshi from "../../../assets/images/ryoshi.png";
 import registerImage from "../../../assets/images/image2.png";
 import Button from "../../../components/button";
 import Input from "../../../components/input";
+import axios from "axios";
 
 function Register() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ function Register() {
 
   const handleFinish = async ()=> {
     try {
+      console.log(values.email);
       const response = await axios.post("http://localhost:8000/api/v1/register", {
         email: values.email,
         password: values.password,
