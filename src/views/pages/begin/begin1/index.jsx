@@ -15,8 +15,8 @@ function Begin1() {
   const [phone, setPhone] = useState('');
   const [gender, setGender] = useState('');
 
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3MzI1NDU3OTQsImV4cCI6MTczNTEzNzc5NH0.OAkbvzKUhceuKw_PbMPhTtDOVqSHJ2_6Y-wksCpydBg'; // Thay thế bằng token thực tế
-  const userId = 1
+  const token = sessionStorage.getItem("authToken");
+  const userId = JSON.parse(sessionStorage.getItem("auth")).id
 
   const handleNextClick = async (e) => {
     e.preventDefault(); // Ngăn chặn hành vi mặc định của form
