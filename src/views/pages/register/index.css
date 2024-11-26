@@ -49,44 +49,12 @@
   margin-bottom: 20px;
 }
 
-.register-image1 {
-  width: 237px;
-  object-fit: contain;
-  transform: translateX(40px);
-}
-
-.register-image2 {
-  width: 313px;
-  height: 175px;
-  /* object-fit: contain; */
-  transform: translateY(30px);
-}
-
-.register-images-bottom {
-  display: flex;
-  justify-content: center;
-  width: 852px;
-  height: 45px;
-  transform: translateX(-150px);
-  margin-bottom: 20px;
-}
-
 .register-form-item-mobile {
   transform: translateX(100px);
 }
 
 .register-icon {
   color: #6c5dd3;
-}
-
-.register-btn-regis {
-  min-width: 375px;
-  transform: translateX(85px);
-  background-color: #ff9000;
-  color: white;
-  border-radius: 12px;
-  gap: 8px;
-  padding: 20px;
 }
 
 .register-to-login {
@@ -102,14 +70,12 @@
 
 .other-login-methods {
   text-align: center; /* Căn giữa nội dung */
-  margin-top: 30px; /* Khoảng cách từ phần đăng ký */
-  margin-left: 35px;
+  margin-top: 15px;
 }
 
 .other-login-text {
-  font-size: 16px;
+  font-size: 20px;
   color: #fff; /* Đặt màu chữ thành trắng */
-  margin-bottom: 15px; /* Khoảng cách giữa dòng chữ và các biểu tượng */
 }
 
 .social-icons {
@@ -146,6 +112,9 @@
   color: #1da1f2; /* Màu của Twitter khi hover */
 }
 
+.justi-center{
+  justify-content: center;
+}
 @media only screen and (max-width: 430px) {
   .register-wrap {
     width: 350px;
@@ -160,13 +129,9 @@
   }
   .register-btn,
   .register-check,
-  .register-btn-regis,
   #other-option-regis,
   .register-other-option {
     margin-left: 0;
-  }
-  .register-btn-regis {
-    min-width: 300px;
   }
   .register-other-option {
     margin-right: 100px;

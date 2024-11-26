@@ -46,9 +46,7 @@ function Begin2() {
 
     fetchOptions(); // Gọi hàm bất đồng bộ
   }, []);
-
-  console.log(options);
-
+  
   const rows = [];
   let currentRow = [];
 

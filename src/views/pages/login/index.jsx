@@ -1,6 +1,6 @@
 import "./index.css";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,7 +9,6 @@ import {
   faFacebook,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import { Form } from "antd";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import backgroundImage from "../../../assets/images/background.png";
@@ -25,6 +24,41 @@ function Login() {
     email: "",
     password: "",
   });
+
+  const [mailError, setMailError] = useState('');
+  const [passError, setPassError] = useState('');
+
+  const validateEmail = (email) => {
+    // Sử dụng biểu thức chính quy để kiểm tra định dạng email
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleMailChange = (e) => {
+    const email = e.target.value;
+    setValues({ ...values, email });
+
+    // Kiểm tra định dạng email
+    if (!validateEmail(email)) {
+      setMailError('無効なメールです!'); // Thiết lập thông báo lỗi
+    } else {
+      setMailError(''); // Xóa thông báo lỗi nếu định dạng hợp lệ
+    }
+  };
+
+  const handlePassChange = (e) => {
+    const password = e.target.value;
+    setValues({ ...values, password: password }); // Cập nhật trường password
+
+    // Kiểm tra mật khẩu theo yêu cầu
+    const passwordRequirements = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,20}$/;
+    if (!passwordRequirements.test(password)) {
+        setPassError('パスワードは、少なくとも1つの大文字、1つの数字、1つの特殊文字を含み、6〜20文字でなければなりません！');
+    } else {
+        setPassError(''); // Xóa thông báo lỗi nếu mật khẩu hợp lệ
+    }
+  };
+
   const handleSubmit = async ()=> {
     try {
       const response = await axios.post("http://localhost:8000/api/v1/login", {
@@ -73,81 +107,49 @@ function Login() {
             alt="Login Bottom Image"
             className="login-image"
           />
-        </div>
+        </div>       
+        <form className="login-form-item-mobile">
+          <div>
+            <Input
+            type="text"
+            className=""
+            placeholder="メール"
+            icon={<MailOutlined />}
+            value={values.email}
+            onChange={handleMailChange}
+            />
+            <div className="explain-error">
+              {mailError || <span>&nbsp;</span>} 
+            </div>
+          </div>
 
-        <>
-          <Form
-            labelCol={{
-              span: 4,
-            }}
-            wrapperCol={{
-              span: 14,
-            }}
-            layout="horizontal"
-            style={{
-              width: 600,
-            }}
-            className="login-form"
-            onFinish={handleSubmit}
-          >
-            <Form.Item
-              className="login-form-item-mobile"
-              name="email"
-              rules={[
-                {
-                  type: "email",
-                  message: "無効なメールです!",
-                },
-              ]}
-            >
-              <Input
-              type="text"
-              className=""
-              placeholder="メール"
-              icon={<MailOutlined />}
-              value={values.email}
-              onChange={(e) =>
-                setValues({ ...values, email: e.target.value })
-              }
-              />
-            </Form.Item>
+          <div>
+            <Input
+            type="password"
+            className=""
+            placeholder="パスワード"
+            icon={<LockOutlined />}
+            value={values.password} 
+            onChange={handlePassChange}
+            />
+            <div className="explain-error">
+              {passError || <span>&nbsp;</span>} 
+            </div>
+          </div>
 
-            <Form.Item
-              className="login-form-item-mobile"
-              name="password"
-              rules={[
-                {
-                  message: "パスワードを入力してください。",
-                },
-              ]}
-              hasFeedback
-            >
-              <Input
-              type="password"
-              className=""
-              placeholder="パスワード"
-              icon={<LockOutlined />}
-              value={values.password} 
-              onChange={(e) =>
-                setValues({ ...values, password: e.target.value })
-              }
-              />
-            </Form.Item>
+          <Button label="ログイン" className="login-btn-regis" onClick={handleSubmit}>
+          </Button>
+        </form>
+        <div className="flex-full-width">
+          <div className="login-to-register-to-forgotpassword">
+            <Link className="register-link underline" to="/register">
+              アカウントがない？
+            </Link>
 
-            <Form.Item style={{ textAlign: "center" }}>
-              <Button label="ログイン" className="login-btn-regis" onClick={handleSubmit}>
-              </Button>
-            </Form.Item>
-          </Form>
-        </>
-        <div className="login-to-register-to-forgotpassword">
-          <Link className="register-link" to="/register">
-            アカウントがない？
-          </Link>
-
-          <Link className="forgot-link" to="/forgot-password-one">
-            パスワードを忘れた？
-          </Link>
+            <Link className="forgot-link underline" to="/forgot-password-one">
+              パスワードを忘れた？
+            </Link>
+          </div>
         </div>
         <div className="other-login-methods">
           <div className="other-login-text">他の方法</div>
