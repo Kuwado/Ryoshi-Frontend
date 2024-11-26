@@ -1,33 +1,31 @@
 import "./index.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
+import UploadProfile from "../../../../components/uploadProfile";
 import Begin1_1 from "../../../../assets/images/begin1.1.png";
 import Begin1_2 from "../../../../assets/images/begin1.2.png";
 import Begin1_3 from "../../../../assets/images/begin1.3.png";
 import Begin1_4 from "../../../../assets/images/begin1.4.png";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
-import UploadProfile from "../../../../components/uploadProfile";
 
 function Begin1_5() {
   const navigate = useNavigate();
-  const [fileList, setFileList] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3MzI1NDU3OTQsImV4cCI6MTczNTEzNzc5NH0.OAkbvzKUhceuKw_PbMPhTtDOVqSHJ2_6Y-wksCpydBg"; // Thay thế bằng token thực tế
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3MzI1NDU3OTQsImV4cCI6MTczNTEzNzc5NH0.OAkbvzKUhceuKw_PbMPhTtDOVqSHJ2_6Y-wksCpydBg";
   const userId = 1;
 
   const handleNextClick = async (e) => {
-    e.preventDefault(); // Ngăn chặn hành vi mặc định của form
+    e.preventDefault();
 
-    // Kiểm tra xem có hình ảnh nào được tải lên hay không
-    if (!fileList.length) {
+    if (!selectedImage) {
       message.error("Please upload an image before proceeding.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", fileList[0].originFileObj); // Giả sử bạn chỉ cần gửi một hình ảnh
+    formData.append("file", selectedImage);
 
     try {
       const response = await fetch(
@@ -35,8 +33,7 @@ function Begin1_5() {
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Thêm Bearer Token vào header
+            Authorization: `Bearer ${token}`,
           },
           body: formData,
         }
@@ -49,10 +46,9 @@ function Begin1_5() {
       const data = await response.json();
       console.log("Upload successful:", data);
 
-      // Chuyển đến trang tiếp theo
       navigate("/user/begin1.6");
     } catch (error) {
-      console.error("Có lỗi xảy ra khi gửi hình ảnh:", error);
+      console.error("Error uploading image:", error);
       message.error("Upload failed. Please try again.");
     }
   };
@@ -64,7 +60,7 @@ function Begin1_5() {
       <div className="begin1-content">
         <div className="begin1-form-section">
           <form>
-            <UploadProfile />
+            <UploadProfile onImageSelect={setSelectedImage} />
             <button
               type="submit"
               className="begin1-submit-button"
