@@ -53,14 +53,13 @@ function Register() {
     const password = e.target.value;
     setValues({ ...values, password1: password }); // Cập nhật trường password1
 
-    // Kiểm tra mật khẩu theo yêu cầu
-    // const passwordRequirements = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,20}$/;
-    // if (!passwordRequirements.test(password)) {
-    //     setPass1Error('パスワードは、少なくとも1つの大文字、1つの数字、1つの特殊文字を含み、6〜20文字でなければなりません！');
-    // } 
-    // else {
-    //     setPass1Error(''); // Xóa thông báo lỗi nếu mật khẩu hợp lệ
-    // }
+    const passwordRequirements = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,20}$/;
+    if (!passwordRequirements.test(values.password1)) {
+        setPass1Error('パスワードは、少なくとも1つの大文字、1つの数字、1つの特殊文字を含み、6〜20文字でなければなりません！');
+        return;
+    } else {
+      setPass1Error(''); // Xóa thông báo lỗi nếu giống nhau
+    } 
   };
 
   const handlePass2Change = (e) => {
@@ -73,6 +72,11 @@ function Register() {
     if (values.password1.length === 0) {
       setPass1Error('パスワードを入力してください！'); // Thông báo lỗi nếu không nhập
       return;
+    }   
+    const passwordRequirements = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,20}$/;
+    if (!passwordRequirements.test(values.password1)) {
+        setPass1Error('パスワードは、少なくとも1つの大文字、1つの数字、1つの特殊文字を含み、6〜20文字でなければなりません！');
+        return;
     } else {
       setPass1Error(''); // Xóa thông báo lỗi nếu giống nhau
     } 
@@ -93,15 +97,17 @@ function Register() {
       });
 
       // Xử lý khi đăng nhập thành công
-      if (response.status === 200) {
-        toast.success("ログイン成功！");
+    if (response.status === 200) {
+      toast.success("ログイン成功！");
+      setTimeout(() => {
         navigate("/login");
-      }
-    } catch (error) {
-      // Xử lý lỗi từ server
-      console.log(error.response.data.error);
-      toast.error(error.response.data.error)
+      }, 5000);
     }
+  } catch (error) {
+    // Xử lý lỗi từ server
+    console.log(error.response.data.error);
+    toast.error(error.response.data.error)
+  }
   };
 
   return (
