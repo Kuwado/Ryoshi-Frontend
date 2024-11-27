@@ -47,6 +47,8 @@
   gap: 20px;
   margin-top: 95px;
   margin-bottom: 20px;
+  mix-blend-mode: screen;
+  filter: brightness(1.2);
 }
 
 .login-image1 {
