@@ -54,28 +54,37 @@ function Register() {
     setValues({ ...values, password1: password }); // Cập nhật trường password1
 
     // Kiểm tra mật khẩu theo yêu cầu
-    const passwordRequirements = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,20}$/;
-    if (!passwordRequirements.test(password)) {
-        setPass1Error('パスワードは、少なくとも1つの大文字、1つの数字、1つの特殊文字を含み、6〜20文字でなければなりません！');
-    } else {
-        setPass1Error(''); // Xóa thông báo lỗi nếu mật khẩu hợp lệ
-    }
+    // const passwordRequirements = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,20}$/;
+    // if (!passwordRequirements.test(password)) {
+    //     setPass1Error('パスワードは、少なくとも1つの大文字、1つの数字、1つの特殊文字を含み、6〜20文字でなければなりません！');
+    // } 
+    // else {
+    //     setPass1Error(''); // Xóa thông báo lỗi nếu mật khẩu hợp lệ
+    // }
   };
 
   const handlePass2Change = (e) => {
     const password2 = e.target.value;
     setValues({ ...values, password2 });
-
-    // Kiểm tra xem password1 và password2 có giống nhau không
-    if (password2 !== values.password1) {
-      setPass2Error('再入力したパスワードが間違っています'); // Thiết lập thông báo lỗi
-    } else {
-      setPass2Error(''); // Xóa thông báo lỗi nếu giống nhau
-    }
   };
 
   const handleFinish = async (e) => {
     e.preventDefault(); // Ngăn chặn hành vi mặc định của form
+    if (values.password1.length === 0) {
+      setPass1Error('パスワードを入力してください！'); // Thông báo lỗi nếu không nhập
+      return;
+    } else {
+      setPass1Error(''); // Xóa thông báo lỗi nếu giống nhau
+    } 
+
+    // Kiểm tra xem password1 và password2 có giống nhau không
+    if (values.password2 !== values.password1) {
+      setPass2Error('再入力したパスワードが間違っています'); // Thiết lập thông báo lỗi
+      return;
+    } else {
+        setPass2Error(''); // Xóa thông báo lỗi nếu giống nhau
+    }
+
     try {
       console.log(values.email);
       const response = await axios.post("http://localhost:8000/api/v1/register", {
