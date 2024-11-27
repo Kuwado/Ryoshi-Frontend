@@ -1,6 +1,7 @@
 import "./index.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "../../../../components/button";
 
 async function getCityList() {
   try {
@@ -209,7 +210,7 @@ function Begin1_6() {
                     value={city ? city.id : ''} // Hiển thị id của city nếu có
                     onChange={handleCityChange} // Gọi hàm xử lý
                   >
-                    <option value="">県/市</option>
+                    <option value="" disabled selected hidden>県/市</option>
                     {nameCities.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.name}
@@ -224,7 +225,7 @@ function Begin1_6() {
                     value={ward ? ward.id : ''}
                     onChange={handleWardChange} // Cập nhật giá trị ward
                   >
-                    <option value="">区/郡</option>
+                    <option value="" disabled selected hidden>区/郡</option>
                     {nameWards.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.name}
@@ -239,7 +240,7 @@ function Begin1_6() {
                     value={town ? town.id : ''}
                     onChange={(e) => setTown(e.target.value)} // Cập nhật giá trị town
                   >
-                    <option value="">町/村</option>
+                    <option value="" disabled selected hidden>町/村</option>
                     {nameTowns.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.name}
@@ -284,10 +285,9 @@ function Begin1_6() {
                 </div>
               ))}
             </div>
-            <div class="button-wrapper begin1-6-submit-button" onClick={handleNextClick}>
-              <input type="checkbox" id="button" class="d-none"/>
-              <label for="button" class="btn d-flex align-items-center justify-content-center">次のステップ</label>
-            </div>
+
+            <Button label="次のステップ" className="begin1-6-submit-button" onClick={handleNextClick}>
+            </Button>
           </div>
         </div>
       </div>
