@@ -109,7 +109,7 @@ function Begin2() {
       if (selectedItems.length < 5) {
         alert("最低5つの項目を選択してください");
       } else {
-        navigate("/next-step");
+        navigate("/user/home");
       }
     } catch (error) {
       console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
