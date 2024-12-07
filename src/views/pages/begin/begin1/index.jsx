@@ -108,6 +108,8 @@ function Begin1() {
             </div>
             <Button label="次のステップ" className="begin1-submit-button" onClick={handleNextClick}>
             </Button>
+            <Button label="戻る" className="begin1-back-button" onClick={() => navigate("/user/home")}>
+            </Button>
           </form>
         </div>
 

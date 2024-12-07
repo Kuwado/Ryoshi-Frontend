@@ -99,9 +99,10 @@ function Register() {
       // Xử lý khi đăng nhập thành công
     if (response.status === 200) {
       toast.success("ログイン成功！");
+      sessionStorage.setItem("authToken", response.data.token);
       setTimeout(() => {
-        navigate("/login");
-      }, 5000);
+        navigate("/user/begin1");
+      }, 3000);
     }
   } catch (error) {
     // Xử lý lỗi từ server
