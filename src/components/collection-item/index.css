@@ -1,0 +1,90 @@
+.item-container {
+  box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.item-header {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px 15px;
+}
+
+.item-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #0094DAB2;
+  padding: 8px 15px 17px 15px;
+  gap: 5px;
+}
+
+.item-property {
+  display: flex;
+  flex-direction: row;
+  gap: 7px;
+  align-items: start;
+}
+
+.item-img {
+  width: 100%; 
+  height: 35vh;
+  object-fit: cover;
+}
+
+.name-text {
+  font-weight: 600;
+  color: #FAFAFA;
+  font-size: 16px;
+}
+
+.place-text {
+  font-weight: 400;
+  color: #FAFAFA;
+  font-size: 16px;
+  line-height: 18.75px;
+}
+
+.product-slider__fav {
+  position: relative;
+  display: inline-block;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: none;
+  height: 27px;
+}
+
+.heart, .tick {
+  display: block;
+  position: absolute;
+  transform: translate(-50%, -50%) scale(0.7);
+  top: 50%;
+  pointer-events: none;
+  width: 100px;
+  height: 100px;
+  background-position: 0 0;
+  cursor: pointer;
+  transition: background-position 1s steps(28);
+  transition-duration: 0s;
+
+  &.is-active {
+    transition-duration: 1s;
+    background-position: -2800px 0;
+  }
+}
+
+.heart {
+  background: url("../../assets/images/heart.png") no-repeat;
+}
+
+.tick {
+  background: url("../../assets/images/tick.png") no-repeat;
+}
