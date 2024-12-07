@@ -62,7 +62,7 @@ function Begin1_5() {
       const data = await response.json();
       console.log("Upload successful:", data);
 
-      navigate("/user/begin1.6");
+      navigate("/begin1.6");
     } catch (error) {
       console.error("Error uploading image:", error);
       message.error("Upload failed. Please try again.");
@@ -78,6 +78,8 @@ function Begin1_5() {
           <form>
             <UploadProfile onImageSelect={setSelectedImage} />
             <Button label="スキップ" className="begin1-submit-button" onClick={handleNextClick}>
+            </Button>
+            <Button label="スキップこのステップ" className="begin1-back-button" onClick={() => navigate("/user/begin1.6")}>
             </Button>
           </form>
         </div>
