@@ -70,7 +70,10 @@ function Login() {
         const decodedPayload = JSON.parse(atob(payload)); // Giải mã Base64
         
         sessionStorage.setItem("auth", JSON.stringify(decodedPayload));
-        navigate("/user/home");
+        const role = decodedPayload.role;
+        if (role === "user") {
+          navigate("/user/home");
+        }
       }
     } catch (error) {
       // Xử lý lỗi từ server

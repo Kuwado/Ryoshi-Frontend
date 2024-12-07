@@ -1,4 +1,4 @@
-import "./home.css";
+import "./index.css";
 import React, { useState } from "react";
 import Carousel from "../../../components/carousel";
 import Collection from "../../../components/collection";

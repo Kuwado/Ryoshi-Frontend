@@ -189,7 +189,7 @@ function Begin1_6() {
       const data = await response.json();
 
       // Nếu gửi thành công, chuyển đến trang tiếp theo
-      navigate("/user/begin2");
+      navigate("user/begin2");
     } catch (error) {
       console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
       // Xử lý lỗi nếu cần
@@ -287,6 +287,8 @@ function Begin1_6() {
             </div>
 
             <Button label="次のステップ" className="begin1-6-submit-button" onClick={handleNextClick}>
+            </Button>
+            <Button label="スキップこのステップ" className="begin1-back-button" onClick={() => navigate("/user/begin2")}>
             </Button>
           </div>
         </div>
