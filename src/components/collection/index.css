@@ -51,6 +51,8 @@
     flex-direction: row;
     gap: 40px;
     padding: 0 0 10px 0;
+    height: fit-content;
+    justify-content: space-around;
 }
 
 .collection-item:not(.active) {
