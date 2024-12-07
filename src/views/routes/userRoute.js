@@ -3,7 +3,7 @@ import Begin1 from "../pages/begin/begin1";
 import Begin1_5 from "../pages/begin/begin1.5";
 import Begin1_6 from "../pages/begin/begin1.6";
 import Begin2 from "../pages/begin/begin2";
-import Home from "../pages/home/home";
+import Home from "../pages/home";
 import Testpage from "../pages/test-page/test-page";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
