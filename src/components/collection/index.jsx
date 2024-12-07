@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import "./index.css";
 import CollectionItem from "../collection-item";
 
-const Collection = ({collectionData, col, showIndicator}) => {
+//collectionData (array): mảng chứa dữ liệu của 1 item cần có 3 trường id, name, place
+//itemsPerSlide (int): số item tối đa hiển thị trong 1 trang
+//showIndicator (boolean): hiển thị đánh số trang
+const Collection = ({collectionData, itemsPerSlide, showIndicator}) => {
     const [currentSlide, setCurrentSlide] = useState(0);
-    const totalSlides = Math.ceil(collectionData.length / col);
+    const totalSlides = Math.ceil(collectionData.length / itemsPerSlide);
     
     const goToPrevSlide = () => {
         setCurrentSlide((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
@@ -29,7 +32,7 @@ const Collection = ({collectionData, col, showIndicator}) => {
     };
 
     // Tách collectionData thành các mảng nhỏ
-    const slicedData = sliceArray(collectionData, col);
+    const slicedData = sliceArray(collectionData, itemsPerSlide);
 
     return (
         <div className='collection-container'>

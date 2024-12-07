@@ -1,8 +1,6 @@
 import "./home.css";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Carousel from "../../../components/carousel";
-import CollectionItem from "../../../components/collection-item";
 import Collection from "../../../components/collection";
 import HomeImg from "../../../assets/images/home.png";
 import ItemImg from "../../../assets/images/item.png";
@@ -89,13 +87,13 @@ return (
                 <div className="title-collection">
                     <span>あなたに合った観光地</span>
                 </div>
-                <Collection collectionData={collections} col={5} showIndicator={false}></Collection>
+                <Collection collectionData={collections} itemsPerSlide={5} showIndicator={false}></Collection>
             </div>
             <div className="hot-collection">
                 <div className="title-collection">
                     <span>最も人気のある観光地</span>
                 </div>
-                <Collection collectionData={collections} col={5} showIndicator={false}></Collection>
+                <Collection collectionData={collections} itemsPerSlide={5} showIndicator={false}></Collection>
             </div>
         </div>
     </div>
