@@ -1,12 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./index.css";
 import CollectionItem from "../collection-item";
 
 //collectionData (array): mảng chứa dữ liệu của 1 item cần có 3 trường id, name, place
-//itemsPerSlide (int): số item tối đa hiển thị trong 1 trang
+//itemsNumber (int): số item tối đa hiển thị trong 1 hàng
+//rowNumber (int): số hàng
 //showIndicator (boolean): hiển thị đánh số trang
-const Collection = ({collectionData, itemsPerSlide, showIndicator}) => {
+
+const Collection = ({collectionData, itemsNumber, rowNumber, showIndicator}) => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [itemsPerSlide, setItemsPerSlide] = useState(itemsNumber * rowNumber); // Giá trị mặc định
+
+    // Hàm để điều chỉnh số lượng item theo kích thước màn hình
+    const updateItemsPerSlide = () => {
+        const width = window.innerWidth;
+        
+        if (width < 644) {
+            setItemsPerSlide(1 * rowNumber);
+        } else if (width < 930) {
+            setItemsPerSlide(2 * rowNumber); 
+        } else if (width < 1220) {
+            setItemsPerSlide(3 * rowNumber); 
+        } else if (width < 1512) {
+            setItemsPerSlide(4 * rowNumber); 
+        } else {
+            setItemsPerSlide(itemsNumber * rowNumber);
+        }
+    };
+
+    useEffect(() => {
+        updateItemsPerSlide(); // Gọi hàm khi component mount
+        window.addEventListener('resize', updateItemsPerSlide); // Lắng nghe sự kiện resize
+
+        return () => {
+            window.removeEventListener('resize', updateItemsPerSlide); // Dọn dẹp listener khi unmount
+        };
+    }, []);
+
     const totalSlides = Math.ceil(collectionData.length / itemsPerSlide);
     
     const goToPrevSlide = () => {
@@ -21,13 +51,29 @@ const Collection = ({collectionData, itemsPerSlide, showIndicator}) => {
         setCurrentSlide(index);
     };
 
-    // Hàm để tách mảng
     const sliceArray = (array, chunkSize) => {
         const result = [];
+        const maxSlide = Math.ceil(array.length/chunkSize);
         for (let i = 0; i < array.length; i += chunkSize) {
             const chunk = array.slice(i, i + chunkSize);
             result.push(chunk);
+
+            if(result.length == maxSlide && rowNumber > 1) {
+                // Thêm fillers vào chunk nếu cần
+                if (chunk.length < chunkSize / 2) {
+                    const fillCount = Math.ceil(chunkSize / 2) - chunk.length; 
+                    const fillers = new Array(fillCount).fill({ id: -1 });
+                    chunk.push( ...fillers);
+                    console.log(chunk.length, chunkSize);
+                } else if (chunk.length < chunkSize) {
+                    const fillCount = chunkSize - chunk.length; 
+                    const fillers = new Array(fillCount).fill({ id: -1 });
+                    chunk.push( ...fillers);
+                    console.log(chunk.length, chunkSize);
+                }
+            }
         }
+        console.log(result);
         return result;
     };
 
@@ -39,10 +85,14 @@ const Collection = ({collectionData, itemsPerSlide, showIndicator}) => {
             <div className="collection">
                 <div className="collection-inner" style={{ transform: `translateX(calc(${currentSlide * (-100)}vw + ${currentSlide * (60)}px))` }}>
                     {slicedData.map((itemArr, index) => (
-                        <div className={`collection-item ${index === currentSlide ? 'active' : ''}`}>
-                            {itemArr.map((item) => (
-                                <CollectionItem name={item.name} place={item.place}></CollectionItem>
-                            ))}
+                        <div className={`collection-item ${index === currentSlide ? 'active' : ''}`} key={index} style={rowNumber > 1 ? { flexWrap: 'wrap' } : {}}>
+                            {itemArr.map((item, itemIndex) => 
+                                item.id !== -1 ? (
+                                    <CollectionItem key={item.name} name={item.name} place={item.place} />
+                                ) : (
+                                    <div style={{ width: '250px' }}></div>
+                                )
+                            )}
                         </div>
                     ))}
                 </div>

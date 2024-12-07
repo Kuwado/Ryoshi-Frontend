@@ -74,6 +74,11 @@ function Home() {
             id: 10,
             name: "Quốc đảo chim",
             place: "Thiên đường Bảo Sơn - Hà Nội (11km)"
+        },
+        {
+            id: 11,
+            name: "Quốc đảo chim",
+            place: "Thiên đường Bảo Sơn - Hà Nội (11km)"
         }
     ];
 
@@ -87,13 +92,13 @@ return (
                 <div className="title-collection">
                     <span>あなたに合った観光地</span>
                 </div>
-                <Collection collectionData={collections} itemsPerSlide={5} showIndicator={false}></Collection>
+                <Collection collectionData={collections} itemsNumber={5} showIndicator={false} rowNumber={1}></Collection>
             </div>
             <div className="hot-collection">
                 <div className="title-collection">
                     <span>最も人気のある観光地</span>
                 </div>
-                <Collection collectionData={collections} itemsPerSlide={5} showIndicator={false}></Collection>
+                <Collection collectionData={collections} itemsNumber={5} showIndicator={false} rowNumber={1}></Collection>
             </div>
         </div>
     </div>
