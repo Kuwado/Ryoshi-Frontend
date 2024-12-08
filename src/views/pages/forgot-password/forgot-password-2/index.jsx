@@ -29,8 +29,10 @@ function ForgotPasswordTwo() {
         }
       );
       if (response.status === 200) {
-        toast.success("コードが確認されました！");
-        navigate("/forgot-password-three", { state: { email: location.state.email } }); // Chuyển email đến bước tiếp theo
+        toast.success(response.data.message);
+        setTimeout(() => {
+          navigate("/forgot-password-three", { state: { email: location.state.email } }); // Chuyển email đến bước tiếp theo
+        }, 3000);
       }
     } catch (error) {
       toast.error(error.response.data.error);
