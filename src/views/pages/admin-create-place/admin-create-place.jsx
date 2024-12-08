@@ -1,5 +1,75 @@
 import React, { useState } from 'react';
 import './admin-create-place.css';
+import { type } from '@testing-library/user-event/dist/type';
+
+async function getCityList() {
+  try {
+    // Gửi yêu cầu POST đến API
+    const response = await fetch('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1', {
+      method: 'GET',
+    });
+
+    // Kiểm tra phản hồi từ server
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    // Nếu gửi thành công, trả về danh sách
+    return data.data.data.map(city => ({
+      name: city.name,
+      id: city.code,
+    }));
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    return null;
+  }
+}
+
+async function getWardList(cityId) {
+  try {
+    // Gửi yêu cầu POST đến API
+    const response = await fetch(`https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${cityId}&limit=-1`, {
+      method: 'GET',
+    });
+
+    // Kiểm tra phản hồi từ server
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    // Nếu gửi thành công, trả về danh sách
+    return data.data.data.map(ward => ({
+      name: ward.name,
+      id: ward.code,
+    }));
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    return null;
+  }
+}
+
+async function getTownList(wardId) {
+  try {
+    // Gửi yêu cầu POST đến API
+    const response = await fetch(`https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${wardId}&limit=-1`, {
+      method: 'GET',
+    });
+
+    // Kiểm tra phản hồi từ server
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    // Nếu gửi thành công, trả về danh sách
+    return data.data.data.map(town => ({
+      name: town.name,
+      id: town.code,
+    }));
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    return null;
+  }
+}
 
 const AdminCreatePlace = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +88,69 @@ const AdminCreatePlace = () => {
     description: '', // Mô tả
     image: null,
   });
+
+  const [city, setCity] = useState(null); // Khởi tạo city với null
+  const [ward, setWard] = useState(null); 
+  const [town, setTown] = useState(null); 
+
+  const [cityList, setCityList] = useState([]);
+  const [wardList, setWardList] = useState([]);
+  const [townList, setTownList] = useState([]);
+  const [cityId, setCityId] = useState('');
+
+  // Lấy danh sách thành phố khi component được render
+  useEffect(() => {
+    const fetchCityList = async () => {
+      const cities = await getCityList();
+      if (cities) {
+        setCityList(cities);
+      }
+    };
+    fetchCityList();
+  }, []);
+
+  const handleCityChange = async (e) => {
+    const selectedId = e.target.value;
+    const selectedCity = cityList.find((city) => city.id === selectedId);
+
+    setCity(selectedCity);
+    setCityId(selectedId);
+  };
+
+  // Lấy danh sách quận huyện khi cityId thay đổi
+  useEffect(() => {
+    const fetchWardList = async () => {
+      if (cityId) {
+        const wards = await getWardList(cityId);
+        if (wards) {
+          setWardList(wards);
+        }
+      }
+    };
+
+    fetchWardList();
+  }, [cityId]);
+
+  const handleWardChange = async (e) => {
+    const selectedId = e.target.value;
+    const selectedWard = wardList.find((ward) => ward.id === selectedId);
+
+    setWard(selectedWard);
+  };
+
+  // Lấy danh sách phường/xã khi wardId thay đổi
+  useEffect(() => {
+    const fetchTownList = async () => {
+      if (ward) {
+        const towns = await getTownList(ward.id);
+        if (towns) {
+          setTownList(towns);
+        }
+      }
+    };
+
+    fetchTownList();
+  }, [ward]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,9 +175,23 @@ const AdminCreatePlace = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     console.log(formData);
     // Logic to submit the form
+    const body = {
+      name: formData.name,
+      description: formData.description,
+      address: town + "," + ward + "," + city,
+      type:'',
+      open_time: formData.businessHours,
+      close_time: formData.closingTime,
+      age_start: formData.ageGroupStart,
+      age_end: formData.ageGroupEnd,
+      image: formData.image,
+      number_tourist: formData.dailyVisitors,
+    }
   };
 
   return (
@@ -88,38 +235,44 @@ const AdminCreatePlace = () => {
             <div className="selectors-container">
               <select
                 name="region"
-                value={formData.region}
-                onChange={handleChange}
+                value={city ? city.id : ''}
+                onChange={handleCityChange}
                 className="select-field"
               >
                 <option value="" disabled>市</option>
-                <option value="option1">option1</option>
-                <option value="option2">option2</option>
-                <option value="option3">option3</option>
+                {cityList.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
               </select>
 
               <select
                 name="district"
-                value={formData.district}
-                onChange={handleChange}
+                value={ward ? ward.id : ''}
+                onChange={handleWardChange}
                 className="select-field"
               >
                 <option value="" disabled>地区</option>
-                <option value="option1">option1</option>
-                <option value="option2">option2</option>
-                <option value="option3">option3</option>
+                {wardList.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
               </select>
 
               <select
                 name="place"
-                value={formData.place}
+                value={town ? town.id : ''}
                 onChange={handleChange}
                 className="select-field"
               >
                 <option value="" disabled>区</option>
-                <option value="option1">option1</option>
-                <option value="option2">option2</option>
-                <option value="option3">option3</option>
+                {townList.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
