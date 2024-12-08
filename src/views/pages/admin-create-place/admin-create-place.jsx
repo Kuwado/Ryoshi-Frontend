@@ -7,15 +7,15 @@ const AdminCreatePlace = () => {
     region: '', // Thành phố 市 
     district: '', // Khu vực 
     place: '', // Quận 区 
-    description: '', // Mô tả
-    businessHours: '', // Giờ làm việc 営業時間 (Thời gian mở cửa)
+    placeDetail: '', // Chi tiết vị trí
+    openTime: '', // Giờ làm việc 営業時間 (Thời gian mở cửa)
     closingTime: '', // Giờ đóng cửa 閉店時間 (Giờ đóng cửa địa điểm)
     ageGroupStart: '', // Tuổi bắt đầu 適齢期 (Tuổi tối thiểu phù hợp để tham quan địa điểm)
     ageGroupEnd: '', // Tuổi kết thúc 適齢期 (Tuổi tối đa phù hợp để tham quan địa điểm)
-    ticketPrice: '', // Giá vé チケット価格 (Giá vé cho khách tham quan)
-    visitorsAdult: '', // Số lượng khách người lớn 訪問者数 
-    visitorsChild: '', // Số lượng khách trẻ em 訪問者数 
+    visitorsAdult: '', // Giá vé khách người lớn 訪問者数 
+    visitorsChild: '', // Giá vé khách trẻ em 訪問者数 
     dailyVisitors: '', // Số khách tham quan mỗi ngày 訪問者数 
+    description: '', // Mô tả
     image: null,
   });
 
@@ -136,14 +136,14 @@ const AdminCreatePlace = () => {
             </label>
             <input
               type="text"
-              name="businessHours"
-              value={formData.businessHours}
+              name="placeDetail"
+              value={formData.placeDetail}
               onChange={handleChange}
               className="input-field"
             />
           </div>
 
-          {/* Label 4: 閉店時間 */}
+          {/* Label 4: 営業時間 */}
           <div className="form-group">
             <label className="form-label">
               <img
@@ -151,22 +151,40 @@ const AdminCreatePlace = () => {
                 alt="Icon"
                 className="form-icon"
               />
-              閉店時間：
+              営業時間：
             </label>
             <input
               type="text"
-              name="closingTime"
-              value={formData.closingTime}
+              name="openTime"
+              value={formData.openTime}
               onChange={handleChange}
               className="input-field"
             />
           </div>
 
-          {/* Label 5: 適齢期 với 2 ô */}
+          {/* Label 5: 閉店時間 */}
           <div className="form-group">
             <label className="form-label">
               <img
                 src={require('../../../assets/images/Vector5.png')}
+                alt="Icon"
+                className="form-icon"
+              />
+              閉店時間：
+            </label>
+            <input
+              type="text"
+              name="openTime"
+              value={formData.closingTime}
+              onChange={handleChange}
+              className="input-field"
+            />
+          </div>
+          {/* Label 6: 適齢期 với 2 ô */}
+          <div className="form-group">
+            <label className="form-label">
+              <img
+                src={require('../../../assets/images/Vector6.png')}
                 alt="Icon"
                 className="form-icon"
               />
@@ -194,26 +212,7 @@ const AdminCreatePlace = () => {
             </div>
           </div>
 
-          {/* Label 6: チケット価格 */}
-          <div className="form-group">
-  <label className="form-label">
-    <img
-      src={require('../../../assets/images/Vector6.png')}
-      alt="Icon"
-      className="form-icon"
-    />
-    チケット価格：
-  </label>
-  <input
-    type="number"
-    name="ticketPrice"
-    value={formData.ticketPrice}
-    onChange={handleChange}
-    className="input-field"
-  />
-</div>
-
-          {/* Label 7: 訪問者数 */}
+          {/* Label 7: チケット価格 */}
           <div className="form-group-2">
             <label className="form-label">
               <img
