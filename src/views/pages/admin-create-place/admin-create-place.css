@@ -5,13 +5,14 @@
   background-color: white;
 }
 
-.header {
-  text-align: center;
+.ad-header {
+  text-align: left;
+  padding-top:30px;
   margin-bottom: 30px;
   background-color: white;
 }
 
-.header-text {
+.ad-header-text {
   font-size: 36px;
   font-weight: 700;
   color: #222222;
@@ -74,10 +75,6 @@
   align-items: center;
 }
 
-.age-group .input-field {
-  width: 120px;
-}
-
 .age-group .age-text {
   font-family: Roboto;
   font-size: 16px;
@@ -85,6 +82,7 @@
   line-height: 18.75px;
   margin: 0 10px;
   color: #222222;
+  width: 85px;
 }
 
 .selectors-container {
@@ -92,14 +90,44 @@
   gap: 10px;
 }
 
+.selectors-container {
+  display: flex;
+  gap: 10px;
+  width: 100%; /* Đảm bảo chiếm hết chiều rộng */
+}
+
 .select-field {
-  width: 156px;
+  flex: 1; /* Điều chỉnh chiều rộng tự động */
   height: 40px;
   border-radius: 10px;
   background: #fafafa;
   border: 1px solid #00000080;
   text-align: center;
+  font-size: 16px; /* Điều chỉnh kích thước font cho đồng nhất */
+  padding: 0 10px;
 }
+
+@media (max-width: 1090px) {
+  .selectors-container {
+    flex-direction: column; /* Đặt các select xuống hàng khi màn hình nhỏ */
+  }
+
+  .select-field {
+    min-width: 100%; /* Chiếm hết chiều rộng trong trường hợp di động */
+  }
+}
+
+@media (max-width: 500px) {
+  .selectors-container {
+    gap: 0; /* Giảm gap khi màn hình nhỏ hơn */
+  }
+
+  .select-field {
+    width: 100%; /* Chiếm toàn bộ chiều rộng khi màn hình nhỏ */
+    margin-bottom: 10px; /* Khoảng cách giữa các ô select */
+  }
+}
+
 
 .image-upload {
   display: flex;
@@ -176,7 +204,7 @@
   font-weight: 400;
   line-height: 18.75px;
   color: #222222;
-  width: 150px;
+  width: 180px;
 }
 
 /* Input cho 訪問者数 */
@@ -241,6 +269,37 @@
   border: none;
   cursor: pointer;
 }
+.input-with-edit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-field {
+  width: 100%; /* Đảm bảo input chiếm hết chiều rộng */
+  height: 52px;
+  border-radius: 8px;
+  border: 0.5px solid #000;
+  background: #fafafa;
+  padding: 10px;
+}
+
+.edit-btn {
+  position: absolute;
+  right: 10px; /* Đảm bảo nút nằm sát lề phải */
+  top: 50%;
+  transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-icon {
+  width: 20px; /* Kích thước biểu tượng */
+  height: 20px;
+}
+
 @media (max-width: 1090px) {
   .form-container {
     flex-direction: column;  /* Đặt các phần tử của form-container theo cột */
