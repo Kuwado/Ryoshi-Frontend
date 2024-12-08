@@ -190,7 +190,7 @@ const AdminCreatePlace = () => {
       age_start: formData.ageGroupStart,
       age_end: formData.ageGroupEnd,
       image: formData.image,
-      number_tourist: 
+      number_tourist: ''
     }
   };
 
