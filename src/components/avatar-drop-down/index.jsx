@@ -30,13 +30,13 @@ export default function AvatarDropdown() {
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="dropdown-menu">
-          <div className="dropdown-item" onClick={() => handleNavigation("/profile")}>
+          <div className="dropdown-item" onClick={() => handleNavigation("user/profile")}>
             <span className="icon">👤</span> プロフィール
           </div>
-          <div className="dropdown-item" onClick={() => handleNavigation("/visited-places")}>
+          <div className="dropdown-item" onClick={() => handleNavigation("user/visited-places")}>
             <span className="icon">📍</span> 行った観光地
           </div>
-          <div className="dropdown-item" onClick={() => handleNavigation("/logout")}>
+          <div className="dropdown-item" onClick={() => handleNavigation("user/logout")}>
             <span className="icon">↩️</span> ログアウト
           </div>
         </div>
