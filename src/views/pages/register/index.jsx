@@ -98,7 +98,7 @@ function Register() {
 
       // Xử lý khi đăng nhập thành công
     if (response.status === 200) {
-      toast.success("ログイン成功！");
+      toast.success(response.data.message);
       sessionStorage.setItem("authToken", response.data.token);
       //Xử lý token
       const parts = response.data.token.split('.'); // Tách token thành 3 phần
