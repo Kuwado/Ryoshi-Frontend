@@ -327,7 +327,7 @@ const AdminCreatePlace = () => {
             </label>
             <input
               type="text"
-              name="openTime"
+              name="closingTime"
               value={formData.closingTime}
               onChange={handleChange}
               className="input-field"
