@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import NavLink from "../../navLink";
 import Logo from "../../../assets/images/image.png";
-import Avatar from "../../../assets/images/avatar.png";
 import "./index.css";
 import { useLocation } from "react-router-dom";
 import AvatarDropdown from "../../avatar-drop-down";
