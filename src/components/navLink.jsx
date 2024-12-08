@@ -1,12 +1,5 @@
 import {Link, useLocation} from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./header.css";
-import {
-    fa3,
-    faN,
-    faC,
-    faS
-}from "@fortawesome/free-solid-svg-icons";
 
 const links = [
     {name: "三地域の観光地", href: "/tourist-attractions-in-three-areas", text: "3"},

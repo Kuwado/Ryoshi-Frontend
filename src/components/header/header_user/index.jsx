@@ -1,10 +1,30 @@
 import React, {useState} from "react";
-import NavLink from "./navLink";
-import Logo from "../assets/images/image.png";
-import Avatar from "../assets/images/avatar.png";
-import "./header.css";
+import NavLink from "../../navLink";
+import Logo from "../../../assets/images/image.png";
+import Avatar from "../../../assets/images/avatar.png";
+import "./index.css";
+import { useLocation } from "react-router-dom";
 
-export default function Header() {
+export default function UserHeader() {
+    const location = useLocation();
+    
+    if(location.pathname.match("/user/begin")){
+        return (
+            <div id="header" className="header">
+                <div className="container-fluid d-flex align-items-center justify-content-between"
+                     style={{height: "66.225px"}}>
+                    {/* <!-- Logo --> */}
+                    <img src={Logo} alt="Logo" className="logo blend-effect" />
+    
+                    {/* <!-- User Section --> */}
+                    <div className="user-section d-flex align-items-center">
+                        <img src={Avatar} alt="User Avatar" className="avatar" />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div id="header" className="header">
             <div className="container-fluid d-flex align-items-center justify-content-between">

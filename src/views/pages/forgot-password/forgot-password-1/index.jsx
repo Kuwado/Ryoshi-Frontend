@@ -25,7 +25,9 @@ function ForgotPasswordOne() {
       );
       if (response.status === 200) {
         toast.success(response.data.message);
-        navigate("/forgot-password-two", { state: { email: value.email } }); // Chuyển email đến bước tiếp theo
+        setTimeout(() => {
+          navigate("/forgot-password-two", { state: { email: value.email } }); // Chuyển email đến bước tiếp theo
+        }, 3000);
       }
     } catch (error) {
       toast.error(error.response.data.error);

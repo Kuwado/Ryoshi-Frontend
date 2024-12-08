@@ -34,8 +34,10 @@ function ForgotPasswordThree() {
         }
       );
       if (response.status === 200) {
-        toast.success("パスワードが正常にリセットされました。");
-        navigate("/login"); // Chuyển về trang đăng nhập
+        toast.success(response.data.message);
+        setTimeout(() => {
+          navigate("/login"); // Chuyển về trang đăng nhập
+        }, 3000);
       }
     } catch (error) {
       console.log(error);
