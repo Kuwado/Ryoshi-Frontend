@@ -73,20 +73,19 @@ async function getTownList(wardId) {
 
 const AdminCreatePlace = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    place: '',
-    region: '',
-    district: '',
-    description: '',
-    businessHours: '',
-    closingTime: '',
-    ageGroupStart: '',
-    ageGroupEnd: '',
-    ticketPrice: '',
-    visitorsAdult: '',
-    visitorsChild: '',
-    visitorsPerDayAdult: '',
-    visitorsPerDayChild: '',
+    name: '', // Tên địa điểm
+    region: '', // Thành phố 市 
+    district: '', // Khu vực 
+    place: '', // Quận 区 
+    description: '', // Mô tả
+    businessHours: '', // Giờ làm việc 営業時間 (Thời gian mở cửa)
+    closingTime: '', // Giờ đóng cửa 閉店時間 (Giờ đóng cửa địa điểm)
+    ageGroupStart: '', // Tuổi bắt đầu 適齢期 (Tuổi tối thiểu phù hợp để tham quan địa điểm)
+    ageGroupEnd: '', // Tuổi kết thúc 適齢期 (Tuổi tối đa phù hợp để tham quan địa điểm)
+    ticketPrice: '', // Giá vé チケット価格 (Giá vé cho khách tham quan)
+    visitorsAdult: '', // Số lượng khách người lớn 訪問者数 
+    visitorsChild: '', // Số lượng khách trẻ em 訪問者数 
+    dailyVisitors: '', // Số khách tham quan mỗi ngày 訪問者数 
     image: null,
   });
 
