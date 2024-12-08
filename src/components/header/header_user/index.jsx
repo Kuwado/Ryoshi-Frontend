@@ -4,6 +4,7 @@ import Logo from "../../../assets/images/image.png";
 import Avatar from "../../../assets/images/avatar.png";
 import "./index.css";
 import { useLocation } from "react-router-dom";
+import AvatarDropdown from "../../avatar-drop-down";
 
 export default function UserHeader() {
     const location = useLocation();
@@ -18,7 +19,7 @@ export default function UserHeader() {
     
                     {/* <!-- User Section --> */}
                     <div className="user-section d-flex align-items-center">
-                        <img src={Avatar} alt="User Avatar" className="avatar" />
+                        <AvatarDropdown />
                     </div>
                 </div>
             </div>
@@ -48,7 +49,7 @@ export default function UserHeader() {
                         <span className="heart-icon">♥</span>
                         <span className="heart-bubble">3</span>
                     </div>
-                    <img src={Avatar} alt="User Avatar" className="avatar" />
+                    <AvatarDropdown />
                 </div>
             </div>
         </div>
