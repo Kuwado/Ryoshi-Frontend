@@ -79,30 +79,30 @@ const AdminPlaceList = () => {
 
           // Kiểm tra khu vực
           if (filters.region === "北部の観光地") {
-            // Danh sách các tỉnh miền Bắc
+            // Danh sách các tỉnh miền Bắc (viết hoa chữ cái đầu)
             const northernProvinces = [
-              "hà nội", "bắc ninh", "bắc giang", "hà nam", "hải dương",
-              "hải phòng", "hòa bình", "lai châu", "lào cai", "nam định",
-              "ninh bình", "phú thọ", "quảng ninh", "sơn la", "thái bình",
-              "thái nguyên", "tuyên quang", "vĩnh phúc", "yên bái"
+              "Hà Nội", "Bắc Ninh", "Bắc Giang", "Hà Nam", "Hải Dương",
+              "Hải Phòng", "Hòa Bình", "Lai Châu", "Lào Cai", "Nam Định",
+              "Ninh Bình", "Phú Thọ", "Quảng Ninh", "Sơn La", "Thái Bình",
+              "Thái Nguyên", "Tuyên Quang", "Vĩnh Phúc", "Yên Bái"
             ];
             return northernProvinces.includes(province);
           } else if (filters.region === "中部の旅行") {
-            // Danh sách các tỉnh miền Trung
+            // Danh sách các tỉnh miền Trung (viết hoa chữ cái đầu)
             const centralProvinces = [
-              "đà nẵng", "huế", "khánh hòa", "bình định", "quảng nam",
-              "quảng ngãi", "quảng trị", "thừa thiên huế", "ninh thuận",
-              "phú yên", "bình thuận", "đắk lắk", "đắk nông", "gia lai",
-              "kon tum", "lâm đồng", "quảng bình", "hà tĩnh", "nghệ an"
+              "Đà Nẵng", "Huế", "Khánh Hòa", "Bình Định", "Quảng Nam",
+              "Quảng Ngãi", "Quảng Trị", "Thừa Thiên Huế", "Ninh Thuận",
+              "Phú Yên", "Bình Thuận", "Đắk Lắk", "Đắk Nông", "Gia Lai",
+              "Kon Tum", "Lâm Đồng", "Quảng Bình", "Hà Tĩnh", "Nghệ An"
             ];
             return centralProvinces.includes(province);
           } else if (filters.region === "南部の観光地") {
-            // Danh sách các tỉnh miền Nam
+            // Danh sách các tỉnh miền Nam (viết hoa chữ cái đầu)
             const southernProvinces = [
-              "hồ chí minh", "bà rịa-vũng tàu", "bình dương", "bình phước",
-              "cần thơ", "đồng nai", "đồng tháp", "hậu giang", "kiên giang",
-              "long an", "sóc trăng", "tây ninh", "tiền giang", "vĩnh long",
-              "an giang", "bạc liêu", "bến tre", "cà mau", "trà vinh"
+              "Hồ Chí Minh", "Bà Rịa-Vũng Tàu", "Bình Dương", "Bình Phước",
+              "Cần Thơ", "Đồng Nai", "Đồng Tháp", "Hậu Giang", "Kiên Giang",
+              "Long An", "Sóc Trăng", "Tây Ninh", "Tiền Giang", "Vĩnh Long",
+              "An Giang", "Bạc Liêu", "Bến Tre", "Cà Mau", "Trà Vinh"
             ];
             return southernProvinces.includes(province);
           }
