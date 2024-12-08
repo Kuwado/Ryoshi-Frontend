@@ -1,0 +1,126 @@
+.admin-place-list {
+  padding: 40px 70px 70px;
+  min-height: 100vh;
+}
+
+.admin-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.header-filters-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-filters {
+  display: flex;
+  gap: 15px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.header-actions button {
+  width: 80px;
+}
+
+.pill-buttons {
+  display: inline-flex;
+  border: 1px solid #0094da;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.pill-button {
+  padding: 5px 5px;
+  text-align: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: #0094da;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  outline: none;
+}
+
+.pill-button:first-child {
+  border-right: 1px solid #0094da;
+}
+
+.pill-button.active {
+  background-color: #ffa500;
+  color: #ffffff;
+}
+
+.pill-button:hover {
+  background-color: #ffa500;
+  color: #ffffff;
+}
+
+/* Lớp CSS cho hàng chẵn (even) */
+.odd-row {
+  background-color: rgba(0, 148, 218, 0.25); 
+}
+
+/* Lớp CSS cho hàng lẻ (odd) */
+.even-row {
+  background-color: rgba(0, 148, 218, 0.5); 
+}
+
+.ant-table-cell-tbody > tr:hover {
+  background-color: transparent !important;
+}
+
+.ant-table-cell-row-hover {
+  background-color: transparent !important;
+}
+
+/* Căn giữa phần Pagination trong Table */
+.admin-place-list .ant-pagination {
+  display: inline-flex; /* Thay đổi từ flex thành inline-flex để chiều rộng tự động theo nội dung */
+  justify-content: center;
+  margin-top: 20px; /* Điều chỉnh khoảng cách phía trên nếu cần */
+  padding-left: 0;
+  padding-right: 0;
+  border-radius: 20px; /* Bo tròn Pagination */
+  background-color: #f0f0f0; /* Màu nền của Pagination */
+  width: auto; /* Chiều rộng tự động theo nội dung */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Các item trong Pagination */
+.admin-place-list .ant-pagination-item {
+  border-radius: 50%; /* Bo tròn các số trang */
+  margin: 5px 5px; /* Tùy chỉnh khoảng cách giữa các trang */
+  background-color: transparent; /* Màu nền trong suốt cho các trang không phải hiện tại */
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
+}
+
+/* Màu nền khi hover */
+.admin-place-list .ant-pagination-item:hover {
+  background-color: #f0f0f0; /* Màu nền khi hover */
+}
+
+/* Màu nền cho trang hiện tại */
+.admin-place-list .ant-pagination-item-active {
+  background-color: #1890ff; /* Màu nền xanh cho trang hiện tại */
+  border-color: #1890ff; /* Viền của trang hiện tại */
+  color: white; /* Màu chữ trắng */
+}
+
+/* Mũi tên Pagination */
+.admin-place-list .ant-pagination-prev, .admin-place-list .ant-pagination-next {
+  border-radius: 50%; /* Bo tròn mũi tên */
+  margin: 5px 5px;
+}
+
+:where(.css-dev-only-do-not-override-1x0dypw).ant-table-wrapper .ant-table-pagination.ant-pagination {
+  margin: 16px 0px 16px 520px;
+}
