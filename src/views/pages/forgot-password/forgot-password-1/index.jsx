@@ -20,12 +20,12 @@ function ForgotPasswordOne() {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/checkEmail",
+        "http://localhost:8000/api/v1/forgot-password",
         { email: value.email }
       );
       if (response.status === 200) {
-        toast.success("リセットリンクが送信されました。");
-        navigate("/forgot-password-2", { state: { email: value.email } }); // Chuyển email đến bước tiếp theo
+        toast.success(response.data.message);
+        navigate("/forgot-password-two", { state: { email: value.email } }); // Chuyển email đến bước tiếp theo
       }
     } catch (error) {
       toast.error(error.response.data.error);

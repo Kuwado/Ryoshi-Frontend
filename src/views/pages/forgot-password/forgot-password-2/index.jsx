@@ -16,16 +16,25 @@ function ForgotPasswordTwo() {
   const navigate = useNavigate();
   const location = useLocation();
   const [value, setValue] = React.useState({
+    email: location.state.email,
     code: "",
   });
-  const [codeSent] = React.useState("123456")
   const handleSubmit = async () => {
     console.log(location.state.email);
-    if (value.code === codeSent) {
-      toast.success("コードが確認されました！");
-      navigate("/forgot-password-3", { state: { email: location.state.email } }); 
-    } else {
-      toast.error("確認コードが間違っています！");
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/verify-otp",
+        { email: value.email, 
+          opt_post: value.code
+        }
+      );
+      if (response.status === 200) {
+        toast.success("コードが確認されました！");
+        navigate("/forgot-password-three", { state: { email: location.state.email } }); // Chuyển email đến bước tiếp theo
+      }
+    } catch (error) {
+      toast.error(error.response.data.error);
+      console.log(error.response.data.error)
     }
   };
   return (
