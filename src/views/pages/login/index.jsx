@@ -75,6 +75,10 @@ function Login() {
           setTimeout(() => {
             navigate("/user/home");
           }, 3000);
+        } else if (role === "admin") {
+          setTimeout(() => {
+            navigate("/admin");
+          }, 3000);
         }
       }
     } catch (error) {

@@ -9,6 +9,7 @@ import ForgotPasswordThree from "./views/pages/forgot-password/forgot-password-3
 import UserRoute from "./views/routes/userRoute";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AdminRoute from "./views/routes/adminRoute";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/forgot-password-two" element={<ForgotPasswordTwo />} />
         <Route path="/forgot-password-three" element={<ForgotPasswordThree />} />
         <Route path="/user/*" element={<UserRoute />} />
+        <Route path="/admin/*" element={<AdminRoute />} />
       </Routes>
       <ToastContainer />
     </BrowserRouter>
