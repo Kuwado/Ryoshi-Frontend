@@ -185,12 +185,12 @@ const AdminCreatePlace = () => {
       description: formData.description,
       address: town + "," + ward + "," + city,
       type:'',
-      open_time: '',
-      close_time: '',
+      open_time: formData.businessHours,
+      close_time: formData.closingTime,
       age_start: formData.ageGroupStart,
       age_end: formData.ageGroupEnd,
       image: formData.image,
-      number_tourist: ''
+      number_tourist: formData.dailyVisitors,
     }
   };
 
