@@ -62,7 +62,7 @@ function Begin1_5() {
       const data = await response.json();
       console.log("Upload successful:", data);
 
-      navigate("/begin1.6");
+      navigate("/user/begin1.6");
     } catch (error) {
       console.error("Error uploading image:", error);
       message.error("Upload failed. Please try again.");
