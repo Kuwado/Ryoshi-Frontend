@@ -15,8 +15,7 @@ const AdminCreatePlace = () => {
     ticketPrice: '',
     visitorsAdult: '',
     visitorsChild: '',
-    visitorsPerDayAdult: '',
-    visitorsPerDayChild: '',
+    dailyVisitors: '',
     image: null,
   });
 
