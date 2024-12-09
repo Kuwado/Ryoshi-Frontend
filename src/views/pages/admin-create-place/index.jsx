@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import './admin-create-place.css';
-import { type } from '@testing-library/user-event/dist/type';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import "./index.css";
+import { toast } from 'react-toastify';
 
 async function getCityList() {
   try {
@@ -98,6 +99,9 @@ const AdminCreatePlace = () => {
   const [townList, setTownList] = useState([]);
   const [cityId, setCityId] = useState('');
 
+  const token = sessionStorage.getItem('authToken');
+  const navigate = useNavigate();
+
   // Lấy danh sách thành phố khi component được render
   useEffect(() => {
     const fetchCityList = async () => {
@@ -152,6 +156,13 @@ const AdminCreatePlace = () => {
     fetchTownList();
   }, [ward]);
 
+  const handleTownChange = (e) => {
+    const selectedId = e.target.value;
+    const selectedTown = townList.find((town) => town.id === selectedId);
+
+    setTown(selectedTown);
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -177,27 +188,51 @@ const AdminCreatePlace = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(formData);
     // Logic to submit the form
     const body = {
       name: formData.name,
       description: formData.description,
-      address: town + "," + ward + "," + city,
+      address: `${formData.placeDetail},${town?.name || ''},${ward?.name || ''},${city?.name || ''}`.trim(),
       type:'',
-      open_time: formData.businessHours,
+      open_time: formData.openTime,
       close_time: formData.closingTime,
       age_start: formData.ageGroupStart,
       age_end: formData.ageGroupEnd,
-      image: formData.image,
+      images: formData.image,
       number_tourist: formData.dailyVisitors,
+      adult_price: formData.visitorsAdult,
+      child_price: formData.visitorsChild,
+    };
+
+    try{
+      const response = await fetch('http://localhost:8000/api/v1/locations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      toast.success(data.message);
+      setTimeout(() => {
+        navigate("/admin");
+      }, 3000);
+    }catch(error){
+      console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+      toast.error(error.response.data.error);
     }
   };
 
   return (
     <div className="admin-create-place">
-      <div className="header">
-        <div className="header-text">地場所を作成する</div>
+      <div className="ad-header">
+        <div className="ad-header-text">地場所を作成する</div>
       </div>
 
       <div className="form-container">
@@ -234,7 +269,7 @@ const AdminCreatePlace = () => {
             </label>
             <div className="selectors-container">
               <select
-                name="region"
+                name="city"
                 value={city ? city.id : ''}
                 onChange={handleCityChange}
                 className="select-field"
@@ -248,7 +283,7 @@ const AdminCreatePlace = () => {
               </select>
 
               <select
-                name="district"
+                name="ward"
                 value={ward ? ward.id : ''}
                 onChange={handleWardChange}
                 className="select-field"
@@ -262,9 +297,9 @@ const AdminCreatePlace = () => {
               </select>
 
               <select
-                name="place"
+                name="town"
                 value={town ? town.id : ''}
-                onChange={handleChange}
+                onChange={handleTownChange}
                 className="select-field"
               >
                 <option value="" disabled>区</option>
@@ -277,7 +312,7 @@ const AdminCreatePlace = () => {
             </div>
           </div>
 
-          {/* Label 3: 営業時間 */}
+          {/* Label 3: 場所の詳細 */}
           <div className="form-group">
             <label className="form-label">
               <img
@@ -285,7 +320,7 @@ const AdminCreatePlace = () => {
                 alt="Icon"
                 className="form-icon"
               />
-              営業時間：
+              場所の詳細：
             </label>
             <input
               type="text"
@@ -327,7 +362,7 @@ const AdminCreatePlace = () => {
             </label>
             <input
               type="text"
-              name="openTime"
+              name="closingTime"
               value={formData.closingTime}
               onChange={handleChange}
               className="input-field"

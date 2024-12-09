@@ -16,7 +16,7 @@ function UserRoute() {
       </div>
       <div>
         <Routes>
-          <Route path="/" element={<Navigate to="Home" />} />
+          <Route path="/" element={<Navigate to="home" />} />
           <Route path="/begin1" element={<Begin1 />} />
           <Route path="/begin1.5" element={<Begin1_5 />} />
           <Route path="/begin1.6" element={<Begin1_6 />} />

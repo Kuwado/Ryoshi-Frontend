@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Select, Space, message, Modal } from "antd";
 import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from "axios";
-import "./adminPlaceList.css";
+import "./index.css";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 const { confirm } = Modal;
@@ -16,6 +17,7 @@ const AdminPlaceList = () => {
     region: "",
   });
   const [selectedButton, setSelectedButton] = useState("all");
+  const navigate = useNavigate();
 
   // Fetch data from API
   const fetchPlaces = async () => {
@@ -209,8 +211,13 @@ const AdminPlaceList = () => {
       title: "詳細",
       key: "details",
       render: (_, record) => (
-        <Button type="link" onClick={() => alert(`Detail of ${record.name}`)}>
-          <EyeOutlined style={{ fontSize: '18px', color: '#222222' }} />
+        <Button type="link" onClick={() => 
+          navigate(`/admin/admin-edit-place/${record.location_id}`, { state: { location: record } })
+        }>
+          <img
+          src={require('../../../assets/images/VectorShow.png')}
+          style={{ width: '24px', height: '18px', objectFit: 'cover' }}
+          />
         </Button>
       ),
     },
@@ -222,7 +229,10 @@ const AdminPlaceList = () => {
           type="link"
           onClick={() => handleDelete(record.location_id)}
         >
-          <DeleteOutlined style={{ fontSize: '18px', color: '#FAFAFA' }} />
+          <img
+          src={require('../../../assets/images/VectorDelete.png')}
+          style={{ width: '20px', height: '24px', objectFit: 'cover' }}
+          />
         </Button>
       ),
     },
