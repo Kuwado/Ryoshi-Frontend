@@ -349,3 +349,22 @@
     width: 100%;  /* Chiếm hết chiều rộng cho các selector khi màn hình nhỏ */
   }
 }
+
+.input-with-edit {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .edit-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+  }
+  
+  .edit-icon {
+    width: 18px;
+    height: 18px;
+  }

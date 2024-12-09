@@ -89,6 +89,7 @@ const AdminPlaceDetail = () => {
     description: '', // Mô tả
     image: null,
   });
+
   const [isEditable, setIsEditable] = useState({
     name: false,
     region: false,
@@ -104,6 +105,7 @@ const AdminPlaceDetail = () => {
     dailyVisitors: false,
     description: false,
   });
+
   const location = useLocation();
   const navigate = useNavigate();
   const locationId = location.pathname.split('/').pop();
@@ -228,6 +230,9 @@ const AdminPlaceDetail = () => {
       [name]: value,
     }));
   };
+    // Logic xử lý khi người dùng nhấn nút edit
+  };
+
   const handleSubmit = async (e) => {
     // Xử lý khi người dùng nhấn nút tạo
   };
@@ -263,6 +268,7 @@ const AdminPlaceDetail = () => {
                 value={formData.name}
                 onChange={handleChange}
                 readOnly={!isEditable.name}
+                readOnly
                 className="input-field"
               />
               <button
@@ -295,6 +301,7 @@ const AdminPlaceDetail = () => {
                   value={city ? city.id : ''}
                   onChange={handleChange}
                   disabled={!isEditable.region}
+                  readOnly
                   className="select-field"
                 >
                   <option value="" disabled>市</option>
@@ -312,6 +319,7 @@ const AdminPlaceDetail = () => {
                   value={ward ? ward.id : ''}
                   onChange={handleChange}
                   disabled={!isEditable.district}
+                  readOnly
                   className="select-field"
                 >
                   <option value="" disabled>地区</option>
@@ -329,6 +337,7 @@ const AdminPlaceDetail = () => {
                   value={town ? town.id : ''}
                   onChange={handleChange}
                   disabled={!isEditable.place}
+                  readOnly
                   className="select-field"
                 >
                   <option value="" disabled>区</option>
@@ -359,6 +368,7 @@ const AdminPlaceDetail = () => {
                 value={formData.placeDetail}
                 onChange={handleChange}
                 readOnly={!isEditable.placeDetail}
+                readOnly
                 className="input-field"
               />
               <button
@@ -391,6 +401,7 @@ const AdminPlaceDetail = () => {
                 value={formData.openTime}
                 onChange={handleChange}
                 readOnly={!isEditable.openTime}
+                readOnly
                 className="input-field"
               />
               <button
@@ -423,6 +434,7 @@ const AdminPlaceDetail = () => {
                 value={formData.closingTime}
                 onChange={handleChange}
                 readOnly={!isEditable.closingTime}
+                readOnly
                 className="input-field"
               />
               <button
@@ -456,6 +468,7 @@ const AdminPlaceDetail = () => {
                   value={formData.ageGroupStart}
                   onChange={handleChange}
                   readOnly={!isEditable.ageGroupStart}
+                  readOnly
                   className="input-field"
                   placeholder=""
                 />
@@ -478,6 +491,7 @@ const AdminPlaceDetail = () => {
                   value={formData.ageGroupEnd}
                   onChange={handleChange}
                   readOnly={!isEditable.ageGroupEnd}
+                  readOnly
                   className="input-field"
                   placeholder=""
                 />
@@ -516,6 +530,7 @@ const AdminPlaceDetail = () => {
             value={formData.visitorsAdult}
             onChange={handleChange}
             readOnly={!isEditable.visitorsAdult}
+            readOnly
             className="input-field"
             placeholder=""
           />
@@ -540,6 +555,7 @@ const AdminPlaceDetail = () => {
             value={formData.visitorsChild}
             onChange={handleChange}
             readOnly={!isEditable.visitorsChild}
+            readOnly
             className="input-field"
             placeholder=""
           />
@@ -576,6 +592,7 @@ const AdminPlaceDetail = () => {
             value={formData.dailyVisitors}
             onChange={handleChange}
             readOnly={!isEditable.dailyVisitors}
+            readOnly
             className="input-field"
             placeholder=""
           />
