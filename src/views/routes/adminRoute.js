@@ -1,7 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
+import AdminHeader from "../../components/header/header_admin";
 import Footer from "../../components/footer";
-import UserHeader from "../../components/header/header_user";
 import AdminPlaceList from "../pages/admin-place-list";
 import AdminCreatePlace from "../pages/admin-create-place";
 
@@ -10,7 +9,7 @@ function AdminRoute() {
   return (
     <div>
       <div>
-        <UserHeader />
+        <AdminHeader />
       </div>
       <div>
         <Routes>
