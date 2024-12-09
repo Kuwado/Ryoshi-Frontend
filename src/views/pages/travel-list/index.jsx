@@ -9,108 +9,162 @@ const { Option } = Select;
 const { confirm } = Modal;
 
 const TravelList = () => {
-  const collections = [
-    {
-      id: 1,
-      name: "Quốc đảo chim",
-      place: "Thiên đường Bảo Sơn - Hà Nội (11km)",
-      price: 500000, // Giá
-      visitors: 150, // Lượt tham quan
-      age: "0-1", // Nhóm tuổi
-      style: "家族旅行", // Phong cách
-      visited: "行っていない", // Trạng thái đã đi chưa
-      distance: "10-20km", // Khoảng cách
-      like: "好き", // Thích hay không
-    },
-    {
-      id: 2,
-      name: "Khu bảo tồn rừng quốc gia",
-      place: "Ba Vì - Hà Nội (50km)",
-      price: 300000,
-      visitors: 200,
-      age: "1-3",
-      style: "エコツーリズム",
-      visited: "行ってきました",
-      distance: "40-100km",
-      like: "好きじゃない",
-    },
-    {
-      id: 3,
-      name: "Vịnh Hạ Long",
-      place: "Quảng Ninh (160km)",
-      price: 1500000,
-      visitors: 500,
-      age: "1-3",
-      style: "リゾート",
-      visited: "行ってきました",
-      distance: "40-100km",
-      like: "好き",
-    },
-    {
-      id: 4,
-      name: "Làng cổ Đường Lâm",
-      place: "Sơn Tây - Hà Nội (40km)",
-      price: 200000,
-      visitors: 50,
-      age: "1-3",
-      style: "文化旅行",
-      visited: "行っていない",
-      distance: "30-40km",
-      like: "好き",
-    },
-    {
-      id: 5,
-      name: "Đỉnh Fansipan",
-      place: "Lào Cai (300km)",
-      price: 2000000,
-      visitors: 300,
-      age: "10+",
-      style: "冒険",
-      visited: "行ってきました",
-      distance: "40-100km",
-      like: "好き",
-    },
-    {
-      id: 6,
-      name: "Biển Sầm Sơn",
-      place: "Thanh Hóa (170km)",
-      price: 700000,
-      visitors: 400,
-      age: "3-6",
-      style: "ビーチ",
-      visited: "行ってきました",
-      distance: "40-100km",
-      like: "好き",
-    },
-    {
-      id: 7,
-      name: "Hồ Gươm",
-      place: "Hà Nội (1km)",
-      price: 100000,
-      visitors: 1000,
-      age: "すべて",
-      style: "都市",
-      visited: "行ってきました",
-      distance: "0-10km",
-      like: "好き",
-    },
-    {
-      id: 8,
-      name: "Núi Bà Đen",
-      place: "Tây Ninh (1200km)",
-      price: 400000,
-      visitors: 250,
-      age: "6-10",
-      style: "探検",
-      visited: "行っていない",
-      distance: "40-100km",
-      like: "好き",
-    },
-  ];
-
-  const [filteredCollections, setFilteredCollections] = useState(collections);
+  // const collections = [
+  //   {
+  //     id: 1,
+  //     name: "Quốc đảo chim",
+  //     place: "Thiên đường Bảo Sơn - Hà Nội (11km)",
+  //     price: 500000, // Giá
+  //     visitors: 150, // Lượt tham quan
+  //     age: "0-1", // Nhóm tuổi
+  //     style: "家族旅行", // Phong cách
+  //     visited: "行っていない", // Trạng thái đã đi chưa
+  //     distance: "10-20km", // Khoảng cách
+  //     like: "好き", // Thích hay không
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Khu bảo tồn rừng quốc gia",
+  //     place: "Ba Vì - Hà Nội (50km)",
+  //     price: 300000,
+  //     visitors: 200,
+  //     age: "1-3",
+  //     style: "エコツーリズム",
+  //     visited: "行ってきました",
+  //     distance: "40-100km",
+  //     like: "好きじゃない",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Vịnh Hạ Long",
+  //     place: "Quảng Ninh (160km)",
+  //     price: 1500000,
+  //     visitors: 500,
+  //     age: "1-3",
+  //     style: "リゾート",
+  //     visited: "行ってきました",
+  //     distance: "40-100km",
+  //     like: "好き",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Làng cổ Đường Lâm",
+  //     place: "Sơn Tây - Hà Nội (40km)",
+  //     price: 200000,
+  //     visitors: 50,
+  //     age: "1-3",
+  //     style: "文化旅行",
+  //     visited: "行っていない",
+  //     distance: "30-40km",
+  //     like: "好き",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Đỉnh Fansipan",
+  //     place: "Lào Cai (300km)",
+  //     price: 2000000,
+  //     visitors: 300,
+  //     age: "10+",
+  //     style: "冒険",
+  //     visited: "行ってきました",
+  //     distance: "40-100km",
+  //     like: "好き",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Biển Sầm Sơn",
+  //     place: "Thanh Hóa (170km)",
+  //     price: 700000,
+  //     visitors: 400,
+  //     age: "3-6",
+  //     style: "ビーチ",
+  //     visited: "行ってきました",
+  //     distance: "40-100km",
+  //     like: "好き",
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Hồ Gươm",
+  //     place: "Hà Nội (1km)",
+  //     price: 100000,
+  //     visitors: 1000,
+  //     age: "すべて",
+  //     style: "都市",
+  //     visited: "行ってきました",
+  //     distance: "0-10km",
+  //     like: "好き",
+  //   },
+  //   {
+  //     id: 8,
+  //     name: "Núi Bà Đen",
+  //     place: "Tây Ninh (1200km)",
+  //     price: 400000,
+  //     visitors: 250,
+  //     age: "6-10",
+  //     style: "探検",
+  //     visited: "行っていない",
+  //     distance: "40-100km",
+  //     like: "好き",
+  //   },
+  //   {
+  //     id: 9,
+  //     name: "Hồ Gươm",
+  //     place: "Hà Nội (1km)",
+  //     price: 100000,
+  //     visitors: 1000,
+  //     age: "すべて",
+  //     style: "都市",
+  //     visited: "行ってきました",
+  //     distance: "0-10km",
+  //     like: "好き",
+  //   },
+  //   {
+  //     id: 10,
+  //     name: "Núi Bà Đen",
+  //     place: "Tây Ninh (1200km)",
+  //     price: 400000,
+  //     visitors: 250,
+  //     age: "6-10",
+  //     style: "探検",
+  //     visited: "行っていない",
+  //     distance: "40-100km",
+  //     like: "好き",
+  //   },
+  // ];
+  const [collections, setCollections] = useState([]); // Dữ liệu từ API
+  const [filteredCollections, setFilteredCollections] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [selectedButton, setSelectedButton] = useState("all");
+
+  const fetchPlaces = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/locations",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const { location } = response.data;
+        setCollections(location); // Lưu danh sách địa điểm vào state
+        setFilteredCollections(location); // Mặc định hiển thị tất cả địa điểm
+      } else {
+        console.error("Error fetching locations:", response.data.message);
+      }
+    } catch (error) {
+      console.error(
+        "Error fetching places:",
+        error.response?.data || error.message
+      );
+    }
+  };
+  useEffect(() => {
+    fetchPlaces();
+  }, []);
 
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prevFilters) => ({
@@ -126,12 +180,12 @@ const TravelList = () => {
       setFilteredCollections(collections); // Hiển thị tất cả
     } else if (button === "price") {
       const sortedByPrice = [...filteredCollections].sort(
-        (a, b) => a.price - b.price
+        (a, b) => a.adult_price - b.adult_price
       ); // Sắp xếp theo giá tăng dần
       setFilteredCollections(sortedByPrice);
     } else if (button === "general") {
       const sortedByVisitors = [...filteredCollections].sort(
-        (a, b) => b.visitors - a.visitors // Sắp xếp giảm dần theo lượng người tham quan
+        (a, b) => b.number_tourist - a.number_tourist // Sắp xếp giảm dần theo lượng người tham quan
       );
       setFilteredCollections(sortedByVisitors);
     }
@@ -140,7 +194,7 @@ const TravelList = () => {
   useEffect(() => {
     // Lọc dữ liệu dựa trên các bộ lọc đã chọn
     let updatedCollections = collections;
-  
+
     Object.entries(selectedFilters).forEach(([key, value]) => {
       if (value && value !== "すべて") {
         updatedCollections = updatedCollections.filter((item) => {
@@ -154,17 +208,16 @@ const TravelList = () => {
             const [min, max] = value.split("-").map(Number);
             const distance = parseInt(item.distance, 10); // Chuyển thành số nguyên
             return distance >= min && distance <= max;
-          } else if (key === "like") { 
+          } else if (key === "like") {
             return item.like === value;
           }
           return true;
         });
       }
     });
-  
+
     setFilteredCollections(updatedCollections);
   }, [selectedFilters]);
-  
 
   return (
     <div className="admin-place-list">
@@ -276,7 +329,8 @@ const TravelList = () => {
         <Collection
           collectionData={filteredCollections}
           itemsNumber={5}
-          showIndicator={true}
+          showIndicator={false}
+          showPagination={true}
           rowNumber={2}
         ></Collection>
       </div>
