@@ -3,6 +3,75 @@ import "./index.css";
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+async function getCityList() {
+  try {
+    // Gửi yêu cầu POST đến API
+    const response = await fetch('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1', {
+      method: 'GET',
+    });
+
+    // Kiểm tra phản hồi từ server
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    // Nếu gửi thành công, trả về danh sách
+    return data.data.data.map(city => ({
+      name: city.name,
+      id: city.code,
+    }));
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    return null;
+  }
+}
+
+async function getWardList(cityId) {
+  try {
+    // Gửi yêu cầu POST đến API
+    const response = await fetch(`https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${cityId}&limit=-1`, {
+      method: 'GET',
+    });
+
+    // Kiểm tra phản hồi từ server
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    // Nếu gửi thành công, trả về danh sách
+    return data.data.data.map(ward => ({
+      name: ward.name,
+      id: ward.code,
+    }));
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    return null;
+  }
+}
+
+async function getTownList(wardId) {
+  try {
+    // Gửi yêu cầu POST đến API
+    const response = await fetch(`https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${wardId}&limit=-1`, {
+      method: 'GET',
+    });
+
+    // Kiểm tra phản hồi từ server
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    // Nếu gửi thành công, trả về danh sách
+    return data.data.data.map(town => ({
+      name: town.name,
+      id: town.code,
+    }));
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    return null;
+  }
+}
+
 const AdminPlaceDetail = () => {
   const [formData, setFormData] = useState({
     name: '', // Tên địa điểm
@@ -34,7 +103,67 @@ const AdminPlaceDetail = () => {
   const [wardList, setWardList] = useState([]);
   const [townList, setTownList] = useState([]);
   const [cityId, setCityId] = useState('');
-  const [place, setPlace] = useState('');
+
+  // Lấy danh sách thành phố khi component được render
+  useEffect(() => {
+    const fetchCityList = async () => {
+      const cities = await getCityList();
+      if (cities) {
+        setCityList(cities);
+      }
+    };
+    fetchCityList();
+  }, []);
+
+  const handleCityChange = async (e) => {
+    const selectedId = e.target.value;
+    const selectedCity = cityList.find((city) => city.id === selectedId);
+
+    setCity(selectedCity);
+    setCityId(selectedId);
+  };
+
+  // Lấy danh sách quận huyện khi cityId thay đổi
+  useEffect(() => {
+    const fetchWardList = async () => {
+      if (cityId) {
+        const wards = await getWardList(cityId);
+        if (wards) {
+          setWardList(wards);
+        }
+      }
+    };
+
+    fetchWardList();
+  }, [cityId]);
+
+  const handleWardChange = async (e) => {
+    const selectedId = e.target.value;
+    const selectedWard = wardList.find((ward) => ward.id === selectedId);
+
+    setWard(selectedWard);
+  };
+
+  // Lấy danh sách phường/xã khi wardId thay đổi
+  useEffect(() => {
+    const fetchTownList = async () => {
+      if (ward) {
+        const towns = await getTownList(ward.id);
+        if (towns) {
+          setTownList(towns);
+        }
+      }
+    };
+
+    fetchTownList();
+  }, [ward]);
+
+  const handleTownChange = (e) => {
+    const selectedId = e.target.value;
+    const selectedTown = townList.find((town) => town.id === selectedId);
+
+    setTown(selectedTown);
+  };
 
   const getPlace = async () => {
     try{
@@ -45,8 +174,22 @@ const AdminPlaceDetail = () => {
       });
 
       if(response.status === 200){
-        setPlace(response.data);
-        console.log(response.data);
+        setFormData({
+          name: response.data.location.name,
+          //region: response.data.city_id,
+          //district: response.data.district_id,
+          //place: response.data.ward_id,
+          //placeDetail: response.data.address,
+          openTime: response.data.location.open_time,
+          closingTime: response.data.location.close_time,
+          ageGroupStart: response.data.location.age_start,
+          ageGroupEnd: response.data.location.age_end,
+          visitorsAdult: response.data.location.adult_price,
+          visitorsChild: response.data.location.child_price,
+          dailyVisitors: response.data.location.number_tourist,
+          description: response.data.location.description,
+          image: response.data.location.images,
+        })
       }
     }catch(error){
       console.log(error);
@@ -59,6 +202,16 @@ const AdminPlaceDetail = () => {
 
   const handleEditClick = (field) => {
     // Logic xử lý khi người dùng nhấn nút edit
+  };
+
+  const handleSubmit = async (e) => {
+    // Xử lý khi người dùng nhấn nút tạo
+  };
+
+  const handleCancel = async (e) => {
+    // Xử lý khi người dùng nhấn nút hủy
+    e.preventDefault();
+    navigate('/admin/admin-place-list');
   };
 
   return (
@@ -169,7 +322,7 @@ const AdminPlaceDetail = () => {
                 alt="Icon"
                 className="form-icon"
               />
-              詳細：
+              場所の詳細：
             </label>
             <div className="input-with-edit">
               <input
@@ -462,7 +615,7 @@ const AdminPlaceDetail = () => {
       </div>
               {/* Action Buttons */}
               <div className="action-buttons">
-  <button className="btn-create">
+  <button className="btn-create" onClick={handleSubmit}>
     <img
       src={require('../../../assets/images/Vector11.png')}
       alt="Create"
@@ -470,7 +623,7 @@ const AdminPlaceDetail = () => {
     />
     アップデート
   </button>
-  <button className="btn-cancel">
+  <button className="btn-cancel" onClick={handleCancel}>
     <img
       src={require('../../../assets/images/VectorDelete.png')}
       alt="Cancel"

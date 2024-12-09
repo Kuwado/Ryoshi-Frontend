@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./index.css";
-import { type } from '@testing-library/user-event/dist/type';
 import { toast } from 'react-toastify';
 
 async function getCityList() {
@@ -189,11 +188,6 @@ const AdminCreatePlace = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(formData);
-    console.log(city);
-    console.log(ward);
-    console.log(town);
     // Logic to submit the form
     const body = {
       name: formData.name,
@@ -208,8 +202,7 @@ const AdminCreatePlace = () => {
       number_tourist: formData.dailyVisitors,
       adult_price: formData.visitorsAdult,
       child_price: formData.visitorsChild,
-    }
-    console.log(body);
+    };
 
     try{
       const response = await fetch('http://localhost:8000/api/v1/locations', {
