@@ -1,3 +1,355 @@
+.admin-create-place {
+  font-family: Roboto, sans-serif;
+  padding-left: 43px;
+  padding-right: 43px;
+  background-color: white;
+}
+
+.ad-header {
+  text-align: left;
+  padding-top:30px;
+  margin-bottom: 30px;
+  background-color: white;
+}
+
+.ad-header-text {
+  font-size: 36px;
+  font-weight: 700;
+  color: #222222;
+}
+
+.form-container {
+  display: flex;
+  gap: 50px;
+}
+
+.left-side {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.right-side {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.form-group-2 {
+  align-items: center;
+  margin-bottom: 20px;
+}
+.form-label {
+  width: 180px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0094da;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.form-icon {
+  width: auto;
+  height: 28px;
+  max-width: 28px;
+  margin-right: 10px;
+}
+
+.input-field {
+  width: 490px;
+  height: 52px;
+  border-radius: 8px;
+  border: 0.5px solid #000;
+  background: #fafafa;
+  padding: 10px;
+}
+
+.age-group {
+  display: flex;
+  align-items: center;
+}
+
+.age-group .age-text {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18.75px;
+  margin: 0 10px;
+  color: #222222;
+  width: 85px;
+}
+
+.selectors-container {
+  display: flex;
+  gap: 10px;
+}
+
+.selectors-container {
+  display: flex;
+  gap: 10px;
+  width: 100%; /* Đảm bảo chiếm hết chiều rộng */
+}
+
+.select-field {
+  flex: 1; /* Điều chỉnh chiều rộng tự động */
+  height: 40px;
+  border-radius: 10px;
+  background: #fafafa;
+  border: 1px solid #00000080;
+  text-align: center;
+  font-size: 16px; /* Điều chỉnh kích thước font cho đồng nhất */
+  padding: 0 10px;
+}
+
+@media (max-width: 1090px) {
+  .selectors-container {
+    flex-direction: column; /* Đặt các select xuống hàng khi màn hình nhỏ */
+  }
+
+  .select-field {
+    min-width: 100%; /* Chiếm hết chiều rộng trong trường hợp di động */
+  }
+}
+
+@media (max-width: 500px) {
+  .selectors-container {
+    gap: 0; /* Giảm gap khi màn hình nhỏ hơn */
+  }
+
+  .select-field {
+    width: 100%; /* Chiếm toàn bộ chiều rộng khi màn hình nhỏ */
+    margin-bottom: 10px; /* Khoảng cách giữa các ô select */
+  }
+}
+
+
+.image-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-label {
+  cursor: pointer;
+  color: #0094da;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.image-preview {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.preview-image {
+  width: 100px;
+  height: 82.5px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #000000;
+  position: relative;
+}
+
+.remove-image {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.remove-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.right-textarea {
+  width: 100%;
+  height: 532px;
+  padding: 20px;
+  font-size: 16px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0px -4px 44px 0px #1e1c3414;
+}
+
+/* Cho right-side, đảm bảo label và input thẳng hàng */
+.right-side .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Adjusting the layout of visiters input fields */
+/* Đảm bảo label 7: 訪問者数 có 2 ô input ở 2 dòng khác nhau */
+.visit-group {
+  display: flex;
+  align-items: center; /* Căn trái các phần tử */
+  gap: 5px; /* Thêm khoảng cách giữa text và input */
+  margin-left: 180px; /* Thụt vào so với các ô input khác (thụt vào như label 1,2,3,4,5) */
+}
+
+/* Text "アダルト（ドン）" và "子供（ドン）" */
+.visit-text {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18.75px;
+  color: #222222;
+  width: 180px;
+}
+
+/* Input cho 訪問者数 */
+.visit-group .input-field {
+  width: 370px;  /* Chiều rộng của input */
+  height: 52px;
+  border-radius: 8px;
+  border: 0.5px solid #000;
+  margin-bottom: 20px;
+}
+
+/* Thêm margin bên trái cho label 8 để thụt vào giống label 7 */
+.visit-group .daily-input {
+  width: 370px;
+  height: 52px;
+  border-radius: 8px;
+  border: 0.5px solid #000;
+  margin-left: 180px;
+}
+
+/* Sửa CSS cho label 8 để đảm bảo vị trí và thụt vào */
+.visit-group .visit-text-right {
+  margin-left: 0px; /* Xoá thụt vào nếu cần */
+  margin-right: 20px; /* Khoảng cách với ô input */
+}
+
+
+.daily-input {
+  width: 370px;  /* Chiều rộng cho ô input của label 8 */
+}
+
+.visit-text + .daily-input {
+  margin-left: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.btn-create {
+  background: #0094da;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background: #0094da;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+.input-with-edit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-field {
+  width: 100%; /* Đảm bảo input chiếm hết chiều rộng */
+  height: 52px;
+  border-radius: 8px;
+  border: 0.5px solid #000;
+  background: #fafafa;
+  padding: 10px;
+}
+
+.edit-btn {
+  position: absolute;
+  right: 10px; /* Đảm bảo nút nằm sát lề phải */
+  top: 50%;
+  transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-icon {
+  width: 20px; /* Kích thước biểu tượng */
+  height: 20px;
+}
+
+@media (max-width: 1090px) {
+  .form-container {
+    flex-direction: column;  /* Đặt các phần tử của form-container theo cột */
+  }
+  
+  /* Thay đổi chiều rộng của left-side và right-side khi màn hình nhỏ */
+  .left-side,
+  .right-side {
+    width: 100%;  /* Chiếm 100% chiều rộng màn hình */
+  }
+
+  /* Đảm bảo 2 nút action nằm ở dưới cùng và không bị dịch chuyển */
+  .action-buttons {
+    flex-direction: column;  /* Chia cột cho các nút khi màn hình nhỏ */
+    margin-top: 20px;
+    align-items: center;
+  }
+
+  .btn-create, .btn-cancel {
+    width: 100%;  /* Các nút sẽ chiếm hết chiều rộng khi màn hình nhỏ */
+    margin-bottom: 10px;
+  }
+}
+
+/* Khi màn hình nhỏ hơn 500px, chỉnh sửa một chút các thành phần khác */
+@media (max-width: 500px) {
+  .form-label,
+  .input-field,
+  .visit-text,
+  .daily-input {
+    font-size: 14px; /* Giảm kích thước font khi màn hình nhỏ */
+  }
+  
+  .input-field {
+    width: 100%;  /* Đảm bảo input chiếm toàn bộ chiều rộng khi màn hình nhỏ */
+  }
+
+  .age-group .input-field {
+    width: 100%; /* Input của age-group cũng chiếm toàn bộ chiều rộng */
+  }
+
+  .selectors-container {
+    flex-direction: column; /* Đặt các selector xuống hàng khi màn hình nhỏ */
+  }
+
+  .select-field {
+    width: 100%;  /* Chiếm hết chiều rộng cho các selector khi màn hình nhỏ */
+  }
+}
+
 .input-with-edit {
     display: inline-flex;
     align-items: center;
