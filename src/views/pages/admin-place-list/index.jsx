@@ -3,6 +3,7 @@ import { Table, Button, Select, Space, message, Modal } from "antd";
 import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from "axios";
 import "./index.css";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 const { confirm } = Modal;
@@ -16,6 +17,7 @@ const AdminPlaceList = () => {
     region: "",
   });
   const [selectedButton, setSelectedButton] = useState("all");
+  const navigate = useNavigate();
 
   // Fetch data from API
   const fetchPlaces = async () => {
@@ -209,7 +211,9 @@ const AdminPlaceList = () => {
       title: "詳細",
       key: "details",
       render: (_, record) => (
-        <Button type="link" onClick={() => alert(`Detail of ${record.name}`)}>
+        <Button type="link" onClick={() => 
+          navigate(`/admin/admin-edit-place/${record.location_id}`, { state: { location: record } })
+        }>
           <EyeOutlined style={{ fontSize: '18px', color: '#222222' }} />
         </Button>
       ),
