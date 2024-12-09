@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Select, Space, message, Modal } from "antd";
 import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from "axios";
-import "./adminPlaceList.css";
+import "./index.css";
 
 const { Option } = Select;
 const { confirm } = Modal;

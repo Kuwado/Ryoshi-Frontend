@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './admin-create-place.css';
+import "./index.css";
 
 const AdminPlaceDetail = () => {
   const [formData, setFormData] = useState({
