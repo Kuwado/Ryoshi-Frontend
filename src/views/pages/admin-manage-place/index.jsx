@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./index.css";
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AdminPlaceDetail = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +21,11 @@ const AdminPlaceDetail = () => {
     image: null,
   });
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const locationId = location.pathname.split('/').pop();
+  const token = sessionStorage.getItem('authToken');
+
   const [city, setCity] = useState(null); 
   const [ward, setWard] = useState(null); 
   const [town, setTown] = useState(null); 
@@ -27,9 +34,27 @@ const AdminPlaceDetail = () => {
   const [wardList, setWardList] = useState([]);
   const [townList, setTownList] = useState([]);
   const [cityId, setCityId] = useState('');
+  const [place, setPlace] = useState('');
+
+  const getPlace = async () => {
+    try{
+      const response = await axios.get(`http://localhost:8000/api/v1/locations/${locationId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if(response.status === 200){
+        setPlace(response.data);
+        console.log(response.data);
+      }
+    }catch(error){
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    // Load dữ liệu của địa điểm từ API
+    getPlace();
   }, []);
 
   const handleEditClick = (field) => {
