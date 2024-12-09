@@ -18,7 +18,7 @@ const AdminPlaceList = () => {
   });
   const [selectedButton, setSelectedButton] = useState("all");
   const navigate = useNavigate();
-
+  
   // Fetch data from API
   const fetchPlaces = async () => {
     try {
@@ -47,82 +47,91 @@ const AdminPlaceList = () => {
 
   // Hàm thay đổi filter
   const handleFilterChange = (key, value) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [key]: value,
-    }));
+    setFilters((prevFilters) => {
+      const updatedFilters = {
+        ...prevFilters,
+        [key]: value,
+      };
+      applyFilters(updatedFilters);  
+      return updatedFilters;
+    });
   };
-
-  const handleButtonClick = (button) => {
-    setSelectedButton(button);
   
+  const applyFilters = (updatedFilters) => {
     let filtered = [...places];
   
-    if (button === "general") {
-      // Lọc theo độ tuổi
-      if (filters.age) {
-        const [start, end] = filters.age.split("-").map(Number);
-        filtered = filtered.filter(
-          (place) => place.age_start <= start && place.age_end >= end
+    // Áp dụng lọc theo tuổi
+    if (updatedFilters.age) {
+      const [start, end] = updatedFilters.age.split("-").map(Number);
+      filtered = filtered.filter(
+        (place) => place.age_start <= start && place.age_end >= end
+      );
+    }
+  
+    // Áp dụng lọc theo loại hình du lịch
+    if (updatedFilters.style && updatedFilters.style !== "すべて") {
+      filtered = filtered.filter((place) => place.type === updatedFilters.style);
+    }
+  
+    // Áp dụng lọc theo vùng miền
+    if (updatedFilters.region && updatedFilters.region !== "すべて") {
+      filtered = filtered.filter((place) => {
+        const addressParts = place.address.split(",").map((part) => part.trim());
+        const province = addressParts[addressParts.length - 1].toLowerCase();
+  
+        const regions = {
+          "北部の観光地": [
+            "Hà Nội", "Bắc Ninh", "Bắc Giang", "Hà Nam", "Hải Dương", 
+            "Hải Phòng", "Hòa Bình", "Lai Châu", "Lào Cai", "Nam Định", 
+            "Ninh Bình", "Phú Thọ", "Quảng Ninh", "Sơn La", "Thái Bình", 
+            "Thái Nguyên", "Tuyên Quang", "Vĩnh Phúc", "Yên Bái"
+          ],
+          "中部の旅行": [
+            "Đà Nẵng", "Huế", "Khánh Hòa", "Bình Định", "Quảng Nam", 
+            "Quảng Ngãi", "Quảng Trị", "Thừa Thiên Huế", "Ninh Thuận", 
+            "Phú Yên", "Bình Thuận", "Đắk Lắk", "Đắk Nông", "Gia Lai", 
+            "Kon Tum", "Lâm Đồng", "Quảng Bình", "Hà Tĩnh", "Nghệ An"
+          ],
+          "南部の観光地": [
+            "Hồ Chí Minh", "Bà Rịa-Vũng Tàu", "Bình Dương", "Bình Phước", 
+            "Cần Thơ", "Đồng Nai", "Đồng Tháp", "Hậu Giang", "Kiên Giang", 
+            "Long An", "Sóc Trăng", "Tây Ninh", "Tiền Giang", "Vĩnh Long", 
+            "An Giang", "Bạc Liêu", "Bến Tre", "Cà Mau", "Trà Vinh"
+          ],
+        };
+  
+        return regions[updatedFilters.region]?.some(
+          (provinceName) => provinceName.toLowerCase() === province
         );
-      }
-  
-      // Lọc theo loại hình du lịch
-      if (filters.style && filters.style !== "すべて") {
-        filtered = filtered.filter((place) => place.type === filters.style);
-      }      
-  
-      // Lọc theo vùng miền dựa trên địa chỉ
-      if (filters.region && filters.region !== "すべて") {
-        filtered = filtered.filter((place) => {
-          // Lấy tỉnh từ address và chuyển thành chữ thường
-          const addressParts = place.address.split(",").map(part => part.trim());
-          const province = addressParts[addressParts.length - 1].toLowerCase(); // Tỉnh là phần cuối sau dấu phẩy
-
-          // Kiểm tra khu vực
-          if (filters.region === "北部の観光地") {
-            // Danh sách các tỉnh miền Bắc
-            const northernProvinces = [
-              "Hà Nội", "Bắc Ninh", "Bắc Giang", "Hà Nam", "Hải Dương",
-              "Hải Phòng", "Hòa Bình", "Lai Châu", "Lào Cai", "Nam Định",
-              "Ninh Bình", "Phú Thọ", "Quảng Ninh", "Sơn La", "Thái Bình",
-              "Thái Nguyên", "Tuyên Quang", "Vĩnh Phúc", "Yên Bái"
-            ];
-
-            // Kiểm tra tỉnh
-            return northernProvinces.some(provinceName => provinceName.toLowerCase() === province);
-          } else if (filters.region === "中部の旅行") {
-            // Danh sách các tỉnh miền Trung
-            const centralProvinces = [
-              "Đà Nẵng", "Huế", "Khánh Hòa", "Bình Định", "Quảng Nam",
-              "Quảng Ngãi", "Quảng Trị", "Thừa Thiên Huế", "Ninh Thuận",
-              "Phú Yên", "Bình Thuận", "Đắk Lắk", "Đắk Nông", "Gia Lai",
-              "Kon Tum", "Lâm Đồng", "Quảng Bình", "Hà Tĩnh", "Nghệ An"
-            ];
-
-            // Kiểm tra tỉnh
-            return centralProvinces.some(provinceName => provinceName.toLowerCase() === province);
-          } else if (filters.region === "南部の観光地") {
-            // Danh sách các tỉnh miền Nam 
-            const southernProvinces = [
-              "Hồ Chí Minh", "Bà Rịa-Vũng Tàu", "Bình Dương", "Bình Phước",
-              "Cần Thơ", "Đồng Nai", "Đồng Tháp", "Hậu Giang", "Kiên Giang",
-              "Long An", "Sóc Trăng", "Tây Ninh", "Tiền Giang", "Vĩnh Long",
-              "An Giang", "Bạc Liêu", "Bến Tre", "Cà Mau", "Trà Vinh"
-            ];
-
-            // Kiểm tra tỉnh
-            return southernProvinces.some(provinceName => provinceName.toLowerCase() === province);
-          }
-
-          return false;
-        });
-      }
-
+      });
     }
   
     setFilteredPlaces(filtered); 
-  };  
+  };
+  
+  const applySort = (sortType) => {
+    let sorted = [...filteredPlaces];
+  
+    if (sortType === "general") {
+      sorted.sort((a, b) => b.number_tourist - a.number_tourist); // Sắp xếp giảm dần
+    } 
+  
+    setFilteredPlaces(sorted);
+  };
+  
+  const handleButtonClick = (button) => {
+    setSelectedButton(button); 
+    if (button === "all") {
+      setFilters({
+        age: "",
+        style: "",
+        region: "",
+      });
+      setFilteredPlaces(places);
+    } else if (button === "general") {
+      applySort("general");
+    }
+  };
 
   const handleDelete = (id) => {
     confirm({
@@ -218,7 +227,6 @@ const AdminPlaceList = () => {
           src={require('../../../assets/images/VectorShow.png')}
           style={{ width: '24px', height: '18px', objectFit: 'cover' }}
           />
-          <EyeOutlined style={{ fontSize: '18px', color: '#222222' }} />
         </Button>
       ),
     },
@@ -234,7 +242,6 @@ const AdminPlaceList = () => {
           src={require('../../../assets/images/VectorDelete.png')}
           style={{ width: '20px', height: '24px', objectFit: 'cover' }}
           />
-          <DeleteOutlined style={{ fontSize: '18px', color: '#FAFAFA' }} />
         </Button>
       ),
     },
@@ -255,8 +262,9 @@ const AdminPlaceList = () => {
                 placeholder="子供の年齢"
                 style={{ width: 150 }}
                 onChange={(value) => handleFilterChange("age", value)}
+                value={filters.age === "" ? undefined : filters.age}
               >
-                <Option value="">すべて</Option>
+                <Option value="100-0">すべて</Option>
                 <Option value="0-1">0-1歳</Option>
                 <Option value="1-3">1-3歳</Option>
                 <Option value="3-6">3-6歳</Option>
@@ -268,6 +276,7 @@ const AdminPlaceList = () => {
                 placeholder="旅行のスタイル"
                 style={{ width: 150 }}
                 onChange={(value) => handleFilterChange("style", value)}
+                value={filters.style === "" ? undefined : filters.style}
               >
                 <Option value="すべて">すべて</Option>
                 <Option value="エコツーリズム">エコツーリズム</Option>
@@ -292,6 +301,7 @@ const AdminPlaceList = () => {
                 placeholder="地域"
                 style={{ width: 150 }}
                 onChange={(value) => handleFilterChange("region", value)}
+                value={filters.region === "" ? undefined : filters.region}
               >
                 <Option value="すべて">すべて</Option>
                 <Option value="北部の観光地">北部の観光地</Option>
