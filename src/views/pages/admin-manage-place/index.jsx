@@ -190,12 +190,27 @@ const AdminPlaceDetail = () => {
       });
 
       if(response.status === 200){
+        const address = response.data.location.address;
+        const addressArray = address.split(',').map(item => item.trim());
+
+        // Assuming the order is: Street, Town, District, Province
+        const lastElement = addressArray[addressArray.length - 1];
+        const twolastElement = addressArray[addressArray.length - 2];
+        const threelastElement = addressArray[addressArray.length - 3];
+        const selectProvince = cityList.find((city) => city.name === lastElement);
+        const selectDistrict = wardList.find((ward) => ward.name === twolastElement);
+        const selectTown = townList.find((town) => town.name === threelastElement);
+
+        setCity(selectProvince);
+        setWard(selectDistrict);
+        setTown(selectTown);
+        
         setFormData({
           name: response.data.location.name,
           //region: response.data.city_id,
           //district: response.data.district_id,
           //place: response.data.ward_id,
-          //placeDetail: response.data.address,
+          //placeDetail: addressArray[0] + addressArray[1],
           openTime: response.data.location.open_time,
           closingTime: response.data.location.close_time,
           ageGroupStart: response.data.location.age_start,
