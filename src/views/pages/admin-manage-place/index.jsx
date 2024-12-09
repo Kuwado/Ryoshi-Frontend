@@ -223,14 +223,13 @@ const AdminPlaceDetail = () => {
       [field]: !prevState[field],
     }));
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-  };
-    // Logic xử lý khi người dùng nhấn nút edit
   };
 
   const handleSubmit = async (e) => {
@@ -268,7 +267,6 @@ const AdminPlaceDetail = () => {
                 value={formData.name}
                 onChange={handleChange}
                 readOnly={!isEditable.name}
-                readOnly
                 className="input-field"
               />
               <button
@@ -368,7 +366,6 @@ const AdminPlaceDetail = () => {
                 value={formData.placeDetail}
                 onChange={handleChange}
                 readOnly={!isEditable.placeDetail}
-                readOnly
                 className="input-field"
               />
               <button
@@ -401,7 +398,6 @@ const AdminPlaceDetail = () => {
                 value={formData.openTime}
                 onChange={handleChange}
                 readOnly={!isEditable.openTime}
-                readOnly
                 className="input-field"
               />
               <button
@@ -434,7 +430,6 @@ const AdminPlaceDetail = () => {
                 value={formData.closingTime}
                 onChange={handleChange}
                 readOnly={!isEditable.closingTime}
-                readOnly
                 className="input-field"
               />
               <button
@@ -468,7 +463,6 @@ const AdminPlaceDetail = () => {
                   value={formData.ageGroupStart}
                   onChange={handleChange}
                   readOnly={!isEditable.ageGroupStart}
-                  readOnly
                   className="input-field"
                   placeholder=""
                 />
@@ -491,7 +485,6 @@ const AdminPlaceDetail = () => {
                   value={formData.ageGroupEnd}
                   onChange={handleChange}
                   readOnly={!isEditable.ageGroupEnd}
-                  readOnly
                   className="input-field"
                   placeholder=""
                 />
@@ -530,7 +523,6 @@ const AdminPlaceDetail = () => {
             value={formData.visitorsAdult}
             onChange={handleChange}
             readOnly={!isEditable.visitorsAdult}
-            readOnly
             className="input-field"
             placeholder=""
           />
@@ -555,7 +547,6 @@ const AdminPlaceDetail = () => {
             value={formData.visitorsChild}
             onChange={handleChange}
             readOnly={!isEditable.visitorsChild}
-            readOnly
             className="input-field"
             placeholder=""
           />
@@ -592,7 +583,6 @@ const AdminPlaceDetail = () => {
             value={formData.dailyVisitors}
             onChange={handleChange}
             readOnly={!isEditable.dailyVisitors}
-            readOnly
             className="input-field"
             placeholder=""
           />
