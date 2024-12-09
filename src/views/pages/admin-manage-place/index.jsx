@@ -198,7 +198,9 @@ const AdminPlaceDetail = () => {
         const twolastElement = addressArray[addressArray.length - 2];
         const threelastElement = addressArray[addressArray.length - 3];
         const selectProvince = cityList.find((city) => city.name === lastElement);
+        console.log(selectProvince);
         const selectDistrict = wardList.find((ward) => ward.name === twolastElement);
+        console.log(selectDistrict);
         const selectTown = townList.find((town) => town.name === threelastElement);
 
         setCity(selectProvince);
@@ -207,10 +209,10 @@ const AdminPlaceDetail = () => {
         
         setFormData({
           name: response.data.location.name,
-          //region: response.data.city_id,
-          //district: response.data.district_id,
-          //place: response.data.ward_id,
-          //placeDetail: addressArray[0] + addressArray[1],
+          region: lastElement,
+          district: twolastElement,
+          place: threelastElement,
+          placeDetail: addressArray.slice(0, -3).join(', '),
           openTime: response.data.location.open_time,
           closingTime: response.data.location.close_time,
           ageGroupStart: response.data.location.age_start,
