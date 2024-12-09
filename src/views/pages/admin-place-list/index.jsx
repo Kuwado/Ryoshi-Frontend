@@ -214,7 +214,10 @@ const AdminPlaceList = () => {
         <Button type="link" onClick={() => 
           navigate(`/admin/admin-edit-place/${record.location_id}`, { state: { location: record } })
         }>
-          <EyeOutlined style={{ fontSize: '18px', color: '#222222' }} />
+          <img
+          src={require('../../../assets/images/VectorShow.png')}
+          style={{ width: '24px', height: '18px', objectFit: 'cover' }}
+          />
         </Button>
       ),
     },
@@ -226,7 +229,10 @@ const AdminPlaceList = () => {
           type="link"
           onClick={() => handleDelete(record.location_id)}
         >
-          <DeleteOutlined style={{ fontSize: '18px', color: '#FAFAFA' }} />
+          <img
+          src={require('../../../assets/images/VectorDelete.png')}
+          style={{ width: '20px', height: '24px', objectFit: 'cover' }}
+          />
         </Button>
       ),
     },
