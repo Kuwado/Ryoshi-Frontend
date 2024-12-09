@@ -192,32 +192,68 @@ const TravelList = () => {
   };
 
   useEffect(() => {
-    // Lọc dữ liệu dựa trên các bộ lọc đã chọn
-    let updatedCollections = collections;
+    const applyFilters = async () => {
+      let filtered = collections;
 
-    Object.entries(selectedFilters).forEach(([key, value]) => {
-      if (value && value !== "すべて") {
-        updatedCollections = updatedCollections.filter((item) => {
-          if (key === "age") {
-            return item.age === value;
-          } else if (key === "style") {
-            return item.style === value;
-          } else if (key === "visited") {
-            return item.visited === value;
-          } else if (key === "distance") {
-            const [min, max] = value.split("-").map(Number);
-            const distance = parseInt(item.distance, 10); // Chuyển thành số nguyên
-            return distance >= min && distance <= max;
-          } else if (key === "like") {
-            return item.like === value;
-          }
-          return true;
-        });
+      // Áp dụng lọc theo độ tuổi
+      if (selectedFilters.age) {
+        const [start, end] = selectedFilters.age.split("-").map(Number);
+        filtered = filtered.filter(
+          (place) => place.age_start <= start && place.age_end >= end
+        );
       }
-    });
 
-    setFilteredCollections(updatedCollections);
-  }, [selectedFilters]);
+      // Áp dụng lọc theo loại hình du lịch
+      if (selectedFilters.style && selectedFilters.style !== "すべて") {
+        filtered = filtered.filter(
+          (place) => place.type === selectedFilters.style
+        );
+      }
+
+      
+  // Áp dụng lọc theo trạng thái đã đi
+  if (selectedFilters.visited && selectedFilters.visited !== "すべて") {
+    const isGone = selectedFilters.visited === "行ってきました"; // "Đã đi"
+    filtered = filtered.filter((place) => place.isGone === isGone);
+  }
+
+  // Áp dụng lọc theo trạng thái thích
+  if (selectedFilters.like && selectedFilters.like !== "すべて") {
+    const isLiked = selectedFilters.like === "好き"; // "Thích"
+    filtered = filtered.filter((place) => place.isLiked === isLiked);
+  }
+
+      // Áp dụng lọc theo khoảng cách
+      if (selectedFilters.distance && selectedFilters.distance !== "すべて") {
+        try {
+          const token = sessionStorage.getItem("authToken");
+          const [min, max] = selectedFilters.distance.split("-").map(Number);
+
+          for (const place of filtered) {
+            const response = await axios.get(
+              `http://localhost:8000/api/v1/users/distance/${place.id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            const distance = response.data.distance;
+            if (distance < min || distance > max) {
+              filtered = filtered.filter((p) => p.id !== place.id);
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching distances:", error);
+        }
+      }
+
+      setFilteredCollections(filtered);
+    };
+
+    applyFilters();
+  }, [selectedFilters, collections]);
 
   return (
     <div className="admin-place-list">
