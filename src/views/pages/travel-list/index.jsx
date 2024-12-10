@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Select, Space, message, Modal } from "antd";
-import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Select, Space } from "antd";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import Collection from "../../../components/collection";
 import "./index.css";
 
 const { Option } = Select;
-const { confirm } = Modal;
 
 const TravelList = () => {
   // const collections = [
@@ -133,6 +132,7 @@ const TravelList = () => {
   // ];
   const [collections, setCollections] = useState([]); // Dữ liệu từ API
   const [filteredCollections, setFilteredCollections] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [selectedButton, setSelectedButton] = useState("all");
 
@@ -162,8 +162,42 @@ const TravelList = () => {
       );
     }
   };
+
+  const fetchUserInfo = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+      const userId = userInfo?.id;  // Lấy id người dùng từ state userInfo nếu đã có
+  
+      if (userId) {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/users/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (response.status === 200) {
+          const userData = response.data.user;
+          setUserInfo(userData); // Lưu thông tin người dùng vào state
+        } else {
+          console.error("Error fetching user info:", response.data.message);
+        }
+      } else {
+        console.error("User ID not found");
+      }
+    } catch (error) {
+      console.error(
+        "Error fetching user info:",
+        error.response?.data || error.message
+      );
+    }
+  };
+  
   useEffect(() => {
     fetchPlaces();
+    fetchUserInfo();
   }, []);
 
   const handleFilterChange = (filterKey, value) => {
@@ -196,7 +230,7 @@ const TravelList = () => {
       let filtered = collections;
 
       // Áp dụng lọc theo độ tuổi
-      if (selectedFilters.age) {
+      if (selectedFilters.age && selectedFilters.age !== "すべて") {
         const [start, end] = selectedFilters.age.split("-").map(Number);
         filtered = filtered.filter(
           (place) => place.age_start <= start && place.age_end >= end
@@ -210,18 +244,33 @@ const TravelList = () => {
         );
       }
 
-      
-  // Áp dụng lọc theo trạng thái đã đi
-  if (selectedFilters.visited && selectedFilters.visited !== "すべて") {
-    const isGone = selectedFilters.visited === "行ってきました"; // "Đã đi"
-    filtered = filtered.filter((place) => place.isGone === isGone);
-  }
+      // Áp dụng lọc theo trạng thái đã đi
+      if (selectedFilters.visited && selectedFilters.visited !== "すべて") {
+        if (userInfo && userInfo.gone_location) {
+          const isGone = selectedFilters.visited === "行ってきました"; // Đã đi
+          const goneIds = userInfo.gone_location.map(
+            (location) => location.location_id
+          );
 
-  // Áp dụng lọc theo trạng thái thích
-  if (selectedFilters.like && selectedFilters.like !== "すべて") {
-    const isLiked = selectedFilters.like === "好き"; // "Thích"
-    filtered = filtered.filter((place) => place.isLiked === isLiked);
-  }
+          filtered = filtered.filter((place) =>
+            isGone ? goneIds.includes(place.id) : !goneIds.includes(place.id)
+          );
+        }
+      }
+
+      // Áp dụng lọc theo trạng thái thích
+      if (selectedFilters.like && selectedFilters.like !== "すべて") {
+        if (userInfo && userInfo.liked_location) {
+          const isLiked = selectedFilters.like === "好き";
+          const likedIds = userInfo.liked_location.map(
+            (location) => location.location_id
+          );
+
+          filtered = filtered.filter((place) =>
+            isLiked ? likedIds.includes(place.id) : !likedIds.includes(place.id)
+          );
+        }
+      }
 
       // Áp dụng lọc theo khoảng cách
       if (selectedFilters.distance && selectedFilters.distance !== "すべて") {
