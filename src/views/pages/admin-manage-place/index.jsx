@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import "./index.css";
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { type } from '@testing-library/user-event/dist/type';
 
 async function getCityList() {
   try {
@@ -251,6 +253,36 @@ const AdminPlaceDetail = () => {
 
   const handleSubmit = async (e) => {
     // Xử lý khi người dùng nhấn nút tạo
+    e.preventDefault();
+    const data = {
+      name: formData.name,
+      address: `${formData.placeDetail}, ${formData.place}, ${formData.district}, ${formData.region}`,
+      open_time: formData.openTime,
+      close_time: formData.closingTime,
+      type:'',
+      age_start: formData.ageGroupStart,
+      age_end: formData.ageGroupEnd,
+      adult_price: formData.visitorsAdult,
+      child_price: formData.visitorsChild,
+      number_tourist: formData.dailyVisitors,
+      description: formData.description,
+      images: formData.image,
+    };
+
+    try {
+      const response = await axios.put(`http://localhost:8000/api/v1/locations/${locationId}`, data, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if(response.status === 200){
+        toast.success(response.data.message);
+        navigate('/admin/admin-place-list');
+      }
+    } catch (error) {
+      console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    }
   };
 
   const handleCancel = async (e) => {
@@ -313,7 +345,7 @@ const AdminPlaceDetail = () => {
               <div className="input-with-edit">
                 <select
                   name="region"
-                  value={city ? city.id : ''}
+                  value={formData.region}
                   onChange={handleChange}
                   disabled={!isEditable.region}
                   readOnly
