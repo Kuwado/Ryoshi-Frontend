@@ -1,34 +1,34 @@
 import React, {useState} from "react";
-import NavLink from "./navLink";
-import Logo from "../assets/images/image.png";
-import Avatar from "../assets/images/avatar.png";
-import "./header.css";
+import Logo from "../../../assets/images/image.png";
+import "./index.css";
+import AvatarDropdown from "../../avatar-drop-down";
+import NavLinkAdmin from "../../navLinkAdmin";
 
-export default function Header() {
+export default function AdminHeader() {
     return (
         <div id="header" className="header">
-            <div className="container-fluid d-flex align-items-center justify-content-between">
+            <div className="container-fluid d-flex align-items-center">
                 {/* <!-- Logo --> */}
                 <img src={Logo} alt="Logo" className="logo blend-effect" />
 
                 {/* <!-- Menu --> */}
-                <div className="menu d-flex align-items-center">
-                    <NavLink />
+                <div className="ad-menu d-flex align-items-center">
+                    <NavLinkAdmin />
                 </div>
 
                 {/* <!-- Search --> */}
-                <div className="search-container">
+                <div className="ad-search-container">
                     <input type="text" className="search-bar form-control" placeholder="旅行で検索する" /> 
                     <span className="icon-search">🔍</span>
                 </div>     
 
                 {/* <!-- User Section --> */}
-                <div className="user-section d-flex align-items-center">
+                <div className="ad-user-section d-flex align-items-center">
                     <div className="icon-heart">
                         <span className="heart-icon">♥</span>
                         <span className="heart-bubble">3</span>
                     </div>
-                    <img src={Avatar} alt="User Avatar" className="avatar" />
+                    <AvatarDropdown />
                 </div>
             </div>
         </div>

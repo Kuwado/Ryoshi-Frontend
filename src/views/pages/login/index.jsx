@@ -61,7 +61,7 @@ function Login() {
 
       // Xử lý khi đăng nhập thành công
       if (response.status === 200) {
-        toast.success("ログイン成功！");
+        toast.success(response.data.message);
         sessionStorage.setItem("authToken", response.data.token);
 
         //Xử lý token
@@ -70,7 +70,16 @@ function Login() {
         const decodedPayload = JSON.parse(atob(payload)); // Giải mã Base64
         
         sessionStorage.setItem("auth", JSON.stringify(decodedPayload));
-        navigate("/user/begin1");
+        const role = decodedPayload.role;
+        if (role === "user") {
+          setTimeout(() => {
+            navigate("/user/home");
+          }, 3000);
+        } else if (role === "admin") {
+          setTimeout(() => {
+            navigate("/admin");
+          }, 3000);
+        }
       }
     } catch (error) {
       // Xử lý lỗi từ server

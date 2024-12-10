@@ -17,6 +17,7 @@ import Input from "../../../../components/input";
 function ForgotPasswordThree() {
   const navigate = useNavigate();
   const [value, setValue] = React.useState({
+    email: location.state.email,
     password: "",
   });
   const location = useLocation();
@@ -26,19 +27,20 @@ function ForgotPasswordThree() {
     
     try {
       const response = await axios.put(
-        "http://localhost:8000/api/v1/users/forgotPassword",
+        "http://localhost:8000/api/v1/update-password",
         {
-          email: location.state.email,
+          email: value.email,
           password: value.password, 
         }
       );
       if (response.status === 200) {
-        toast.success("パスワードが正常にリセットされました。");
-        navigate("/login"); // Chuyển về trang đăng nhập
+        toast.success(response.data.message);
+        setTimeout(() => {
+          navigate("/login"); // Chuyển về trang đăng nhập
+        }, 3000);
       }
     } catch (error) {
       console.log(error);
-      
       toast.error(error.response.data.error);
     }
   };

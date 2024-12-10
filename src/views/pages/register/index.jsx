@@ -98,10 +98,17 @@ function Register() {
 
       // Xử lý khi đăng nhập thành công
     if (response.status === 200) {
-      toast.success("ログイン成功！");
+      toast.success(response.data.message);
+      sessionStorage.setItem("authToken", response.data.token);
+      //Xử lý token
+      const parts = response.data.token.split('.'); // Tách token thành 3 phần
+      const payload = parts[1];
+      const decodedPayload = JSON.parse(atob(payload)); // Giải mã Base64
+      
+      sessionStorage.setItem("auth", JSON.stringify(decodedPayload));
       setTimeout(() => {
-        navigate("/login");
-      }, 5000);
+        navigate("/user/begin1");
+      }, 3000);
     }
   } catch (error) {
     // Xử lý lỗi từ server

@@ -56,6 +56,24 @@
   width: 330px;
 }
 
+.begin-skip-button {
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: black;
+  margin-top: 20px;
+  margin: 5% 10%;
+  width: 80%;
+}
+
+.begin-skip-button:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+}
+
 .flex-row {
   display: flex;
   flex-direction: row;

@@ -79,6 +79,7 @@ function Begin1_5() {
             <UploadProfile onImageSelect={setSelectedImage} />
             <Button label="スキップ" className="begin1-submit-button" onClick={handleNextClick}>
             </Button>
+            <button className="begin1-5-skip-button" onClick={() => navigate("/user/begin1.6")}>スキップこのステップ</button>
           </form>
         </div>
 

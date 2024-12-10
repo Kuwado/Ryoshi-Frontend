@@ -2,13 +2,11 @@ import {Link, useLocation} from "react-router-dom";
 import "./header.css";
 
 const links = [
-    {name: "三地域の観光地", href: "/user/tourist-attractions-in-three-areas", text: "3"},
-    {name: "北部の観光地", href: "/user/tourist-attractions-in-northern-area", text: "N"},
-    {name: "中部の観光地", href: "/user/tourist-attractions-in-central-area", text: "C"},
-    {name: "南部の観光地", href: "/user/tourist-attractions-in-southern-area", text: "S"},
+    {name: "観光地を追加する", href: "/admin/admin-create-place", text: "3"},
+    {name: "観光地のリスト", href: "/admin/admin-place-list", text: "N"},
 ]
 
-export default function NavLink() {
+export default function NavLinkAdmin() {
     const location = useLocation();
     const pathname = location.pathname;
 
