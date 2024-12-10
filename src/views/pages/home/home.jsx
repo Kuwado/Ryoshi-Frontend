@@ -92,13 +92,13 @@ return (
                 <div className="title-collection">
                     <span>あなたに合った観光地</span>
                 </div>
-                <Collection collectionData={collections} itemsNumber={5} showIndicator={false} rowNumber={1}></Collection>
+                <Collection collectionData={collections} itemsNumber={5} showIndicator={true} rowNumber={1}></Collection>
             </div>
             <div className="hot-collection">
                 <div className="title-collection">
                     <span>最も人気のある観光地</span>
                 </div>
-                <Collection collectionData={collections} itemsNumber={5} showIndicator={false} rowNumber={1}></Collection>
+                <Collection collectionData={collections} itemsNumber={5} showIndicator={true} rowNumber={1}></Collection>
             </div>
         </div>
     </div>
