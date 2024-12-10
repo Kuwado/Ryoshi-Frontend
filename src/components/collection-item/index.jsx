@@ -2,17 +2,84 @@ import React, { useState } from 'react';
 import "./index.css";
 import ItemImg from "../../assets/images/item.png";
 
-export default function CollectionItem({name, place}) {
-    const [isActiveFav, setIsActiveFav] = useState(false);
+export default function CollectionItem({locationId, name, place, initialLikedId, initialGoneId}) {
+    const token = sessionStorage.getItem("authToken");
+    const userId = JSON.parse(sessionStorage.getItem("auth")).id
 
-    const toggleFavorite = () => {
-        setIsActiveFav(prevState => !prevState);
+    // Khởi tạo state cho likedId và isActiveFav
+    const [likedId, setLikedId] = useState(initialLikedId);
+    const [isActiveFav, setIsActiveFav] = useState(initialLikedId !== -1);
+
+    const toggleFavorite = async () => {
+        // Calculate new state based on previous state
+        const newState = !isActiveFav;
+
+        const url = `http://localhost:8000/api/v1/liked${newState ? '' : `/${likedId}`}`;
+        const options = {
+            method: newState ? 'POST' : 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            ...(newState && { body: JSON.stringify({ user_id: userId, location_id: locationId }) }), // Include body only for POST
+        };
+    
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error('Failed to update favorite status');
+            }
+            if (newState) {
+                const data = await response.json();
+                setLikedId(data.like.id); // Cập nhật likedId mới
+            } else {
+                setLikedId(-1); // Đặt likedId về -1 khi xóa
+            }
+            
+            // Update state only if the API call is successful
+            setIsActiveFav(newState);
+
+        } catch (error) {
+            console.error("Error updating favorite status:", error);
+        }
     };
+    
+    // Khởi tạo state cho likedId và isActiveFav
+    const [goneId, setGoneId] = useState(initialLikedId);
+    const [isActiveGone, setIsActiveGone] = useState(initialGoneId !== -1);
 
-    const [isActiveGone, setIsActiveGone] = useState(false);
-
-    const toggleGone = () => {
-        setIsActiveGone(prevState => !prevState);
+    const toggleGone = async () => {
+        // Calculate new state based on previous state
+        const newState = !isActiveGone;
+    
+        const url = `http://localhost:8000/api/v1/gone${newState ? '' : `/${goneId}`}`;
+        const options = {
+            method: newState ? 'POST' : 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            ...(newState && { body: JSON.stringify({ user_id: userId, location_id: locationId }) }), // Include body only for POST
+        };
+    
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error('Failed to update gone status');
+            }
+            if (newState) {
+                const data = await response.json();
+                setGoneId(data.gone.id); 
+            } else {
+                setGoneId(-1);
+            }
+            
+            
+            // Update state only if the API call is successful
+            setIsActiveGone(newState);
+        } catch (error) {
+            console.error("Error updating gone status:", error);
+        }
     };
 
     return(

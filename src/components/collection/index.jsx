@@ -14,8 +14,13 @@ const Collection = ({
   showIndicator,
   showPagination,
 }) => {
+  console.log(collectionData)
+  const token = sessionStorage.getItem("authToken");
+  const userId = JSON.parse(sessionStorage.getItem("auth")).id
   const [currentSlide, setCurrentSlide] = useState(0);
   const [itemsPerSlide, setItemsPerSlide] = useState(itemsNumber * rowNumber); // Giá trị mặc định
+  const [slicedData, setSlicedData] = useState([]);
+  const [totalSlides, setTotalSlides] = useState(0);
 
   // Hàm để điều chỉnh số lượng item theo kích thước màn hình
   const updateItemsPerSlide = () => {
@@ -34,16 +39,106 @@ const Collection = ({
     }
   };
 
+  const fetchUserInfo = async () => {
+    try {
+        const response = await fetch(`http://localhost:8000/api/v1/users/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch user info');
+        }
+
+        const data = await response.json();
+        // Return the user data for further processing
+        return data.user;
+    } catch (error) {
+        console.error("Error fetching user info:", error);
+        throw error; // Re-throw the error for further handling
+    }
+};
+
+const processCollections = (collections, userInfo) => {
+  // Lấy liked_id từ liked_location
+  const likedIds = userInfo.liked_location.map(location => ({
+      location_id: location.location_id,
+      liked_id: location.Liked.id
+  }));
+  
+  // Lấy gone_id từ gone_location (nếu cần)
+  const goneIds = userInfo.gone_location.map(location => ({
+      location_id: location.location_id,
+      gone_id: location.Gone.id // Giả sử gone có cấu trúc tương tự
+  }));
+
+  return collections.map(collection => {
+      // Tìm likedId trong likedIds
+      const likedId = likedIds.find(like => like.location_id === collection.location_id)?.liked_id || -1;
+
+      // Tìm goneId trong goneIds
+      const goneId = goneIds.find(gone => gone.location_id === collection.location_id)?.gone_id || -1;
+
+      return {
+          ...collection,
+          likedId: likedId,
+          goneId: goneId
+      };
+  });
+};
+
+const sliceArray = (array, chunkSize) => {
+  const result = [];
+  const maxSlide = Math.ceil(array.length / chunkSize);
+  for (let i = 0; i < array.length; i += chunkSize) {
+    const chunk = array.slice(i, i + chunkSize);
+    result.push(chunk);
+
+    if (result.length == maxSlide && rowNumber > 1) {
+      // Thêm fillers vào chunk nếu cần
+      if (chunk.length < chunkSize / 2) {
+        const fillCount = Math.ceil(chunkSize / 2) - chunk.length;
+        const fillers = new Array(fillCount).fill({ id: -1 });
+        chunk.push(...fillers);
+      } else if (chunk.length < chunkSize) {
+        const fillCount = chunkSize - chunk.length;
+        const fillers = new Array(fillCount).fill({ id: -1 });
+        chunk.push(...fillers);
+      }
+    }
+  }
+  return result;
+};
+
+// Tách locations thành các mảng nhỏ
+
+
+const initiateFetch = async () => {
+    try {
+        const userInfo = await fetchUserInfo(); // Fetch user info
+        const processedLocations = processCollections(collectionData, userInfo);
+        console.log(processedLocations)
+        setSlicedData(sliceArray(processedLocations, itemsPerSlide))
+        setTotalSlides(Math.ceil(processedLocations.length / itemsPerSlide));
+    } catch (error) {
+        console.error("Error during fetching process:", error);
+    }
+};
+
   useEffect(() => {
     updateItemsPerSlide(); // Gọi hàm khi component mount
     window.addEventListener("resize", updateItemsPerSlide); // Lắng nghe sự kiện resize
-
     return () => {
       window.removeEventListener("resize", updateItemsPerSlide); // Dọn dẹp listener khi unmount
     };
-  }, []);
+  }, []); // Empty dependency array to run only on mount
 
-  const totalSlides = Math.ceil(collectionData.length / itemsPerSlide);
+  useEffect(() => {
+    initiateFetch();
+  }, [collectionData]); // Empty dependency array to run only on mount
 
   const goToPrevSlide = () => {
     setCurrentSlide((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
@@ -56,35 +151,6 @@ const Collection = ({
   const goToSlide = (index) => {
     setCurrentSlide(index);
   };
-
-  const sliceArray = (array, chunkSize) => {
-    const result = [];
-    const maxSlide = Math.ceil(array.length / chunkSize);
-    for (let i = 0; i < array.length; i += chunkSize) {
-      const chunk = array.slice(i, i + chunkSize);
-      result.push(chunk);
-
-      if (result.length == maxSlide && rowNumber > 1) {
-        // Thêm fillers vào chunk nếu cần
-        if (chunk.length < chunkSize / 2) {
-          const fillCount = Math.ceil(chunkSize / 2) - chunk.length;
-          const fillers = new Array(fillCount).fill({ id: -1 });
-          chunk.push(...fillers);
-          console.log(chunk.length, chunkSize);
-        } else if (chunk.length < chunkSize) {
-          const fillCount = chunkSize - chunk.length;
-          const fillers = new Array(fillCount).fill({ id: -1 });
-          chunk.push(...fillers);
-          console.log(chunk.length, chunkSize);
-        }
-      }
-    }
-    console.log(result);
-    return result;
-  };
-
-  // Tách collectionData thành các mảng nhỏ
-  const slicedData = sliceArray(collectionData, itemsPerSlide);
 
   return (
     <div className="collection-container">
@@ -109,8 +175,11 @@ const Collection = ({
                 item.id !== -1 ? (
                   <CollectionItem
                     key={item.name}
+                    locationId={item.location_id}
                     name={item.name}
                     place={item.place}
+                    initialLikedId={item.likedId}
+                    initialGoneId={item.goneId}
                   />
                 ) : (
                   <div style={{ width: "250px" }}></div>
