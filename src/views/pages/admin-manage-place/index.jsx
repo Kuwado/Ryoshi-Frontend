@@ -648,9 +648,13 @@ const AdminPlaceDetail = () => {
         </div>
       </div>
           </div>
-          {/* Label 9: 画像をアップロード */}
-          <div className="form-group">
-            <label className="form-label image-upload-label">
+        </div>
+
+        {/* Right Side */}
+        <div className="right-side">
+                    {/* Label 9: 画像をアップロード */}
+                    <div className="form-group">
+            <label className="form-label-1 image-upload-label">
               <img
                 src={require('../../../assets/images/Vector9.png')}
                 alt="Icon"
@@ -683,10 +687,6 @@ const AdminPlaceDetail = () => {
               )}
             </div>
           </div>
-        </div>
-
-        {/* Right Side */}
-        <div className="right-side">
           <div className="form-group">
             <label className="form-label">
               <img
