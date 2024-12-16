@@ -1,0 +1,171 @@
+/* Chia layout chính */
+.content-wrapper {
+  display: flex; /* Sử dụng flexbox */
+  justify-content: space-between; /* Chia đều không gian */
+  align-items: flex-start; /* Căn theo đỉnh */
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.ad-header {
+  background-color: #f9f9f9 !important;
+}
+.ad-header-text {
+  padding-left: 66px;
+  background-color: #f9f9f9;
+}
+
+/* Phần bên trái (Carousel) */
+.left-content {
+  flex: 1; /* Chiếm 1 nửa màn hình */
+  max-width: 50%; /* Giới hạn tối đa 50% */
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+
+/* Phần bên phải (Thông tin) */
+.right-content {
+  flex: 1; /* Chiếm 1 nửa màn hình */
+  max-width: 50%; /* Giới hạn tối đa 50% */
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+
+/* Căn chỉnh hình ảnh Carousel */
+.left-content img {
+  width: 100%;
+  height: auto;
+}
+
+/* Container chính */
+.place-detail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Slider bên trái */
+.place-slider {
+  display: flex;
+  gap: 10px;
+  overflow: auto;
+}
+
+.slider-image {
+  width: 500px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0px;
+}
+
+/* Phần thông tin chi tiết bên phải */
+.place-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.place-info h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.place-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.place-info li {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.info-group {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.info-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.info-label {
+  flex: 0 0 180px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0094da;
+  margin-right: 10px;
+}
+
+.info-value {
+  flex: 1; /* Giá trị căn thẳng hàng */
+  color: #333;
+  font-size: 16px;
+  word-wrap: break-word;
+}
+
+.ticket-price {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.toggle-button {
+  display: flex;
+  gap: 10px;
+}
+
+.toggle-button button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  font-size: 14px;
+}
+
+.toggle-button button:hover {
+  background-color: #0056b3;
+}
+
+/* Phần mô tả */
+.place-description {
+  background-color: #f9f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.place-description h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+.place-description p {
+  font-size: 16px;
+  color: #555;
+}
+
+.form-label {
+  margin-bottom: 20px !important;
+}
+
+/* Danh sách địa điểm tương tự */
+.similar-places {
+  padding: 20px;
+}
+
+.similar-places h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+}
