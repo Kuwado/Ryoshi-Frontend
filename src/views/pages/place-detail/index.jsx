@@ -12,7 +12,8 @@ const PlaceDetail = () => {
   const currentLocation = useLocation(); // Lấy thông tin location từ router
   const locationId = currentLocation.pathname.split("/").pop();
   const [slides, setSlides] = useState([]);
-  const [hotCollections, setHotCollections] = useState([]);
+  const [locationsList, setLocationsList] = useState([]);
+  const [similarCollections, setSimilarCollections] = useState([]);
 
   // Hàm fetch dữ liệu API
   const fetchLocationData = async () => {
@@ -45,6 +46,51 @@ const PlaceDetail = () => {
     }
   }, [locationId]);
 
+  const fetchLocationsList = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/locations",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setLocationsList(response.data.location);
+      return response.data.location;
+    } catch (error) {
+      console.error("Error fetching locations list:", error);
+      return [];
+    }
+  };
+
+  const similarLocations = (collections, currentLocation) => {
+    if (!currentLocation || !currentLocation.type) return;
+  
+    // Lọc các địa điểm có cùng type nhưng khác với địa điểm hiện tại
+    const filteredCollections = collections.filter(
+      (location) =>
+        location.type === currentLocation.type && location.location_id !== currentLocation.location_id
+    );
+  
+    // Cập nhật state với danh sách đã lọc và sắp xếp
+    setSimilarCollections(filteredCollections);
+  };  
+
+  const initiateFetch = async () => {
+    try {
+      const locations = await fetchLocationsList();
+      if (locationData) {
+        similarLocations(locations, locationData); // Truyền locationData vào
+      }
+    } catch (error) {
+      console.error("Error during fetching process:", error);
+    }
+  };  
+  
+  useEffect(() => {
+    if (locationData) {
+      initiateFetch();
+    }
+  }, [locationData]); // Chạy khi locationData đã được cập nhật
+  
+  
   if (loading) {
     return <div>Loading...</div>; // Hiển thị khi đang fetch dữ liệu
   }
@@ -179,7 +225,7 @@ const PlaceDetail = () => {
       {/* Phần danh sách địa điểm tương tự */}
       <div className="similar-places">
         <h2>似たような場所</h2>
-        <Collection />
+        <Collection collectionData={similarCollections} itemsNumber={5} showIndicator={true} rowNumber={1}></Collection>
       </div>
     </div>
   );

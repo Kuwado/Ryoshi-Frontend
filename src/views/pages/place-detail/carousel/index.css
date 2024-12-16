@@ -72,10 +72,9 @@
     flex-direction: row;
     justify-content: center;
     padding: 0;
-    margin-right: 15%;
-    margin-bottom: 1rem;
-    margin-left: 15%;
+    margin: 0;
     gap: 15px;
+    flex-wrap: wrap;
 }
 
 ol {
@@ -96,13 +95,64 @@ ol {
 }
 
 .indicators img.thumbnail {
-    width: 150px;
-    height: 110px; 
+    width: 133px; /* Kích thước mặc định */
+    height: 90px;
     object-fit: cover;
     border: 2px solid transparent;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .indicators img.active-thumbnail {
     border-color: #0094DA; /* Viền cho ảnh đang được chọn */
-    transform: scale(1.03); /* Hiệu ứng phóng to ảnh */
+    transform: scale(1.05); /* Phóng to ảnh được chọn */
+}
+
+/* Điều chỉnh khi màn hình nhỏ hơn 1200px */
+@media (max-width: 1200px) {
+    .indicators img.thumbnail {
+        width: 100px;
+        height: 75px;
+    }
+    .indicators {
+        gap: 10px; /* Giảm khoảng cách giữa indicators */
+    }
+}
+
+/* Điều chỉnh khi màn hình nhỏ hơn 992px */
+@media (max-width: 992px) {
+    .indicators img.thumbnail {
+        width: 80px;
+        height: 60px;
+    }
+    .indicators {
+        gap: 8px;
+    }
+}
+
+/* Điều chỉnh khi màn hình nhỏ hơn 768px */
+@media (max-width: 768px) {
+    .indicators {
+        flex-direction: row; /* Duy trì hàng ngang */
+        gap: 5px;
+        margin-left: 0; /* Loại bỏ margin */
+        margin-right: 0;
+    }
+
+    .indicators img.thumbnail {
+        width: 60px;
+        height: 45px;
+    }
+}
+
+/* Điều chỉnh khi màn hình nhỏ hơn 576px (di động nhỏ) */
+@media (max-width: 576px) {
+    .indicators {
+        gap: 3px; /* Giảm khoảng cách */
+        flex-wrap: wrap; /* Cho phép xuống dòng */
+    }
+
+    .indicators img.thumbnail {
+        width: 50px; /* Kích thước nhỏ hơn cho di động */
+        height: 40px;
+    }
 }
