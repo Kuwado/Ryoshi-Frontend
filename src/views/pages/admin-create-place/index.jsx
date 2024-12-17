@@ -71,7 +71,99 @@ async function getTownList(wardId) {
     return null;
   }
 }
+const ChipSelector = ({ selectedItems, options, onApply, onClose }) => {
+  const [localSelectedItems, setLocalSelectedItems] = useState([...selectedItems]);
 
+  const handleItemClick = (item) => {
+    setLocalSelectedItems((prevSelected) => {
+      if (prevSelected.includes(item)) {
+        return prevSelected.filter((selectedItem) => selectedItem !== item);
+      } else {
+        return [...prevSelected, item];
+      }
+    });
+  };
+
+  return (
+    <div className="popup-overlay">
+      <div className="popup-container">
+        {/* Tiêu đề */}
+        <h2>旅行のスタイル</h2>
+
+        {/* Wrapper cho tất cả các dòng chip */}
+        <div className="chips-wrapper-container">
+          {/* Dòng 1: 3 chip */}
+          <div className="chips-row">
+            {options.slice(0, 3).map((option, index) => (
+              <div className="chips-wrapper" key={index}>
+                <input
+                  type="checkbox"
+                  id={`chip-${index}`}
+                  checked={localSelectedItems.includes(option)}
+                  onChange={() => handleItemClick(option)}
+                />
+                <label htmlFor={`chip-${index}`}>{option}</label>
+              </div>
+            ))}
+          </div>
+
+          {/* Dòng 2: 4 chip */}
+          <div className="chips-row">
+            {options.slice(3, 7).map((option, index) => (
+              <div className="chips-wrapper" key={index}>
+                <input
+                  type="checkbox"
+                  id={`chip-${index + 3}`}
+                  checked={localSelectedItems.includes(option)}
+                  onChange={() => handleItemClick(option)}
+                />
+                <label htmlFor={`chip-${index + 3}`}>{option}</label>
+              </div>
+            ))}
+          </div>
+
+          {/* Dòng 3: 3 chip */}
+          <div className="chips-row">
+            {options.slice(7, 10).map((option, index) => (
+              <div className="chips-wrapper" key={index}>
+                <input
+                  type="checkbox"
+                  id={`chip-${index + 7}`}
+                  checked={localSelectedItems.includes(option)}
+                  onChange={() => handleItemClick(option)}
+                />
+                <label htmlFor={`chip-${index + 7}`}>{option}</label>
+              </div>
+            ))}
+          </div>
+
+          {/* Dòng 4: 4 chip */}
+          <div className="chips-row">
+            {options.slice(10, 14).map((option, index) => (
+              <div className="chips-wrapper" key={index}>
+                <input
+                  type="checkbox"
+                  id={`chip-${index + 10}`}
+                  checked={localSelectedItems.includes(option)}
+                  onChange={() => handleItemClick(option)}
+                />
+                <label htmlFor={`chip-${index + 10}`}>{option}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Nút 確認 */}
+        <button
+          className="confirm-button"
+          onClick={() => onApply(localSelectedItems)}
+        >
+          確認
+        </button>
+      </div>
+    </div>
+  );
+};
 const AdminCreatePlace = () => {
   const [formData, setFormData] = useState({
     name: '', // Tên địa điểm
@@ -87,9 +179,29 @@ const AdminCreatePlace = () => {
     visitorsChild: '', // Giá vé khách trẻ em 訪問者数 
     dailyVisitors: '', // Số khách tham quan mỗi ngày 訪問者数 
     description: '', // Mô tả
-    image: null,
+    images: [],
   });
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedChips, setSelectedChips] = useState([]);
 
+  const options = [
+    "エコツーリズム", "文化旅行", "リゾート", "レクリエーション", "スポーツ",
+    "探検", "冒険", "コンビネーション", "家族旅行", "団体旅行", "個人旅行", "ビーチ",
+    "山", "都市", "田舎",
+  ];
+
+  const handleImageClick = () => {
+    setIsPopupOpen(true); // Mở pop-up
+  };
+
+  const handleApply = (selectedItems) => {
+    setSelectedChips(selectedItems); // Lưu lại các chip đã chọn
+    setIsPopupOpen(false); // Đóng pop-up
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false); // Đóng pop-up
+  };
   const [city, setCity] = useState(null); // Khởi tạo city với null
   const [ward, setWard] = useState(null); 
   const [town, setTown] = useState(null); 
@@ -172,19 +284,19 @@ const AdminCreatePlace = () => {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
+    const files = Array.from(e.target.files); // Chuyển các file thành mảng
     setFormData((prevData) => ({
       ...prevData,
-      image: URL.createObjectURL(file), // Hiển thị hình ảnh ngay sau khi chọn
+      images: [...prevData.images, ...files.map(file => URL.createObjectURL(file))], // Thêm các ảnh mới vào mảng
     }));
-  };
+  };  
 
-  const handleRemoveImage = () => {
+  const handleRemoveImage = (imageToRemove) => {
     setFormData((prevData) => ({
       ...prevData,
-      image: null, // Xóa hình ảnh khi ấn X
+      images: prevData.images.filter(image => image !== imageToRemove), // Lọc bỏ ảnh cần xóa
     }));
-  };
+  };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -440,7 +552,7 @@ const AdminCreatePlace = () => {
                 alt="Icon"
                 className="form-icon"
               />
-              訪問者数
+              訪問者数 :
             </label>
             <div className="visit-group">
             <div className="visit-text">人/日</div>
@@ -454,9 +566,53 @@ const AdminCreatePlace = () => {
             </div>
           </div>
 
-          {/* Label 9: 画像をアップロード */}
+          {/* type */}
           <div className="form-group">
-            <label className="form-label image-upload-label">
+            <label className="form-label">
+              <img
+                src={require('../../../assets/images/Vector14.png')}
+                alt="Icon"
+                className="form-icon"
+              />
+              名前：
+            </label>
+            <div className="image-placeholder" onClick={handleImageClick}>
+              <img
+                src={require('../../../assets/images/Vector15.png')}
+                alt="Click to select"
+                className="select-image"
+              />
+            </div>
+
+            {/* Hiển thị các chip đã chọn */}
+            <div className="selected-chips">
+              {selectedChips.map((chip, index) => (
+                <div key={index} className="chips-wrapper">
+                  <label>{chip}</label>
+                </div>
+              ))}
+            </div>
+
+            {/* Mở pop-up chọn chip */}
+            {isPopupOpen && (
+              <ChipSelector
+                selectedItems={selectedChips}
+                options={options}
+                onApply={handleApply}
+                onClose={handleClosePopup}
+              />
+            )}
+            </div>
+          </div>
+
+        
+        <div className="right-side">
+        {/* Label 9: 画像をアップロード */}
+          <div className="form-group">
+            <label 
+              htmlFor="image-upload" 
+              className="form-label-1 upload-label"
+            >
               <img
                 src={require('../../../assets/images/Vector9.png')}
                 alt="Icon"
@@ -471,28 +627,32 @@ const AdminCreatePlace = () => {
                 id="image-upload"
                 onChange={handleFileChange}
                 className="image-input"
+                multiple // Cho phép chọn nhiều ảnh
+                style={{ display: 'none' }} // Ẩn input file đi
               />
-              {formData.image && (
-                <div className="image-preview">
-                  <img
-                    src={formData.image}
-                    alt="Preview"
-                    className="preview-image"
-                  />
-                  <button onClick={handleRemoveImage} className="remove-image">
-                    <img
-                      src={require('../../../assets/images/Vector12.png')}
-                      alt="Remove"
-                      className="remove-icon"
-                    />
-                  </button>
+              {formData.images.length > 0 && (
+                <div className="image-preview-container">
+                  {formData.images.map((image, index) => (
+                    <div key={index} className="image-preview">
+                      <img
+                        src={image}
+                        alt={`Preview ${index}`}
+                        className="preview-image"
+                      />
+                      <button onClick={() => handleRemoveImage(image)} className="remove-image">
+                        <img
+                          src={require('../../../assets/images/Vector13.png')}
+                          alt="Remove"
+                          className="remove-icon"
+                        />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
           </div>
-        </div>
 
-        <div className="right-side">
           <div className="form-group">
             <label className="form-label">
               <img
@@ -515,23 +675,23 @@ const AdminCreatePlace = () => {
 
       {/* Action Buttons */}
       <div className="action-buttons">
-  <button className="btn-create" onClick={handleSubmit}>
-    <img
-      src={require('../../../assets/images/Vector11.png')}
-      alt="Create"
-      className="form-icon"
-    />
-    作る
-  </button>
-  <button className="btn-cancel">
-    <img
-      src={require('../../../assets/images/Vector12.png')}
-      alt="Cancel"
-      className="form-icon"
-    />
-    キャンセル
-  </button>
-</div>
+        <button className="btn-create" onClick={handleSubmit}>
+          <img
+            src={require('../../../assets/images/Vector11.png')}
+            alt="Create"
+            className="form-icon"
+          />
+          作る
+        </button>
+        <button className="btn-cancel">
+          <img
+            src={require('../../../assets/images/Vector12.png')}
+            alt="Cancel"
+            className="form-icon"
+          />
+          キャンセル
+        </button>
+      </div>
     </div>
   );
 };
