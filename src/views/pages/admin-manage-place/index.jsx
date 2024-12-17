@@ -74,6 +74,23 @@ async function getTownList(wardId) {
   }
 }
 
+async function getPlaceDetail(locationId, token) {
+  try{
+    const response = await axios.get(`http://localhost:8000/api/v1/locations/${locationId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if(response.status === 200){
+      return response.data.location;
+    }
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
 const AdminPlaceDetail = () => {
   const [formData, setFormData] = useState({
     name: '', // Tên địa điểm
@@ -121,6 +138,11 @@ const AdminPlaceDetail = () => {
   const [wardList, setWardList] = useState([]);
   const [townList, setTownList] = useState([]);
   const [cityId, setCityId] = useState('');
+
+  const [address, setAddress] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedWard, setSelectedWard] = useState(null);
+  const [selectedTown, setSelectedTown] = useState(null);
 
   // Lấy danh sách thành phố khi component được render
   useEffect(() => {
@@ -183,57 +205,71 @@ const AdminPlaceDetail = () => {
     setTown(selectedTown);
   };
 
-  const getPlace = async () => {
-    try{
-      const response = await axios.get(`http://localhost:8000/api/v1/locations/${locationId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if(response.status === 200){
-        const address = response.data.location.address;
-        const addressArray = address.split(',').map(item => item.trim());
-
-        // Assuming the order is: Street, Town, District, Province
-        const lastElement = addressArray[addressArray.length - 1];
-        const twolastElement = addressArray[addressArray.length - 2];
-        const threelastElement = addressArray[addressArray.length - 3];
-        const selectProvince = cityList.find((city) => city.name === lastElement);
-        console.log(selectProvince);
-        const selectDistrict = wardList.find((ward) => ward.name === twolastElement);
-        console.log(selectDistrict);
-        const selectTown = townList.find((town) => town.name === threelastElement);
-
-        setCity(selectProvince);
-        setWard(selectDistrict);
-        setTown(selectTown);
-        
+  useEffect(() => {
+    const fetchPlaceDetail = async () => {
+      const location = await getPlaceDetail(locationId, token);
+      if(location){
+        setAddress(location.address);
+        const addressArr = location.address.split(',').map(item => item.trim());
+        setSelectedCity(addressArr[addressArr.length - 1]);
+        setSelectedWard(addressArr[addressArr.length - 2]);
+        setSelectedTown(addressArr[addressArr.length - 3]);
+        setCity(cityList.find(city => city.name === selectedCity));
+        console.log(selectedCity, selectedWard, selectedTown, city);
         setFormData({
-          name: response.data.location.name,
-          region: lastElement,
-          district: twolastElement,
-          place: threelastElement,
-          placeDetail: addressArray.slice(0, -3).join(', '),
-          openTime: response.data.location.open_time,
-          closingTime: response.data.location.close_time,
-          ageGroupStart: response.data.location.age_start,
-          ageGroupEnd: response.data.location.age_end,
-          visitorsAdult: response.data.location.adult_price,
-          visitorsChild: response.data.location.child_price,
-          dailyVisitors: response.data.location.number_tourist,
-          description: response.data.location.description,
-          image: response.data.location.images,
-        })
+          name: location.name,
+          region: location.address.split(',')[0],
+          district: location.address.split(',')[1],
+          place: location.address.split(',')[2],
+          placeDetail: location.address.split(',')[0],
+          openTime: location.open_time,
+          closingTime: location.close_time,
+          ageGroupStart: location.age_start,
+          ageGroupEnd: location.age_end,
+          visitorsAdult: location.adult_price,
+          visitorsChild: location.child_price,
+          dailyVisitors: location.number_tourist,
+          description: location.description,
+          image: location.images,
+        });
       }
-    }catch(error){
-      console.log(error);
-    }
-  };
+    };
+
+    fetchPlaceDetail();
+  }, [cityList]);
 
   useEffect(() => {
-    getPlace();
-  }, []);
+    const fetchWards = async () => {
+      if(city){
+        const wards = await getWardList(city.id);
+        if(wards){
+          setWardList(wards);
+          console.log(wardList, selectedWard);
+          const findWard = wardList.find(ward => ward.name === selectedWard);
+          console.log(findWard);
+          setWard(findWard);
+        }
+      }
+    }
+    fetchWards();
+    }, [city]
+  );
+
+  useEffect(() => {
+    const fetchTowns = async () => {
+    console.log(ward);
+
+      if(ward){
+        const towns = await getTownList(ward.id);
+        if(towns){
+          setTownList(towns);
+        }
+      }
+    }
+    fetchTowns();
+    setTown(townList.find(town => town.name === selectedTown));
+    console.log(townList);
+  }, [ward]);
 
   const handleEditClick = (field) => {
     // Chuyển trạng thái của trường này thành editable
@@ -345,7 +381,7 @@ const AdminPlaceDetail = () => {
               <div className="input-with-edit">
                 <select
                   name="region"
-                  value={formData.region}
+                  value={city ? city.id : ''}
                   onChange={handleChange}
                   disabled={!isEditable.region}
                   readOnly
@@ -648,9 +684,13 @@ const AdminPlaceDetail = () => {
         </div>
       </div>
           </div>
-          {/* Label 9: 画像をアップロード */}
-          <div className="form-group">
-            <label className="form-label image-upload-label">
+        </div>
+
+        {/* Right Side */}
+        <div className="right-side">
+                    {/* Label 9: 画像をアップロード */}
+                    <div className="form-group">
+            <label className="form-label-1 image-upload-label">
               <img
                 src={require('../../../assets/images/Vector9.png')}
                 alt="Icon"
@@ -683,10 +723,6 @@ const AdminPlaceDetail = () => {
               )}
             </div>
           </div>
-        </div>
-
-        {/* Right Side */}
-        <div className="right-side">
           <div className="form-group">
             <label className="form-label">
               <img

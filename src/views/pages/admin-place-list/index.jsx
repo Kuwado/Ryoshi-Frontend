@@ -177,30 +177,19 @@ const AdminPlaceList = () => {
     },
     {
       title: "写真",
-      dataIndex: "images",
-      key: "images",
-      render: (text) => {
-        if (text) {
-          const imageNames = text.split(","); // Tách các tên tệp ảnh
-          return (
-            <div style={{ display: "flex", gap: "10px" }}>
-              {imageNames.map((imageName, index) => {
-                const imageUrl = `http://localhost:8000/uploads/${imageName}`;
-                return (
-                  <img
-                    key={index}
-                    src={imageUrl}
-                    alt={`place-image-${index}`}
-                    style={{ width: "100px", height: "auto", objectFit: "cover" }}
-                  />
-                );
-              })}
-            </div>
-          );
-        }
-        return null; // Nếu không có hình ảnh, trả về null
+      dataIndex: "avatar", // Dùng avatar làm dữ liệu chính
+      key: "avatar",
+      render: (avatar, record) => {
+        const avatarUrl = `http://localhost:8000/uploads/${avatar}`;
+        return (
+          <img
+            src={avatarUrl}
+            alt="place-avatar"
+            style={{ width: "100px", height: "auto", objectFit: "cover" }}
+          />
+        );
       },
-    },
+    },    
     {
       title: "場所の名前",
       dataIndex: "name",

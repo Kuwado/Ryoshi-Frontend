@@ -8,6 +8,7 @@ import Footer from "../../components/footer";
 import UserHeader from "../../components/header/header_user";
 import TravelList from "../pages/travel-list";
 import SearchResult from "../pages/user-search-result";
+import PlaceDetail from "../pages/place-detail";
 
 function UserRoute() {
   return (
@@ -25,6 +26,7 @@ function UserRoute() {
           <Route path="/home" element={<Home />} />
           <Route path="/travel-list" element={<TravelList />} />
           <Route path="/search-result" element={<SearchResult />} />
+          <Route path="/place-detail/:locationId" element={<PlaceDetail />} />
         </Routes>
       </div>
       <div>
