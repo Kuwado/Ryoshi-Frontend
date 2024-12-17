@@ -16,11 +16,11 @@ import Input from "../../../../components/input";
 
 function ForgotPasswordThree() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [value, setValue] = React.useState({
     email: location.state.email,
     password: "",
   });
-  const location = useLocation();
   const handleSubmit = async () => {
     console.log(location.state.email);
     console.log(value.password);
