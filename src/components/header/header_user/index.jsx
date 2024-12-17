@@ -59,14 +59,22 @@ export default function UserHeader() {
         const filtered = locationsName.filter(location =>
             location.name.toLowerCase().includes(userInput.toLowerCase())
         );
-        console.log(filtered)
         setFilteredLocations(filtered);
     };
     
     const handleSelect = (location) => {
-        setSearch(location);
+        setSearch(location.name);
         setFilteredLocations([]); // Xóa gợi ý sau khi chọn
-        navigate('/user/search-result', { state: { filteredLocations } }); // Truyền dữ liệu qua state
+        const selectedLocations = [location]; 
+        //Truyền 1 địa điểm được chọn
+        navigate('/user/search-result', { state: { locations: selectedLocations } }); // Truyền dữ liệu qua state
+    };
+
+    const handleEnter = () => {
+        setSearch('');
+        setFilteredLocations([]); // Xóa gợi ý sau khi chọn
+        //Truyền danh sách địa điểm phù hợp với keyword
+        navigate('/user/search-result', { state: { locations: filteredLocations } }); // Truyền dữ liệu qua state
     };
 
     return (
@@ -88,6 +96,11 @@ export default function UserHeader() {
                         value={search}
                         onChange={handleChange}
                         placeholder="旅行で検索する"
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleEnter();
+                            }
+                        }}
                     />
                     {filteredLocations.length > 0 && (
                         <ul className="search-content">
@@ -95,16 +108,16 @@ export default function UserHeader() {
                         {filteredLocations.map((location, index) => (
                             <li
                             key={index}
-                            onClick={() => handleSelect(location.name)}
+                            onClick={() => handleSelect(location)}
                             className="search-li"
                             >
-                                <img className="search-img" src={location.images}/>
+                                <img className="search-img" src={`http://localhost:8000/uploads/${location.images.split(",")[0].trim()}`}/>
                                 {location.name}
                             </li>
                         ))}
                         </ul>
                     )}
-                    <span className="icon-search">🔍</span>
+                    <span onClick={handleEnter} className="icon-search">🔍</span>
                 </div>     
 
                 {/* <!-- User Section --> */}

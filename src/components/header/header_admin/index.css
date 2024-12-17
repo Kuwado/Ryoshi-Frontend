@@ -130,12 +130,52 @@
     font-size: 20px;
     cursor: pointer;
   }
+
+  .search-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    z-index: 1;
+    color: #222222;
+    border-radius: 10px;
+    background-color: #FAFAFA;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+  }
+  .search-li {
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .search-li:hover {
+    background-color: #F9900040;
+  }
+
+  .search-img {
+    height: 35px;
+    width: 35px;
+  }
+
+  .search-title {
+    font-weight: 600;
+    font-size: 22px;
+    padding: 5px 10px 5px 20px;
+  }
+
+  .container-fluid {
+    flex-direction: row;
+  }
   
   @media (max-width: 1096px) {
-    .search-container {
-      width: 40px;
-    }
-  
     .search-bar {
       display: none;
     }
