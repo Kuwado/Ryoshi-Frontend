@@ -4,14 +4,6 @@
   height: fit-content;
 }
 
-.begin1-title {
-  font-size: 36px;
-  font-weight: 600;
-  color: black;
-  text-align: left;
-  margin-bottom: 50px;
-}
-
 .begin1-content {
   display: flex;
   gap: 100px;

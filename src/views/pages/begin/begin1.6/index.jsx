@@ -1,7 +1,12 @@
 import "./index.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Begin1_1 from "../../../../assets/images/begin1.1.png";
+import Begin1_2 from "../../../../assets/images/begin1.2.png";
+import Begin1_3 from "../../../../assets/images/begin1.3.png";
+import Begin1_4 from "../../../../assets/images/begin1.4.png";
 import Button from "../../../../components/button";
+import BeginNavLink from "../../../../components/beginNavLink/beginNavLink";
 
 async function getCityList() {
   try {
@@ -189,7 +194,7 @@ function Begin1_6() {
       const data = await response.json();
 
       // Nếu gửi thành công, chuyển đến trang tiếp theo
-      navigate("user/begin2");
+      navigate("/user/begin1.75");
     } catch (error) {
       console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
       // Xử lý lỗi nếu cần
@@ -198,98 +203,81 @@ function Begin1_6() {
 
   return (
     <div className="begin1-container">
+      <div className="begin1-header">
+        <h1 className="begin1-title">あなたの位置を選択してください</h1>
+        <BeginNavLink />
+      </div>
       <div className="begin1-6-content">
-        <div className="flex-item-1">
-          <h1 className="begin1-title">あなたの位置を選択してください</h1>
-          <div className="begin1-6-form-section">
-            <form>
-              <div className="begin1-6-form-item">
-                <div class="begin1-6-form-item">
-                  <select
-                    className="input-field"
-                    value={city ? city.id : ''} // Hiển thị id của city nếu có
-                    onChange={handleCityChange} // Gọi hàm xử lý
-                  >
-                    <option value="" disabled selected hidden>県/市</option>
-                    {nameCities.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </select>
+          <div className="flex-item-1">
+            <div className="begin1-6-form-section">
+              <form>
+                <div className="begin1-6-form-item">
+                  <div class="begin1-6-form-item">
+                    <select
+                      className="input-field"
+                      value={city ? city.id : ''} // Hiển thị id của city nếu có
+                      onChange={handleCityChange} // Gọi hàm xử lý
+                    >
+                      <option value="" disabled selected hidden>県/市</option>
+                      {nameCities.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div class="begin1-6-form-item">
+                    <select
+                      className="input-field"
+                      value={ward ? ward.id : ''}
+                      onChange={handleWardChange} // Cập nhật giá trị ward
+                    >
+                      <option value="" disabled selected hidden>区/郡</option>
+                      {nameWards.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div class="begin1-6-form-item">
+                    <select
+                      className="input-field"
+                      value={town ? town.id : ''}
+                      onChange={(e) => setTown(e.target.value)} // Cập nhật giá trị town
+                    >
+                      <option value="" disabled selected hidden>町/村</option>
+                      {nameTowns.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
-                <div class="begin1-6-form-item">
-                  <select
-                    className="input-field"
-                    value={ward ? ward.id : ''}
-                    onChange={handleWardChange} // Cập nhật giá trị ward
-                  >
-                    <option value="" disabled selected hidden>区/郡</option>
-                    {nameWards.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div class="begin1-6-form-item">
-                  <select
-                    className="input-field"
-                    value={town ? town.id : ''}
-                    onChange={(e) => setTown(e.target.value)} // Cập nhật giá trị town
-                  >
-                    <option value="" disabled selected hidden>町/村</option>
-                    {nameTowns.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="begin1-6-form-item">
-                <input
-                  type="text"
-                  placeholder="具体的な住所を入力してください"
-                  className="input-field"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)} // Cập nhật giá trị address
-                />
-              </div>
-            </form>
-          </div>
-        </div>
-        <div className="flex-item-1">
-          <h1 className="begin1-title">関心のあるお子様の年齢を選択してください</h1>
-          <div className="begin1-6-options-section">
-            <div className="age-options-grid">
-              {ageRanges.map((ageRange, index) => (
-                <div
-                  key={index}
-                  className={`chip-fixed-width chips-wrapper ${
-                    children_ages.includes(ageRange) ? "selected" : ""
-                  }`}
-                  onClick={() => handleChipClick(ageRange)}
-                >
+                <div className="begin1-6-form-item">
                   <input
-                  type="checkbox"
-                  id={ageRange}
-                  className="d-none"
-                  checked={children_ages.includes(ageRange)} // Đánh dấu checkbox nếu chip được chọn
-                  readOnly
-                />
-                <label htmlFor={ageRange}>{ageRange}</label>
+                    type="text"
+                    placeholder="具体的な住所を入力してください"
+                    className="input-field"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)} // Cập nhật giá trị address
+                  />
                 </div>
-              ))}
-            </div>
-
-            <Button label="次のステップ" className="begin1-6-submit-button" onClick={handleNextClick}>
+                <Button label="次のステップ" className="begin1-submit-button" onClick={handleNextClick}>
             </Button>
-            <button className="begin2-skip-button" onClick={() => navigate("/user/begin2")}>スキップこのステップ</button>
-          </div>
+            <button className="begin1-skip-button" onClick={() => navigate("/user/begin1.75")}>スキップこのステップ</button>
+              </form>
+            </div>
+        </div>
+        <div className="image-section">
+          <img src={Begin1_1} className="begin1-image item-1" />
+          <img src={Begin1_2} className="begin1-image item-2" />
+          <img src={Begin1_3} className="begin1-image item-3" />
+          <img src={Begin1_4} className="begin1-image item-4" />
         </div>
       </div>
     </div>
