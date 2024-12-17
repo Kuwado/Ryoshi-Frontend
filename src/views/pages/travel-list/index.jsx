@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Select, Space } from "antd";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import Collection from "../../../components/collection";
 import "./index.css";
@@ -8,6 +8,8 @@ import "./index.css";
 const { Option } = Select;
 
 const TravelList = () => {
+  const location = useLocation();
+  const region = location.pathname.split("/").pop();
   const [collections, setCollections] = useState([]); // Dữ liệu từ API
   const [filteredCollections, setFilteredCollections] = useState([]);
   const [goneCollections, setGoneCollections] = useState([]);
@@ -22,6 +24,48 @@ const TravelList = () => {
   const [selectedDistance, setSelectedDistance] = useState(undefined);
   const [selectedLiked, setSelectedLiked] = useState(undefined);
 
+  const filterByRegion = (places) => {
+    // Nếu miền được chọn là "all", trả về danh sách gốc
+    if (region === "all") {
+      return places;
+    }
+
+    const regions = {
+        "north": [
+            "Hà Nội", "Bắc Ninh", "Bắc Giang", "Hà Nam", "Hải Dương", 
+            "Hải Phòng", "Hòa Bình", "Lai Châu", "Lào Cai", "Nam Định", 
+            "Ninh Bình", "Phú Thọ", "Quảng Ninh", "Sơn La", "Thái Bình", 
+            "Thái Nguyên", "Tuyên Quang", "Vĩnh Phúc", "Yên Bái"
+        ],
+        "central": [
+            "Đà Nẵng", "Huế", "Khánh Hòa", "Bình Định", "Quảng Nam", 
+            "Quảng Ngãi", "Quảng Trị", "Thừa Thiên Huế", "Ninh Thuận", 
+            "Phú Yên", "Bình Thuận", "Đắk Lắk", "Đắk Nông", "Gia Lai", 
+            "Kon Tum", "Lâm Đồng", "Quảng Bình", "Hà Tĩnh", "Nghệ An"
+        ],
+        "south": [
+            "Hồ Chí Minh", "Bà Rịa-Vũng Tàu", "Bình Dương", "Bình Phước", 
+            "Cần Thơ", "Đồng Nai", "Đồng Tháp", "Hậu Giang", "Kiên Giang", 
+            "Long An", "Sóc Trăng", "Tây Ninh", "Tiền Giang", "Vĩnh Long", 
+            "An Giang", "Bạc Liêu", "Bến Tre", "Cà Mau", "Trà Vinh"
+        ],
+    };
+
+    console.log(places)
+    return places.filter((place) => {
+        const addressParts = place.address.split(",").map((part) => part.trim());
+        const province = addressParts[addressParts.length - 1].toLowerCase();
+        
+        return regions[region]?.some(
+            (provinceName) => provinceName.toLowerCase() === province
+        );
+    });
+  };
+
+  useEffect(() => {
+    setFilteredCollections(filterByRegion(collections));
+  }, [region]);
+      
   const fetchPlaces = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
@@ -36,7 +80,7 @@ const TravelList = () => {
 
       if (response.status === 200) {
         const { location } = response.data;
-        setCollections(location); // Lưu danh sách địa điểm vào state
+        setCollections(filterByRegion(location)); // Lưu danh sách địa điểm vào state
         setFilteredCollections(location); // Mặc định hiển thị tất cả địa điểm
       } else {
         console.error("Error fetching locations:", response.data.message);

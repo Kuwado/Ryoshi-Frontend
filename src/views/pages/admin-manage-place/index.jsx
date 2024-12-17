@@ -294,11 +294,12 @@ useEffect(() => {
     const fetchPlaceDetail = async () => {
       try {
         const location = await fetchWithRetry(() => getPlaceDetail(locationId, token));
+ 
         if(location){
           setAddress(location.address);
           const addressArr = location.address.split(',').map(item => item.trim());
-          const selectedCityName = addressArr[addressArr.length - 1];
-          const selectedWardName = addressArr[addressArr.length - 2];
+          const selectedCityName = addressArr[addressArr.length - 1].replace("Tỉnh ", "");
+          const selectedWardName = addressArr[addressArr.length - 2].replace("Đường ", "");
           const selectedTownName = addressArr[addressArr.length - 3];
 
           setSelectedCity(selectedCityName);
@@ -331,7 +332,9 @@ useEffect(() => {
       }
     };
 
-    if (locationId && token) fetchPlaceDetail();
+    if (locationId && token) {
+      fetchPlaceDetail();
+    }
   }, [locationId, token, cityList]);
 
   useEffect(() => {
@@ -483,8 +486,8 @@ useEffect(() => {
                   name="region"
                   value={city ? city.id : ''}
                   onChange={handleChange}
-                  disabled={!isEditable.region}
-                  readOnly
+                  //disabled={!isEditable.region}
+                  //readOnly
                   className="select-field"
                 >
                   <option value="" disabled>市</option>
@@ -501,8 +504,8 @@ useEffect(() => {
                   name="district"
                   value={ward ? ward.id : ''}
                   onChange={handleChange}
-                  disabled={!isEditable.district}
-                  readOnly
+                  // disabled={!isEditable.district}
+                  // readOnly
                   className="select-field"
                 >
                   <option value="" disabled>地区</option>

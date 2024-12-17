@@ -26,7 +26,7 @@ function UserRoute() {
           <Route path="/begin1.75" element={<Begin1_75 />} />
           <Route path="/begin2" element={<Begin2 />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/travel-list" element={<TravelList />} />
+          <Route path="/travel-list/:region" element={<TravelList />} />
           <Route path="/search-result" element={<SearchResult />} />
           <Route path="/place-detail/:locationId" element={<PlaceDetail />} />
         </Routes>
