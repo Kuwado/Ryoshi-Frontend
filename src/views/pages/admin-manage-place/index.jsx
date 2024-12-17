@@ -205,6 +205,7 @@ const AdminPlaceDetail = () => {
     setTown(selectedTown);
   };
 
+/*
   useEffect(() => {
     const fetchPlaceDetail = async () => {
       const location = await getPlaceDetail(locationId, token);
@@ -270,6 +271,105 @@ const AdminPlaceDetail = () => {
     setTown(townList.find(town => town.name === selectedTown));
     console.log(townList);
   }, [ward]);
+*/
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const fetchWithRetry = async (fetchFunction, maxRetries = 3) => {
+  let retries = 0;
+  while (retries < maxRetries) {
+    try {
+      return await fetchFunction();
+    } catch (error) {
+      if (error.response?.status === 429 && retries < maxRetries) {
+        retries++;
+        await sleep(1000); // Nghỉ 1 giây trước khi thử lại
+      } else {
+        throw error;
+      }
+    }
+  }
+};
+
+useEffect(() => {
+    const fetchPlaceDetail = async () => {
+      try {
+        const location = await fetchWithRetry(() => getPlaceDetail(locationId, token));
+        if(location){
+          setAddress(location.address);
+          const addressArr = location.address.split(',').map(item => item.trim());
+          const selectedCityName = addressArr[addressArr.length - 1];
+          const selectedWardName = addressArr[addressArr.length - 2];
+          const selectedTownName = addressArr[addressArr.length - 3];
+
+          setSelectedCity(selectedCityName);
+          setSelectedWard(selectedWardName);
+          setSelectedTown(selectedTownName);
+          
+          const foundCity = cityList.find(city => city.name === selectedCityName);
+          setCity(foundCity);
+          console.log(selectedCityName, selectedWardName, selectedTownName, foundCity);
+          
+          setFormData({
+            name: location.name,
+            region: addressArr[0],
+            district: addressArr[1],
+            place: addressArr[2],
+            placeDetail: addressArr[0],
+            openTime: location.open_time,
+            closingTime: location.close_time,
+            ageGroupStart: location.age_start,
+            ageGroupEnd: location.age_end,
+            visitorsAdult: location.adult_price,
+            visitorsChild: location.child_price,
+            dailyVisitors: location.number_tourist,
+            description: location.description,
+            image: location.images,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching place detail:", error);
+      }
+    };
+
+    if (locationId && token) fetchPlaceDetail();
+  }, [locationId, token, cityList]);
+
+  useEffect(() => {
+    const fetchWards = async () => {
+      if(city){
+        try {
+          const wards = await fetchWithRetry(() => getWardList(city.id));
+          if(wards){
+            setWardList(wards);
+            setWard(wards.find(ward => ward.name === selectedWard));
+          }
+        } catch (error) {
+          console.error("Error fetching wards:", error);
+        }
+      }
+    };
+
+    if (city) fetchWards();
+  }, [city]);
+
+  useEffect(() => {
+    const fetchTowns = async () => {
+      if(ward){
+        try {
+          const towns = await fetchWithRetry(() => getTownList(ward.id));
+          if(towns){
+            setTownList(towns);
+            setTown(towns.find(town => town.name === selectedTown));
+          }
+        } catch (error) {
+          console.error("Error fetching towns:", error);
+        }
+      }
+    };
+
+    if (ward) fetchTowns();
+  }, [ward]);
+
 
   const handleEditClick = (field) => {
     // Chuyển trạng thái của trường này thành editable
