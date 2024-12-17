@@ -3,14 +3,12 @@ import axios from "axios";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LockOutlined } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form } from "antd";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import backgroundImage from "../../../../assets/images/background.png";
 import ryoshi from "../../../../assets/images/ryoshi.png";
 import forgotImage from "../../../../assets/images/image2.png";
-import { useParams } from "react-router-dom";
 import Button from "../../../../components/button";
 import Input from "../../../../components/input";
 
@@ -20,17 +18,18 @@ function ForgotPasswordThree() {
   const [value, setValue] = React.useState({
     email: location.state.email,
     password: "",
+    confirm_password: "",
   });
   const handleSubmit = async () => {
     console.log(location.state.email);
     console.log(value.password);
     
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         "http://localhost:8000/api/v1/update-password",
         {
           email: value.email,
-          password: value.password, 
+          new_password: value.password, 
         }
       );
       if (response.status === 200) {
@@ -130,8 +129,8 @@ function ForgotPasswordThree() {
               className=""
               placeholder="パスワードを確認する"
               icon={<LockOutlined />} 
-              value=""
-              onChange=""
+              value={value.confirm_password}
+              onChange={(e) => setValue({ ...value, confirm_password: e.target.value })}
               />
             </Form.Item>
 
