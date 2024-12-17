@@ -1,136 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Select, Space } from "antd";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import Collection from "../../../components/collection";
 import "./index.css";
 
 const { Option } = Select;
 
-const TravelList = () => {
-  // const collections = [
-  //   {
-  //     id: 1,
-  //     name: "Quốc đảo chim",
-  //     place: "Thiên đường Bảo Sơn - Hà Nội (11km)",
-  //     price: 500000, // Giá
-  //     visitors: 150, // Lượt tham quan
-  //     age: "0-1", // Nhóm tuổi
-  //     style: "家族旅行", // Phong cách
-  //     visited: "行っていない", // Trạng thái đã đi chưa
-  //     distance: "10-20km", // Khoảng cách
-  //     like: "好き", // Thích hay không
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Khu bảo tồn rừng quốc gia",
-  //     place: "Ba Vì - Hà Nội (50km)",
-  //     price: 300000,
-  //     visitors: 200,
-  //     age: "1-3",
-  //     style: "エコツーリズム",
-  //     visited: "行ってきました",
-  //     distance: "40-100km",
-  //     like: "好きじゃない",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Vịnh Hạ Long",
-  //     place: "Quảng Ninh (160km)",
-  //     price: 1500000,
-  //     visitors: 500,
-  //     age: "1-3",
-  //     style: "リゾート",
-  //     visited: "行ってきました",
-  //     distance: "40-100km",
-  //     like: "好き",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Làng cổ Đường Lâm",
-  //     place: "Sơn Tây - Hà Nội (40km)",
-  //     price: 200000,
-  //     visitors: 50,
-  //     age: "1-3",
-  //     style: "文化旅行",
-  //     visited: "行っていない",
-  //     distance: "30-40km",
-  //     like: "好き",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Đỉnh Fansipan",
-  //     place: "Lào Cai (300km)",
-  //     price: 2000000,
-  //     visitors: 300,
-  //     age: "10+",
-  //     style: "冒険",
-  //     visited: "行ってきました",
-  //     distance: "40-100km",
-  //     like: "好き",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Biển Sầm Sơn",
-  //     place: "Thanh Hóa (170km)",
-  //     price: 700000,
-  //     visitors: 400,
-  //     age: "3-6",
-  //     style: "ビーチ",
-  //     visited: "行ってきました",
-  //     distance: "40-100km",
-  //     like: "好き",
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Hồ Gươm",
-  //     place: "Hà Nội (1km)",
-  //     price: 100000,
-  //     visitors: 1000,
-  //     age: "すべて",
-  //     style: "都市",
-  //     visited: "行ってきました",
-  //     distance: "0-10km",
-  //     like: "好き",
-  //   },
-  //   {
-  //     id: 8,
-  //     name: "Núi Bà Đen",
-  //     place: "Tây Ninh (1200km)",
-  //     price: 400000,
-  //     visitors: 250,
-  //     age: "6-10",
-  //     style: "探検",
-  //     visited: "行っていない",
-  //     distance: "40-100km",
-  //     like: "好き",
-  //   },
-  //   {
-  //     id: 9,
-  //     name: "Hồ Gươm",
-  //     place: "Hà Nội (1km)",
-  //     price: 100000,
-  //     visitors: 1000,
-  //     age: "すべて",
-  //     style: "都市",
-  //     visited: "行ってきました",
-  //     distance: "0-10km",
-  //     like: "好き",
-  //   },
-  //   {
-  //     id: 10,
-  //     name: "Núi Bà Đen",
-  //     place: "Tây Ninh (1200km)",
-  //     price: 400000,
-  //     visitors: 250,
-  //     age: "6-10",
-  //     style: "探検",
-  //     visited: "行っていない",
-  //     distance: "40-100km",
-  //     like: "好き",
-  //   },
-  // ];
-  const [collections, setCollections] = useState([]); // Dữ liệu từ API
+const SearchResult = () => {
+  const location = useLocation();
+  const searchLocations = location.state?.filteredLocations; // Lấy từ khóa từ state
+  
+  const [collections, setCollections] = useState(searchLocations); // Dữ liệu từ API
   const [filteredCollections, setFilteredCollections] = useState([]);
   const [goneCollections, setGoneCollections] = useState([]);
   const [likedCollections, setLikedCollections] = useState([]);
@@ -144,32 +25,32 @@ const TravelList = () => {
   const [selectedDistance, setSelectedDistance] = useState(undefined);
   const [selectedLiked, setSelectedLiked] = useState(undefined);
 
-  const fetchPlaces = async () => {
-    try {
-      const token = sessionStorage.getItem("authToken");
-      const response = await axios.get(
-        "http://localhost:8000/api/v1/locations",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  // const fetchPlaces = async () => {
+  //   try {
+  //     const token = sessionStorage.getItem("authToken");
+  //     const response = await axios.get(
+  //       "http://localhost:8000/api/v1/locations",
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
 
-      if (response.status === 200) {
-        const { location } = response.data;
-        setCollections(location); // Lưu danh sách địa điểm vào state
-        setFilteredCollections(location); // Mặc định hiển thị tất cả địa điểm
-      } else {
-        console.error("Error fetching locations:", response.data.message);
-      }
-    } catch (error) {
-      console.error(
-        "Error fetching places:",
-        error.response?.data || error.message
-      );
-    }
-  };
+  //     if (response.status === 200) {
+  //       const { location } = response.data;
+  //       setCollections(location); // Lưu danh sách địa điểm vào state
+  //       setFilteredCollections(location); // Mặc định hiển thị tất cả địa điểm
+  //     } else {
+  //       console.error("Error fetching locations:", response.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error(
+  //       "Error fetching places:",
+  //       error.response?.data || error.message
+  //     );
+  //   }
+  // };
 
   const fetchUserInfo = async () => {
     try {
@@ -206,7 +87,7 @@ const TravelList = () => {
   };
   
   useEffect(() => {
-    fetchPlaces();
+    // fetchPlaces();
     fetchUserInfo();
   }, []);
 
@@ -355,7 +236,7 @@ const TravelList = () => {
   return (
     <div className="travel-list">
       <header className="admin-header">
-        <h2>北部の観光地</h2>
+        <h2>検索結果: バードアイランド</h2>
         <div className="header-filters-actions">
           <div className="header-filters">
             <Space size="middle">
@@ -476,4 +357,4 @@ const TravelList = () => {
   );
 };
 
-export default TravelList;
+export default SearchResult;
