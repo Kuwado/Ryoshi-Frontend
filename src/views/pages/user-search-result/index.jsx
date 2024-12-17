@@ -9,7 +9,7 @@ const { Option } = Select;
 
 const SearchResult = () => {
   const location = useLocation();
-  const searchLocations = location.state?.filteredLocations; // Lấy từ khóa từ state
+  const [searchLocations, setSearchLocations] = useState(location.state?.locations || []);
   
   const [collections, setCollections] = useState(searchLocations); // Dữ liệu từ API
   const [filteredCollections, setFilteredCollections] = useState([]);
@@ -24,33 +24,6 @@ const SearchResult = () => {
   const [selectedGone, setSelectedGone] = useState(undefined);
   const [selectedDistance, setSelectedDistance] = useState(undefined);
   const [selectedLiked, setSelectedLiked] = useState(undefined);
-
-  // const fetchPlaces = async () => {
-  //   try {
-  //     const token = sessionStorage.getItem("authToken");
-  //     const response = await axios.get(
-  //       "http://localhost:8000/api/v1/locations",
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-
-  //     if (response.status === 200) {
-  //       const { location } = response.data;
-  //       setCollections(location); // Lưu danh sách địa điểm vào state
-  //       setFilteredCollections(location); // Mặc định hiển thị tất cả địa điểm
-  //     } else {
-  //       console.error("Error fetching locations:", response.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error(
-  //       "Error fetching places:",
-  //       error.response?.data || error.message
-  //     );
-  //   }
-  // };
 
   const fetchUserInfo = async () => {
     try {
@@ -87,7 +60,6 @@ const SearchResult = () => {
   };
   
   useEffect(() => {
-    // fetchPlaces();
     fetchUserInfo();
   }, []);
 
@@ -232,6 +204,11 @@ const SearchResult = () => {
 
     applyFilters();
   }, [selectedFilters, collections]);
+
+  useEffect(() => {
+    setFilteredCollections(location.state?.locations);
+    setCollections(location.state?.locations);
+  }, [location.state?.locations]);
 
   return (
     <div className="travel-list">

@@ -21,7 +21,7 @@ export default function NavLinkAdmin() {
                     >
                         <div className="menu-item d-flex align-items-center">
                             <span className="menu-letter">{link.text}</span>
-                            <span className="menu-text">{link.name}</span>
+                            <span className="menu-text" style={{whiteSpace: 'nowrap'}}>{link.name}</span>
                         </div>
                     </Link>
                 );

@@ -179,6 +179,7 @@ const initiateFetch = async () => {
                     place={item.address}
                     initialLikedId={item.likedId}
                     initialGoneId={item.goneId}
+                    imageName={item.images.split(",")[0]}
                   />
                 ) : (
                   <div style={{ width: "250px" }}></div>

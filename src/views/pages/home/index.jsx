@@ -72,6 +72,7 @@ function Home() {
             }
 
             const data = await response.json();
+            console.log(data.location)
             return data.location; // Return the locations for further processing
         } catch (error) {
             console.error("Error fetching locations:", error);

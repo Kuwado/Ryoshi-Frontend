@@ -168,10 +168,6 @@
   }
   
   @media (max-width: 1096px) {
-    .search-container {
-      width: 40px;
-    }
-  
     .search-bar {
       display: none;
     }
