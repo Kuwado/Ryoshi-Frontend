@@ -24,10 +24,6 @@ export default function AdminHeader() {
 
                 {/* <!-- User Section --> */}
                 <div className="ad-user-section d-flex align-items-center">
-                    <div className="icon-heart">
-                        <span className="heart-icon">♥</span>
-                        <span className="heart-bubble">3</span>
-                    </div>
                     <AvatarDropdown />
                 </div>
             </div>
