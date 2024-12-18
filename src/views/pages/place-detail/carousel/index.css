@@ -54,7 +54,7 @@
     opacity: 1; /* Hiển thị slide đang hoạt động */
 }
 
-.slide-img {
+.left-content .slide-img {
     width: auto !important;
     display: block !important;
     height: 87vh !important;

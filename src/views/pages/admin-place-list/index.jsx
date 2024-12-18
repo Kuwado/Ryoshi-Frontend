@@ -11,6 +11,10 @@ const { confirm } = Modal;
 const AdminPlaceList = () => {
   const [places, setPlaces] = useState([]);
   const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 5,
+  });  
   const [filters, setFilters] = useState({
     age: "",
     style: "",
@@ -135,8 +139,8 @@ const AdminPlaceList = () => {
 
   const handleDelete = (id) => {
     confirm({
-      title: 'Bạn có chắc chắn muốn xóa địa điểm này?',
-      content: 'Sau khi xóa, bạn sẽ không thể khôi phục lại địa điểm này.',
+      title: 'この場所を削除してもよろしいですか？',
+      content: '削除すると、この場所を元に戻すことはできません。',
       onOk: async () => {
         try {
           const token = sessionStorage.getItem("authToken");
@@ -149,18 +153,18 @@ const AdminPlaceList = () => {
           });
 
           if (response.status === 200) {
-            message.success("Xóa địa điểm thành công!");
+            message.success("場所が正常に削除されました！");
             
             // Cập nhật lại danh sách địa điểm sau khi xóa
             const updatedPlaces = places.filter(place => place.location_id !== id);
             setPlaces(updatedPlaces);
             setFilteredPlaces(updatedPlaces); // Cập nhật filteredPlaces
           } else {
-            message.error("Không thể xóa địa điểm.");
+            message.error("場所を削除できませんでした。");
           }
         } catch (error) {
           console.error("Error deleting place:", error);
-          message.error("Đã xảy ra lỗi khi xóa địa điểm.");
+          message.error("場所を削除中にエラーが発生しました。");
         }
       },
       onCancel() {
@@ -173,7 +177,7 @@ const AdminPlaceList = () => {
     {
       title: "番号",
       key: "number",
-      render: (_, __, index) => index + 1, // Hiển thị số thứ tự (index + 1)
+      render: (_, __, index) => (pagination.current - 1) * pagination.pageSize + index + 1,
     },
     {
       title: "写真",
@@ -323,8 +327,18 @@ const AdminPlaceList = () => {
         columns={columns}
         dataSource={filteredPlaces}
         rowKey="location_id"
-        pagination={{ pageSize: 5 }}
-        rowClassName={rowClassName} 
+        pagination={{
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          total: filteredPlaces.length,
+          onChange: (page, pageSize) => {
+            setPagination({
+              current: page,
+              pageSize,
+            });
+          },
+        }}
+        rowClassName={rowClassName}
       />
     </div>
   );
