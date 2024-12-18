@@ -53,8 +53,9 @@ function Begin2() {
   let currentRow = [];
 
   options.forEach((option, index) => {
-    if (option === "\n") {
+    if (option === "リゾート" || option === "冒険" || option === "団体旅行") {
       // Nếu gặp ký tự xuống dòng, đẩy currentRow vào rows và reset currentRow
+      currentRow.push(option);
       rows.push(currentRow);
       currentRow = []; // Reset currentRow
     } else {
@@ -119,7 +120,7 @@ function Begin2() {
   };
 
   return (
-    <div className="begin1-container">
+    <div className="begin1-container begin2">
       <div className="begin1-header">
         <h1 className="begin1-title">興味のある旅行のタイプを選択してください</h1>
         <BeginNavLink />
