@@ -96,3 +96,11 @@
   justify-content: center;
   align-self: flex-end;
 }
+
+.begin2 .begin1-header .begin1-title{
+  margin-bottom: 0;
+}
+
+.flex-col .begin1-title{
+  margin-bottom: 50px;
+}
