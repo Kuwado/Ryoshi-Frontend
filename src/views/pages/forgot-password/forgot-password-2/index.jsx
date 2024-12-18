@@ -21,11 +21,12 @@ function ForgotPasswordTwo() {
   });
   const handleSubmit = async () => {
     console.log(location.state.email);
+    console.log(value.code);
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/verify-otp",
         { email: value.email, 
-          opt_post: value.code
+          otp_post: value.code
         }
       );
       if (response.status === 200) {

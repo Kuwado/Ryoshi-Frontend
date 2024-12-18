@@ -1,0 +1,46 @@
+/* Header container chứa begin1-title và BeginNavLink */
+.begin1-header {
+    display: flex;
+    justify-content: space-between; /* Đẩy title sang trái và navLink sang phải */
+  }
+  
+  /* Title */
+  .begin1-title {
+    font-size: 36px;
+    font-weight: 600;
+    color: black;
+    margin: 0; /* Loại bỏ margin mặc định */
+    margin-bottom: 30px;
+  }
+  
+  /* BeginNavLink */
+  .beginNavLink-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa các item */
+    margin-right: 100px; /* Đảm bảo lề phải khớp với image-section */
+  }
+  
+  .beginNavLink-item {
+    font-family: "Roboto", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #a0a0a0; /* Mặc định màu xám */
+    cursor: pointer;
+  }
+  
+  .beginNavLink-item.active {
+    color: #0094da; /* Màu xanh cho trang hiện tại */
+  }
+  
+  .beginNavLink-item.visited {
+    color: #000000; /* Màu đen cho trang đã đi qua */
+  }
+  
+  .beginNavLink-shape {
+    width: 9px;
+    height: 16px;
+    margin-top: 2px;
+    margin-left: 8px;
+  }
+  

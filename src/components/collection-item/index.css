@@ -22,8 +22,11 @@
   display: flex;
   flex-direction: column;
   background-color: #0094DAB2;
-  padding: 8px 15px 17px 15px;
+  padding: 8px 15px 16px 15px;
   gap: 5px;
+  height: 90px;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .item-property {
@@ -37,12 +40,15 @@
   width: 250px; 
   height: 250px;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .name-text {
   font-weight: 600;
   color: #FAFAFA;
   font-size: 16px;
+  overflow-x: hidden;
+  white-space: nowrap;
 }
 
 .place-text {

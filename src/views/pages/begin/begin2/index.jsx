@@ -6,6 +6,7 @@ import Begin1_2 from "../../../../assets/images/begin1.2.png";
 import Begin1_3 from "../../../../assets/images/begin1.3.png";
 import Begin1_4 from "../../../../assets/images/begin1.4.png";
 import Button from "../../../../components/button";
+import BeginNavLink from "../../../../components/beginNavLink/beginNavLink";
 
 function Begin2() {
   const navigate = useNavigate();
@@ -119,7 +120,10 @@ function Begin2() {
 
   return (
     <div className="begin1-container">
-      <h1 className="begin1-title" style={{ margin: 0 }}>興味のある旅行のタイプを選択してください</h1>
+      <div className="begin1-header">
+        <h1 className="begin1-title">興味のある旅行のタイプを選択してください</h1>
+        <BeginNavLink />
+      </div> 
       <div className="flex-2cols">
         <div className="flex-col">
           <h2 className="begin1-title" style={{ marginTop: "10px" }}>最低5つの項目を選択してください</h2>
