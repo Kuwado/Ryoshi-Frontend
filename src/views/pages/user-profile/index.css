@@ -1,0 +1,40 @@
+.user-profile-wrap {
+    display: flex;
+  }
+.user-profile-image{
+    width: 40%;
+}
+.user-profile-info{
+    width: 50%;
+}
+.user-profile-button{
+    width: 10%;
+}
+.user-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user-button-edit {
+    margin: 30px 8px;
+}
+.user-hobby-button{
+    padding: 10px 10px 10px 10px;
+}
+.user-button-hobby{
+    margin-right:10px;
+}
+.user-button-hobby{
+    background-color: #d9d9d9 ;
+}
+.title-user{
+    font-size: 20px;
+}
+.favarite-title{
+    font-size: 20px;
+}
+.color-icon{
+    color: #0094da;
+    margin-right: 10px;
+    margin-left: 5px;
+}
