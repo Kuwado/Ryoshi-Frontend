@@ -6,7 +6,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    navigate("/test-map");
+    navigate("/login");
   };
 
   const handleRegisterClick = () => {
