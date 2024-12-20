@@ -38,7 +38,7 @@
   width: 80%;
 }
 
-.begin1-skip-button {
+.begin1-6-skip-button {
   font-size: 16px;
   font-weight: bold;
   border: none;
@@ -50,7 +50,7 @@
   width: 80%;
 }
 
-.begin1-skip-button:hover {
+.begin1-6-skip-button:hover {
   text-decoration: underline;
   text-underline-offset: 5px;
   text-decoration-thickness: 2px;

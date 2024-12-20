@@ -92,7 +92,7 @@ const ageRanges = [
 
                 <Button label="次のステップ" className="begin1-6-submit-button" onClick={handleNextClick}>
                 </Button>
-                <button className="begin1-skip-button" onClick={() => navigate("/user/begin2")}>スキップこのステップ</button>
+                <button className="begin-1-75-skip-button" onClick={() => navigate("/user/begin2")}>スキップこのステップ</button>
             </div>
             </div>
         <div className="image-section">
