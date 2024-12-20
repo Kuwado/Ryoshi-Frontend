@@ -17,11 +17,13 @@
     justify-content: center;
     align-items: center;
 }
+
 .user-button-edit {
     margin: 30px 8px;
 }
 .user-hobby-button{
     padding: 10px 10px 10px 10px;
+    display: flex;
 }
 .user-button-hobby{
     margin-right:10px;
@@ -33,6 +35,13 @@
     font-size: 20px;
     margin-top:30px;
     margin-bottom: 10px;
+}
+.user-button-addhobby{
+    margin-left: 10px;
+}
+.chips-wrapper .label{
+    background-color: #d9d9d9 ;
+   color:black;
 }
 .favarite-title{
     font-size: 20px;

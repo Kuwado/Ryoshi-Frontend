@@ -13,22 +13,87 @@ import { Button as AntdButton, Input } from "antd";
 import axios from "axios";
 import Collection from "../../../components/collection";
 import "./index.css";
+import { CustomersInformation, CustomersInformationUpdate } from "./userprofileapi";
+import { format } from 'date-fns';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const UserProfile = () => {
   const [hobbies, setHobbies] = useState([]); // Danh sách sở thích
-  const [newHobby, setNewHobby] = useState(""); // Giá trị của sở thích mới
-  const [isHobbyFormVisible, setHobbyFormVisible] = useState(false); // Trạng thái hiển thị form
   const [collections, setCollections] = useState([]); // Dữ liệu từ API
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedChips, setSelectedChips] = useState([]);
   const [formData, setFormData] = useState({
-    name: "HelloH",
-    birthday: "2010年10月21日",
-    phone: "0911345677",
-    email: "abc@gmail.com",
-    location: "HaNoi",
+    name: "",
+    birthday: "",
+    phone: "",
+    email: "",
+    location: "",
+    interest: "",
+    liked: [],
+    gone: [],
+    image:"",
   });
+  const options = [
+    "リゾート",
+    "レクリエーション",
+    "スポーツ",
+    "探検",
+    "冒険",
+    "コンビネーション",
+    "家族旅行",
+    "団体旅行",
+    "個人旅行",
+    "ビーチ",
+    "山",
+    "都市",
+    "田舎",
+  ];
+  const token = sessionStorage.getItem("authToken");
+  const id = JSON.parse(sessionStorage.getItem("auth")).id;
 
+  useEffect(() => {
+    const userData = async () => {
+      const user = await CustomersInformation(token, id);
+      setFormData({
+        name: user.user.name,
+        birthday: format(new Date(user.user.dob), 'yyyy-MM-dd'),
+        phone: user.user.phone,
+        email: user.user.email,
+        location: user.user.address,
+        interest: user.user.interest,
+        liked: user.user.liked_location,
+        gone: user.user.gone_location,
+        image: user.user.ava,
+      }); // Lưu dữ liệu vào state
+    };
+
+    userData();
+    console.log(formData.interest);
+  }, []);
+
+  const SaveButtons = async () => {
+    const data = {
+      name: formData.name,
+      dob: formData.birthday,
+      phone: formData.phone,
+      email: formData.email,
+      address: formData.location,
+      interest: formData.interest,
+    };
+    const response = await CustomersInformationUpdate(data, token, id);
+    console.log(response.data);
+
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message);
+      console.error("Error fetching customer:", response.data.message);
+    }
+  }
   const handleToggleButtons = () => {
     setIsButtonVisible(!isButtonVisible);
     setIsEditing(!isEditing); // Bật/tắt chế độ chỉnh sửa
@@ -43,51 +108,102 @@ const UserProfile = () => {
     }));
   };
 
-  // Hàm xử lý thêm sở thích
-  const handleAddHobby = () => {
-    if (newHobby.trim() !== "") {
-      setHobbies([...hobbies, newHobby]); // Thêm sở thích mới vào danh sách
-      setNewHobby(""); // Reset input
-    }
-  };
+const ChipSelector = ({ selectedItems, options, onApply, onClose }) => {
+  const [localSelectedItems, setLocalSelectedItems] = useState([
+    ...selectedItems,
+  ]);
 
-  const handleInputChange = (e) => {
-    setNewHobby(e.target.value);
-  };
-
-  // Hàm xử lý hiển thị form
-  const toggleHobbyForm = () => {
-    setHobbyFormVisible(!isHobbyFormVisible); // Chuyển trạng thái ẩn/hiện
-  };
-  const fetchPlaces = async () => {
-    try {
-      const token = sessionStorage.getItem("authToken");
-      const response = await axios.get(
-        "http://localhost:8000/api/v1/locations",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        const { location } = response.data;
-        setCollections(location); // Lưu danh sách địa điểm vào state
+  const handleItemClick = (item) => {
+    setLocalSelectedItems((prevSelected) => {
+      if (prevSelected.includes(item)) {
+        return prevSelected.filter((selectedItem) => selectedItem !== item);
       } else {
-        console.error("Error fetching locations:", response.data.message);
+        return [...prevSelected, item];
       }
-    } catch (error) {
-      console.error(
-        "Error fetching places:",
-        error.response?.data || error.message
-      );
-    }
+    });
   };
-  useEffect(() => {
-    fetchPlaces();
-  }, []);
 
+  return (
+    <div className="popup-overlay">
+      <div className="popup-container">
+        {/* Tiêu đề */}
+        <h2>趣味</h2>
+
+        {/* Wrapper cho tất cả các dòng chip */}
+        <div className="chips-wrapper-container">
+          {/* Dòng 1: 3 chip */}
+          <div className="chips-row">
+            {options.slice(0, 3).map((option, index) => (
+              <div className="chips-wrapper" key={index}>
+                <input
+                  type="checkbox"
+                  id={`chip-${index}`}
+                  checked={localSelectedItems.includes(option)}
+                  onChange={() => handleItemClick(option)}
+                />
+                <label htmlFor={`chip-${index}`}>{option}</label>
+              </div>
+            ))}
+          </div>
+
+          {/* Dòng 2: 4 chip */}
+          <div className="chips-row">
+            {options.slice(3, 7).map((option, index) => (
+              <div className="chips-wrapper" key={index}>
+                <input
+                  type="checkbox"
+                  id={`chip-${index + 3}`}
+                  checked={localSelectedItems.includes(option)}
+                  onChange={() => handleItemClick(option)}
+                />
+                <label htmlFor={`chip-${index + 3}`}>{option}</label>
+              </div>
+            ))}
+          </div>
+
+          {/* Dòng 3: 3 chip */}
+          <div className="chips-row">
+            {options.slice(7, 10).map((option, index) => (
+              <div className="chips-wrapper" key={index}>
+                <input
+                  type="checkbox"
+                  id={`chip-${index + 7}`}
+                  checked={localSelectedItems.includes(option)}
+                  onChange={() => handleItemClick(option)}
+                />
+                <label htmlFor={`chip-${index + 7}`}>{option}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Nút 確認 */}
+        <button
+          className="confirm-button"
+          onClick={() => onApply(localSelectedItems)}
+        >
+          確認
+        </button>
+      </div>
+    </div>
+  );
+};
+const handleImageClick = () => {
+  setIsPopupOpen(true); // Mở pop-up
+};
+
+const handleApply = (selectedItems) => {
+  setSelectedChips(selectedItems);
+  setFormData((prevData) => ({
+    ...prevData,
+    type: selectedItems.join(","), // Lưu selectedChips vào formData.type
+  }));
+  setIsPopupOpen(false); // Đóng pop-up
+};
+
+const handleClosePopup = () => {
+  setIsPopupOpen(false); // Đóng pop-up
+};
   return (
     <div className="user-profile">
       <h1 className="title-user-head">プロフィール</h1>
@@ -202,22 +318,18 @@ const UserProfile = () => {
           趣味
         </label>
         <div className="user-hobby-button">
+          <div className="user-hobby-button-item">
           {/* Các nút mặc định */}
           <Button
-            label="エコツーリズム"
-            className="user-button-hobby"
-            type="user-submit-hobby"
-          ></Button>
+           label={formData.interest?.split(",") || "Default Label"}
+           className="user-button-hobby"
+           type="user-submit-hobby"
+          />
           <Button
-            label="文化旅行"
-            className="user-button-hobby"
-            type="user-submit-hobby"
-          ></Button>
-          <Button
-            label="リンート"
-            className="user-button-hobby"
-            type="user-submit-hobby"
-          ></Button>
+           label={formData.interest?.split(",") || "Default Label"}
+           className="user-button-hobby"
+           type="user-submit-hobby"
+          />
           {/* Danh sách sở thích */}
           {hobbies.map((hobby, index) => (
             <Button
@@ -227,36 +339,40 @@ const UserProfile = () => {
               type="user-submit-hobby"
             ></Button>
           ))}
+          </div>
           {/* Nút thêm sở thích */}
+          <div className="selected-chips">
+              {selectedChips.map((chip, index) => (
+                <div key={index} className="chips-wrapper">
+                  <Button
+                   key={index}
+                   label={chip}
+                   className="user-button-hobby"
+                   type="user-submit-hobby"
+                  ></Button>
+                </div>
+              ))}
+            </div>
           <Button
             label="+"
             className="user-button-addhobby"
             type="user-submit-addhobby"
-            onClick={toggleHobbyForm} // Xử lý hiển thị form
+            onClick={handleImageClick}
           ></Button>
-        </div>
+           {/* Hiển thị các chip đã chọn */}
+           <div className="selected-chips">
 
-        {/* Form nhập sở thích */}
-        {isHobbyFormVisible && (
-          <div
-            style={{
-              marginTop: "10px",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            <Input
-              value={newHobby}
-              onChange={handleInputChange}
-              placeholder="Enter a new hobby"
-              className="user-input-hobby"
-            />
-            <AntdButton type="primary" onClick={handleAddHobby}>
-              Add
-            </AntdButton>
-          </div>
-        )}
+            {/* Mở pop-up chọn chip */}
+            {isPopupOpen && (
+              <ChipSelector
+                selectedItems={selectedChips}
+                options={options}
+                onApply={handleApply}
+                onClose={handleClosePopup}
+              />
+            )}
+        </div>
+        </div>
       </div>
       <div class="favoritelocation">
         <label className="favarite-title">
@@ -264,7 +380,7 @@ const UserProfile = () => {
           好きな場所
         </label>
         <Collection
-          collectionData={collections}
+          collectionData={formData.liked}
           itemsNumber={4}
           showIndicator={false}
           showPagination={false}
@@ -277,7 +393,7 @@ const UserProfile = () => {
           訪れた場所
         </label>
         <Collection
-          collectionData={collections}
+          collectionData={formData.gone}
           itemsNumber={4}
           showIndicator={false}
           showPagination={false}
@@ -296,6 +412,7 @@ const UserProfile = () => {
                 }
                 className="user-button-editsave1"
                 type="user-submit"
+                onClick={SaveButtons}
               ></Button>
             </div>
             <div className="user-button-edit">
@@ -307,6 +424,7 @@ const UserProfile = () => {
                 }
                 className="user-button-editsave2"
                 type="user-submit"
+                onClick={handleToggleButtons}
               ></Button>
             </div>
           </div>
