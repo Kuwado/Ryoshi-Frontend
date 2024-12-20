@@ -1,5 +1,5 @@
-.travel-list {
-  padding: 40px 25px 40px 45px;
+.admin-place-list {
+  padding: 40px 70px 70px;
   min-height: 100vh;
 }
 
@@ -54,10 +54,6 @@
   border-right: 1px solid #0094da;
 }
 
-.pill-button:nth-child(2) {
-  border-right: 1px solid #0094da;
-}
-
 .pill-button.active {
   background-color: #ffa500;
   color: #ffffff;
@@ -66,6 +62,24 @@
 .pill-button:hover {
   background-color: #ffa500;
   color: #ffffff;
+}
+
+/* Lớp CSS cho hàng chẵn (even) */
+.odd-row {
+  background-color: rgba(0, 148, 218, 0.25); 
+}
+
+/* Lớp CSS cho hàng lẻ (odd) */
+.even-row {
+  background-color: rgba(0, 148, 218, 0.5); 
+}
+
+.ant-table-cell-tbody > tr:hover {
+  background-color: transparent !important;
+}
+
+.ant-table-cell-row-hover {
+  background-color: transparent !important;
 }
 
 /* Căn giữa phần Pagination trong Table */
@@ -102,13 +116,11 @@
 }
 
 /* Mũi tên Pagination */
-.admin-place-list .ant-pagination-prev,
-.admin-place-list .ant-pagination-next {
+.admin-place-list .ant-pagination-prev, .admin-place-list .ant-pagination-next {
   border-radius: 50%; /* Bo tròn mũi tên */
   margin: 5px 5px;
 }
 
-:where(.css-dev-only-do-not-override-1x0dypw).ant-table-wrapper
-  .ant-table-pagination.ant-pagination {
+:where(.css-dev-only-do-not-override-1x0dypw).ant-table-wrapper .ant-table-pagination.ant-pagination {
   margin: 16px 0px 16px 520px;
 }

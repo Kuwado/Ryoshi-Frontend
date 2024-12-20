@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import "./index.css";
 import ItemImg from "../../assets/images/item.png";
+import { useNavigate } from "react-router-dom";
 
-export default function CollectionItem({locationId, name, place, initialLikedId, initialGoneId}) {
+export default function CollectionItem({locationId, name, place, initialLikedId, initialGoneId, imageName}) {
     const token = sessionStorage.getItem("authToken");
     const userId = JSON.parse(sessionStorage.getItem("auth")).id
+    const navigate = useNavigate();
+    const imgSrc = `http://localhost:8000/uploads/${imageName.trim()}`;
 
     // Khởi tạo state cho likedId và isActiveFav
     const [likedId, setLikedId] = useState(initialLikedId);
@@ -82,6 +85,10 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
         }
     };
 
+    const goToPlaceDetail = () => {
+        navigate(`/user/place-detail/${locationId}`);
+    };
+
     return(
         <div className="item-container">
             <div className="item-header">
@@ -93,7 +100,7 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
                 </button>
             </div>
 
-            <img src={ItemImg} className="item-img" />
+            <img onClick={goToPlaceDetail} src={imgSrc} className="item-img" />
 
             <div className="item-footer">
                 <div className="item-property">

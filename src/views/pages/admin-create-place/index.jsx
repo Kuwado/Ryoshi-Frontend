@@ -180,6 +180,8 @@ const AdminCreatePlace = () => {
     dailyVisitors: '', // Số khách tham quan mỗi ngày 訪問者数 
     description: '', // Mô tả
     images: [],
+    avatar: null,
+    type: '',
   });
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedChips, setSelectedChips] = useState([]);
@@ -195,9 +197,13 @@ const AdminCreatePlace = () => {
   };
 
   const handleApply = (selectedItems) => {
-    setSelectedChips(selectedItems); // Lưu lại các chip đã chọn
+    setSelectedChips(selectedItems);
+    setFormData((prevData) => ({
+      ...prevData,
+      type: selectedItems.join(","), // Lưu selectedChips vào formData.type
+    }));
     setIsPopupOpen(false); // Đóng pop-up
-  };
+  };  
 
   const handleClosePopup = () => {
     setIsPopupOpen(false); // Đóng pop-up
@@ -284,62 +290,94 @@ const AdminCreatePlace = () => {
   };
 
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files); // Chuyển các file thành mảng
+    const files = Array.from(e.target.files); // Chuyển file được chọn thành mảng
+    const newPreviews = files.map((file) => URL.createObjectURL(file)); // Tạo URL xem trước cho ảnh mới
+  
     setFormData((prevData) => ({
       ...prevData,
-      images: [...prevData.images, ...files.map(file => URL.createObjectURL(file))], // Thêm các ảnh mới vào mảng
+      images: [...prevData.images, ...files], // Thêm ảnh mới vào danh sách ảnh cũ
+      imagesPreview: [...(prevData.imagesPreview || []), ...newPreviews], // Thêm preview mới
     }));
-  };  
+  };
+  
 
-  const handleRemoveImage = (imageToRemove) => {
+  const handleRemoveImage = (index) => {
     setFormData((prevData) => ({
       ...prevData,
-      images: prevData.images.filter(image => image !== imageToRemove), // Lọc bỏ ảnh cần xóa
+      images: prevData.images.filter((_, i) => i !== index), // Xóa file thực tại index
+      imagesPreview: prevData.imagesPreview.filter((_, i) => i !== index), // Xóa URL preview tại index
+    }));
+  };
+  
+   
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0]; // Lấy file đầu tiên
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        avatar: file, // Lưu file thực
+        avatarPreview: URL.createObjectURL(file), // Tạo URL xem trước
+      }));
+    }
+  };    
+  
+  const handleRemoveAvatar = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      avatar: null, // Xóa file thực
+      avatarPreview: null, // Xóa preview
     }));
   };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logic to submit the form
-    const body = {
-      name: formData.name,
-      description: formData.description,
-      address: `${formData.placeDetail},${town?.name || ''},${ward?.name || ''},${city?.name || ''}`.trim(),
-      type:'',
-      open_time: formData.openTime,
-      close_time: formData.closingTime,
-      age_start: formData.ageGroupStart,
-      age_end: formData.ageGroupEnd,
-      images: formData.image,
-      number_tourist: formData.dailyVisitors,
-      adult_price: formData.visitorsAdult,
-      child_price: formData.visitorsChild,
-    };
-
-    try{
+  
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("address", `${formData.placeDetail},${town?.name || ''},${ward?.name || ''},${city?.name || ''}`.trim());
+    formDataToSend.append("type", formData.type); // Thêm trường type từ selectedChips
+    formDataToSend.append("open_time", formData.openTime);
+    formDataToSend.append("close_time", formData.closingTime);
+    formDataToSend.append("age_start", formData.ageGroupStart);
+    formDataToSend.append("age_end", formData.ageGroupEnd);
+    formDataToSend.append("number_tourist", formData.dailyVisitors);
+    formDataToSend.append("adult_price", formData.visitorsAdult);
+    formDataToSend.append("child_price", formData.visitorsChild);
+  
+    if (formData.avatar) {
+      formDataToSend.append("avatar", formData.avatar);
+    }
+  
+    formData.images.forEach((image) => {
+      formDataToSend.append("images", image);
+    });
+  
+    try {
       const response = await fetch('http://localhost:8000/api/v1/locations', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(body),
+        body: formDataToSend,
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+  
       const data = await response.json();
       toast.success(data.message);
       setTimeout(() => {
         navigate("/admin");
       }, 3000);
-    }catch(error){
-      console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
-      toast.error(error.response.data.error);
+    } catch (error) {
+      console.error('Có lỗi xảy ra khi gửi dữ liệu:', error.message);
+      toast.error(error.message);
     }
   };
+  
+  
 
   return (
     <div className="admin-create-place">
@@ -586,12 +624,12 @@ const AdminCreatePlace = () => {
 
             {/* Hiển thị các chip đã chọn */}
             <div className="selected-chips">
-              {selectedChips.map((chip, index) => (
-                <div key={index} className="chips-wrapper">
-                  <label>{chip}</label>
-                </div>
-              ))}
-            </div>
+  {selectedChips.map((chip, index) => (
+    <div key={index} className="chips-wrapper">
+      <label>{chip}</label>
+    </div>
+  ))}
+</div>
 
             {/* Mở pop-up chọn chip */}
             {isPopupOpen && (
@@ -607,6 +645,48 @@ const AdminCreatePlace = () => {
 
         
         <div className="right-side">
+        {/* Label: アバター画像をアップロード */}
+<div className="form-group">
+  <label 
+    htmlFor="avatar-upload" 
+    className="form-label-1 upload-label"
+  >
+    <img
+      src={require('../../../assets/images/Vector9.png')}
+      alt="Icon"
+      className="form-icon"
+    />
+    アバター画像をアップロード：
+  </label>
+  <div className="image-upload">
+    <input
+      type="file"
+      name="avatar"
+      id="avatar-upload"
+      onChange={handleAvatarChange}
+      className="image-input"
+      style={{ display: 'none' }} // Ẩn input file
+    />
+{formData.avatarPreview && (
+  <div className="image-preview">
+    <img
+      src={formData.avatarPreview} // Dùng preview
+      alt="Avatar Preview"
+      className="preview-image"
+    />
+    <button onClick={handleRemoveAvatar} className="remove-image">
+      <img
+        src={require('../../../assets/images/Vector13.png')}
+        alt="Remove"
+        className="remove-icon"
+      />
+    </button>
+  </div>
+)}
+
+  </div>
+</div>
+
         {/* Label 9: 画像をアップロード */}
           <div className="form-group">
             <label 
@@ -630,26 +710,28 @@ const AdminCreatePlace = () => {
                 multiple // Cho phép chọn nhiều ảnh
                 style={{ display: 'none' }} // Ẩn input file đi
               />
-              {formData.images.length > 0 && (
-                <div className="image-preview-container">
-                  {formData.images.map((image, index) => (
-                    <div key={index} className="image-preview">
-                      <img
-                        src={image}
-                        alt={`Preview ${index}`}
-                        className="preview-image"
-                      />
-                      <button onClick={() => handleRemoveImage(image)} className="remove-image">
-                        <img
-                          src={require('../../../assets/images/Vector13.png')}
-                          alt="Remove"
-                          className="remove-icon"
-                        />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
+{formData.imagesPreview && formData.imagesPreview.length > 0 && (
+  <div className="image-preview-container">
+    {formData.imagesPreview.map((preview, index) => (
+      <div key={index} className="image-preview">
+        <img
+          src={preview} // Hiển thị preview
+          alt={`Preview ${index}`}
+          className="preview-image"
+        />
+        <button onClick={() => handleRemoveImage(index)} className="remove-image">
+          <img
+            src={require('../../../assets/images/Vector13.png')}
+            alt="Remove"
+            className="remove-icon"
+          />
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
+
             </div>
           </div>
 

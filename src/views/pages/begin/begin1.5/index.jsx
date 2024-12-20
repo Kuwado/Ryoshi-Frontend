@@ -8,6 +8,7 @@ import Begin1_2 from "../../../../assets/images/begin1.2.png";
 import Begin1_3 from "../../../../assets/images/begin1.3.png";
 import Begin1_4 from "../../../../assets/images/begin1.4.png";
 import Button from "../../../../components/button";
+import BeginNavLink from "../../../../components/beginNavLink/beginNavLink";
 
 function Begin1_5() {
   const navigate = useNavigate();
@@ -71,13 +72,16 @@ function Begin1_5() {
 
   return (
     <div className="begin1-container">
-      <h1 className="begin1-title">アバターを更新する</h1>
+      <div className="begin1-header">
+        <h1 className="begin1-title">アバターを更新する</h1>
+        <BeginNavLink />
+      </div>
 
       <div className="begin1-content">
         <div className="begin1-form-section">
           <form>
             <UploadProfile onImageSelect={setSelectedImage} />
-            <Button label="スキップ" className="begin1-submit-button" onClick={handleNextClick}>
+            <Button label="次のステップ" className="begin1-submit-button" onClick={handleNextClick}>
             </Button>
             <button className="begin1-5-skip-button" onClick={() => navigate("/user/begin1.6")}>スキップこのステップ</button>
           </form>

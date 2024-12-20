@@ -3,18 +3,15 @@ import { Table, Button, Select, Space, message, Modal } from "antd";
 import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from "axios";
 import "./index.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const { Option } = Select;
 const { confirm } = Modal;
 
 const AdminPlaceList = () => {
-  const [places, setPlaces] = useState([]);
-  const [filteredPlaces, setFilteredPlaces] = useState([]);
-  const [pagination, setPagination] = useState({
-    current: 1,
-    pageSize: 5,
-  });  
+  const location = useLocation();
+  const [places, setPlaces] = useState(location.state?.locations || []);
+  const [filteredPlaces, setFilteredPlaces] = useState(location.state?.locations || []);
   const [filters, setFilters] = useState({
     age: "",
     style: "",
@@ -22,32 +19,6 @@ const AdminPlaceList = () => {
   });
   const [selectedButton, setSelectedButton] = useState("all");
   const navigate = useNavigate();
-  
-  // Fetch data from API
-  const fetchPlaces = async () => {
-    try {
-      const token = sessionStorage.getItem("authToken");
-      const response = await axios.get("http://localhost:8000/api/v1/locations", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.status === 200) {
-        const { location } = response.data;
-        setPlaces(location); // Lưu danh sách địa điểm vào state
-        setFilteredPlaces(location); // Mặc định hiển thị tất cả địa điểm
-      } else {
-        console.error("Error fetching locations:", response.data.message);
-      }
-    } catch (error) {
-      console.error("Error fetching places:", error.response?.data || error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchPlaces();
-  }, []);
 
   // Hàm thay đổi filter
   const handleFilterChange = (key, value) => {
@@ -139,8 +110,8 @@ const AdminPlaceList = () => {
 
   const handleDelete = (id) => {
     confirm({
-      title: 'この場所を削除してもよろしいですか？',
-      content: '削除すると、この場所を元に戻すことはできません。',
+      title: 'Bạn có chắc chắn muốn xóa địa điểm này?',
+      content: 'Sau khi xóa, bạn sẽ không thể khôi phục lại địa điểm này.',
       onOk: async () => {
         try {
           const token = sessionStorage.getItem("authToken");
@@ -153,18 +124,18 @@ const AdminPlaceList = () => {
           });
 
           if (response.status === 200) {
-            message.success("場所が正常に削除されました！");
+            message.success("Xóa địa điểm thành công!");
             
             // Cập nhật lại danh sách địa điểm sau khi xóa
             const updatedPlaces = places.filter(place => place.location_id !== id);
             setPlaces(updatedPlaces);
             setFilteredPlaces(updatedPlaces); // Cập nhật filteredPlaces
           } else {
-            message.error("場所を削除できませんでした。");
+            message.error("Không thể xóa địa điểm.");
           }
         } catch (error) {
           console.error("Error deleting place:", error);
-          message.error("場所を削除中にエラーが発生しました。");
+          message.error("Đã xảy ra lỗi khi xóa địa điểm.");
         }
       },
       onCancel() {
@@ -177,7 +148,7 @@ const AdminPlaceList = () => {
     {
       title: "番号",
       key: "number",
-      render: (_, __, index) => (pagination.current - 1) * pagination.pageSize + index + 1,
+      render: (_, __, index) => index + 1, // Hiển thị số thứ tự (index + 1)
     },
     {
       title: "写真",
@@ -243,6 +214,11 @@ const AdminPlaceList = () => {
   const rowClassName = (record, index) => {
     return index % 2 === 0 ? 'even-row' : 'odd-row';
   };
+
+  useEffect(() => {
+    setFilteredPlaces(location.state?.locations);
+    setPlaces(location.state?.locations);
+  }, [location.state?.locations]);
 
   return (
     <div className="admin-place-list">
@@ -327,18 +303,8 @@ const AdminPlaceList = () => {
         columns={columns}
         dataSource={filteredPlaces}
         rowKey="location_id"
-        pagination={{
-          current: pagination.current,
-          pageSize: pagination.pageSize,
-          total: filteredPlaces.length,
-          onChange: (page, pageSize) => {
-            setPagination({
-              current: page,
-              pageSize,
-            });
-          },
-        }}
-        rowClassName={rowClassName}
+        pagination={{ pageSize: 5 }}
+        rowClassName={rowClassName} 
       />
     </div>
   );
