@@ -19,6 +19,29 @@ const UserProfile = () => {
   const [newHobby, setNewHobby] = useState(""); // Giá trị của sở thích mới
   const [isHobbyFormVisible, setHobbyFormVisible] = useState(false); // Trạng thái hiển thị form
   const [collections, setCollections] = useState([]); // Dữ liệu từ API
+  const [isButtonVisible, setIsButtonVisible] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "HelloH",
+    birthday: "2010年10月21日",
+    phone: "0911345677",
+    email: "abc@gmail.com",
+    location: "HaNoi",
+  });
+
+  const handleToggleButtons = () => {
+    setIsButtonVisible(!isButtonVisible);
+    setIsEditing(!isEditing); // Bật/tắt chế độ chỉnh sửa
+  };
+
+  // Hàm xử lý thay đổi dữ liệu trong form
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   // Hàm xử lý thêm sở thích
   const handleAddHobby = () => {
@@ -64,6 +87,7 @@ const UserProfile = () => {
   useEffect(() => {
     fetchPlaces();
   }, []);
+
   return (
     <div className="user-profile">
       <h1 className="title-user-head">プロフィール</h1>
@@ -73,39 +97,94 @@ const UserProfile = () => {
         </div>
         <div className="user-profile-info">
           <div className="user-profile-info-item">
-            <i className="fas fa-birthday-cake text-blue-500 mr-2"></i>
+            <img
+              src={require("../../../assets/images/Vector.png")}
+              alt="Icon"
+              className="info-icon"
+            />
             <span className="font-bold">名前：</span>
-            <span className="ml-2">HelloH</span>
+            {isEditing ? (
+              <Input
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="input-field"
+              />
+            ) : (
+              <span className="ml-2">{formData.name}</span>
+            )}
           </div>
           <div className="user-profile-info-item">
-            <i className="fas fa-birthday-cake text-blue-500 mr-2"></i>
+            <img
+              src={require("../../../assets/images/birthday.jpg")}
+              alt="Icon"
+              className="info-icon"
+            />
             <span className="font-bold">生年月日：</span>
-            <span className="ml-2">2010年10月21日</span>
+            {isEditing ? (
+              <Input
+                name="birthday"
+                value={formData.birthday}
+                onChange={handleChange}
+                className="input-field"
+              />
+            ) : (
+              <span className="ml-2">{formData.birthday}</span>
+            )}
           </div>
           <div className="user-profile-info-item">
-            <i className="fas fa-birthday-cake text-blue-500 mr-2"></i>
-            <span className="font-bold">生年月日：</span>
-            <span className="ml-2">2010年10月21日</span>
-          </div>
-          <div className="user-profile-info-item">
-            <i className="fas fa-birthday-cake text-blue-500 mr-2"></i>
+            <img
+              src={require("../../../assets/images/phone.jpg")}
+              alt="Icon"
+              className="info-icon"
+            />
             <span className="font-bold">電話番号：</span>
-            <span className="ml-2">0911345677 </span>
+            {isEditing ? (
+              <Input
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="input-field"
+              />
+            ) : (
+              <span className="ml-2">{formData.phone}</span>
+            )}
           </div>
           <div className="user-profile-info-item">
-            <i className="fas fa-birthday-cake text-blue-500 mr-2"></i>
+            <img
+              src={require("../../../assets/images/mail.jpg")}
+              alt="Icon"
+              className="info-icon"
+            />
             <span className="font-bold">メール：</span>
-            <span className="ml-2">abc@gmail.com </span>
+            {isEditing ? (
+              <Input
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="input-field"
+              />
+            ) : (
+              <span className="ml-2">{formData.email}</span>
+            )}
           </div>
           <div className="user-profile-info-item">
-            <i className="fas fa-birthday-cake text-blue-500 mr-2"></i>
-            <span className="font-bold">メール：</span>
-            <span className="ml-2">abc@gmail.com </span>
-          </div>
-          <div className="user-profile-info-item">
-            <i className="fas fa-birthday-cake text-blue-500 mr-2"></i>
+            <img
+              src={require("../../../assets/images/Vector3.png")}
+              alt="Icon"
+              className="info-icon"
+            />
             <span className="font-bold">場所：</span>
-            <span className="ml-2">HaNoi </span>
+            {isEditing ? (
+              <Input
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className="input-field"
+              />
+            ) : (
+              <span className="ml-2">{formData.location}</span>
+            )}
           </div>
         </div>
         <div className="user-profile-button">
@@ -113,12 +192,13 @@ const UserProfile = () => {
             label="編集"
             className="user-button"
             type="user-submit"
+            onClick={handleToggleButtons}
           ></Button>
         </div>
       </div>
       <div className="user-hobby">
         <label className="title-user">
-          <FontAwesomeIcon icon={faThumbsUp} className="color-icon"/>
+          <FontAwesomeIcon icon={faThumbsUp} className="color-icon" />
           趣味
         </label>
         <div className="user-hobby-button">
@@ -180,7 +260,7 @@ const UserProfile = () => {
       </div>
       <div class="favoritelocation">
         <label className="favarite-title">
-          <FontAwesomeIcon icon={faHeart} className="color-icon"/>
+          <FontAwesomeIcon icon={faHeart} className="color-icon" />
           好きな場所
         </label>
         <Collection
@@ -205,30 +285,32 @@ const UserProfile = () => {
         ></Collection>
       </div>
       <div className="user-button">
-        <div style={{display: "flex"}}>
-          <div className="user-button-edit">
-            <Button
-              label={
-                <div>
-                  <FontAwesomeIcon icon={faCircleCheck} /> 保存
-                </div>
-              }
-              className="user-button-editsave1"
-              type="user-submit"
-            ></Button>
+        {!isButtonVisible && (
+          <div style={{ display: "flex" }}>
+            <div className="user-button-edit">
+              <Button
+                label={
+                  <div>
+                    <FontAwesomeIcon icon={faCircleCheck} /> 保存
+                  </div>
+                }
+                className="user-button-editsave1"
+                type="user-submit"
+              ></Button>
+            </div>
+            <div className="user-button-edit">
+              <Button
+                label={
+                  <div>
+                    <FontAwesomeIcon icon={faX} /> キャンセル
+                  </div>
+                }
+                className="user-button-editsave2"
+                type="user-submit"
+              ></Button>
+            </div>
           </div>
-          <div className="user-button-edit">
-            <Button
-              label={
-                <div>
-                  <FontAwesomeIcon icon={faX} /> キャンセル
-                </div>
-              }
-              className="user-button-editsave2"
-              type="user-submit"
-            ></Button>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
