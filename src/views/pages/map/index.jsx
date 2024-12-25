@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import './index.css';
 
 const TestMap = () => {
   const mapRef = useRef(null);
@@ -49,48 +50,52 @@ const TestMap = () => {
   };
 
   return (
-    <div classname="map-container">
-      <h2>地図 - 道案内</h2>
-      <div style={{ marginBottom: "10px" }} className="input-group">
-        <input
-          type="text"
-          placeholder="出発地点を入力"
-          value={origin}
-          onChange={(e) => setOrigin(e.target.value)}
-          style={{ marginRight: "10px" }}
-        />
-        <input
-          type="text"
-          placeholder="目的地点を入力"
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-          style={{ marginRight: "10px" }}
-        />
-        <button onClick={calculateRoute}>道を探る</button>
+    <div className="map-container"> 
+      <div className="map-left-panel">
+        <h2>地図 - 道案内</h2>
+        <div　className="input-group">
+          <input
+            className="input-group-item"
+            type="text"
+            placeholder="出発地点を入力"
+            value={origin}
+            onChange={(e) => setOrigin(e.target.value)}
+          />
+          <input
+            className="input-group-item"
+            type="text"
+            placeholder="目的地点を入力"
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
+          />
+          <button
+          className="button-group-item" 
+          onClick={calculateRoute}>道を探る</button>
+        </div>
+
+        {/* Panel hiển thị hướng dẫn đường đi */}
+        <div
+          id="directions-panel"
+          // style={{
+          //   width: "100%",
+          //   maxHeight: "300px",
+          //   overflowY: "auto",
+          //   border: "1px solid #ccc",
+          //   padding: "10px",
+          //   backgroundColor: "#f9f9f9",
+          // }}
+        ></div>
       </div>
       {/* Bản đồ */}
       <div
-        id="map"
+      className="map-right-panel"
         ref={mapRef}
-        style={{
-          width: "100%",
-          height: "500px",
-          border: "1px solid black",
-          marginBottom: "10px",
-        }}
-      ></div>
-
-      {/* Panel hiển thị hướng dẫn đường đi */}
-      <div
-        id="directions-panel"
-        style={{
-          width: "100%",
-          maxHeight: "300px",
-          overflowY: "auto",
-          border: "1px solid #ccc",
-          padding: "10px",
-          backgroundColor: "#f9f9f9",
-        }}
+        // style={{
+        //   width: "100%",
+        //   height: "500px",
+        //   border: "1px solid black",
+        //   marginBottom: "10px",
+        // }}
       ></div>
     </div>
   );

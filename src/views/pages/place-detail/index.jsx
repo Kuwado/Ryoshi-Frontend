@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom"; // Import useLocation
+import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation
 import "./index.css";
 import Collection from "../../../components/collection";
 import axios from "axios";
@@ -16,6 +16,7 @@ const PlaceDetail = () => {
   const [slides, setSlides] = useState([]);
   const [locationsList, setLocationsList] = useState([]);
   const [similarCollections, setSimilarCollections] = useState([]);
+  const navigate = useNavigate();
   const id = JSON.parse(sessionStorage.getItem("auth")).id;
 
   // Hàm fetch dữ liệu API
@@ -145,8 +146,9 @@ const PlaceDetail = () => {
   };
 
   const handleNavigateButton = () => {
-    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(locationData.address)}`;
-    window.open(googleMapsUrl, "_blank");
+    setTimeout(() => {
+      navigate("/user/test-map");
+    }, 1000);
   };
   
   return (
