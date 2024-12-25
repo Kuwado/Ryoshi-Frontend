@@ -49,27 +49,28 @@ const TestMap = () => {
   };
 
   return (
-    <div>
-      <h2>Hiển thị Bản đồ và Hướng dẫn Đường đi</h2>
-      <div style={{ marginBottom: "10px" }}>
+    <div classname="map-container">
+      <h2>地図 - 道案内</h2>
+      <div style={{ marginBottom: "10px" }} className="input-group">
         <input
           type="text"
-          placeholder="Nhập điểm A"
+          placeholder="出発地点を入力"
           value={origin}
           onChange={(e) => setOrigin(e.target.value)}
           style={{ marginRight: "10px" }}
         />
         <input
           type="text"
-          placeholder="Nhập điểm B"
+          placeholder="目的地点を入力"
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
           style={{ marginRight: "10px" }}
         />
-        <button onClick={calculateRoute}>Tìm Đường</button>
+        <button onClick={calculateRoute}>道を探る</button>
       </div>
       {/* Bản đồ */}
       <div
+        id="map"
         ref={mapRef}
         style={{
           width: "100%",

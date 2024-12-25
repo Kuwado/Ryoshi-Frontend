@@ -4,6 +4,8 @@ import "./index.css";
 import Collection from "../../../components/collection";
 import axios from "axios";
 import Carousel from "./carousel";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PlaceDetail = () => {
   const [locationData, setLocationData] = useState(null); // State lưu dữ liệu địa điểm
@@ -14,6 +16,7 @@ const PlaceDetail = () => {
   const [slides, setSlides] = useState([]);
   const [locationsList, setLocationsList] = useState([]);
   const [similarCollections, setSimilarCollections] = useState([]);
+  const id = JSON.parse(sessionStorage.getItem("auth")).id;
 
   // Hàm fetch dữ liệu API
   const fetchLocationData = async () => {
@@ -94,6 +97,52 @@ const PlaceDetail = () => {
   if (loading) {
     return <div>Loading...</div>; // Hiển thị khi đang fetch dữ liệu
   }
+
+  const handleLikeButton = async () => {
+    // Xử lý khi click vào nút Like
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/liked`,
+        { user_id: id,
+          location_id: locationId,
+         },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log(response.data.message);
+      if(response.status === 200){
+        console.log(1)
+        toast.success(response.data.message);
+      }else{
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error liking location:", error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const handleVisitedButton = async () => {
+    // Xử lý khi click vào nút Visited
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/gone`,
+        { user_id: id,
+          location_id: locationId,
+         },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log(response.data.message);
+      if(response.status === 200){
+        console.log(1)
+        toast.success(response.data.message);
+      }else{
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error visiting location:", error);
+      toast.error(error.response.data.message);
+    }
+  };
 
   return (
     <div className="place-detail-container">
@@ -203,8 +252,12 @@ const PlaceDetail = () => {
             </div>
           </div>
           <div className="toggle-button">
-            <button>お気に入り</button>
-            <button>行ったことがある</button>
+            <button
+              onClick={handleLikeButton}
+            >お気に入り</button>
+            <button
+              onClick={handleVisitedButton}
+            >行ったことがある</button>
           </div>
         </div>
       </div>
