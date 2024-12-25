@@ -152,9 +152,8 @@ const PlaceDetail = () => {
   };
 
   const handleNavigateButton = () => {
-    setTimeout(() => {
-      navigate("/user/test-map");
-    }, 1000);
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(locationData.address)}`;
+    window.open(googleMapsUrl, "_blank");
   };
   
   return (
@@ -276,14 +275,14 @@ const PlaceDetail = () => {
               onClick={handleLikeButton}
             >
               <div className="product-slider__fav js-fav" >
-                <span className={`tick ${isLiked ? 'is-active' : ''}`}></span>
+                <span className={`heart ${isLiked ? 'is-active' : ''}`}></span>
               </div>
               お気に入り</button>
             <button
               onClick={handleVisitedButton}
             >
               <div className="product-slider__fav js-fav">
-                <span className={`heart ${isVisited ? 'is-active' : ''}`}></span>
+                <span className={`tick ${isVisited ? 'is-active' : ''}`}></span>
               </div>
               行ったことがある</button>
           </div>
