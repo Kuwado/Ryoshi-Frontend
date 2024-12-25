@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route, Navigate } from "react-router-dom";
-import LandingPage from "./views/pages/landing-page/landingPage";
+import LandingPage from "./views/pages/landing-page";
 import Login from "./views/pages/login";
 import Register from "./views/pages/register";
 import ForgotPasswordOne from "./views/pages/forgot-password/forgot-password-1";
