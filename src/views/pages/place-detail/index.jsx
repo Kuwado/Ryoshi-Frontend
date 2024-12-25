@@ -18,6 +18,8 @@ const PlaceDetail = () => {
   const [similarCollections, setSimilarCollections] = useState([]);
   const navigate = useNavigate();
   const id = JSON.parse(sessionStorage.getItem("auth")).id;
+  const [isLiked, setIsLiked] = useState(false);
+  const [isVisited, setIsVisited] = useState(false);
 
   // Hàm fetch dữ liệu API
   const fetchLocationData = async () => {
@@ -37,6 +39,8 @@ const PlaceDetail = () => {
         }));
         setSlides(slideData);
       }
+      setIsLiked(location.like.id);
+      setIsVisited(location.gone.id);
     } catch (error) {
       console.error("Error fetching location data:", error);
     } finally {
@@ -112,6 +116,7 @@ const PlaceDetail = () => {
       console.log(response.data.message);
       if(response.status === 200){
         console.log(1)
+        setIsLiked(!isLiked);
         toast.success(response.data.message);
       }else{
         toast.error(response.data.message);
@@ -135,6 +140,7 @@ const PlaceDetail = () => {
       console.log(response.data.message);
       if(response.status === 200){
         console.log(1)
+        setIsVisited(!isVisited);
         toast.success(response.data.message);
       }else{
         toast.error(response.data.message);
@@ -268,10 +274,18 @@ const PlaceDetail = () => {
               方向</button>
             <button
               onClick={handleLikeButton}
-            >お気に入り</button>
+            >
+              <div className="product-slider__fav js-fav" >
+                <span className={`tick ${isLiked ? 'is-active' : ''}`}></span>
+              </div>
+              お気に入り</button>
             <button
               onClick={handleVisitedButton}
-            >行ったことがある</button>
+            >
+              <div className="product-slider__fav js-fav">
+                <span className={`heart ${isVisited ? 'is-active' : ''}`}></span>
+              </div>
+              行ったことがある</button>
           </div>
         </div>
       </div>

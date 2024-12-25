@@ -129,7 +129,7 @@
 .toggle-button button {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 15px;
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
