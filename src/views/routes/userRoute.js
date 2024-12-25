@@ -11,6 +11,7 @@ import TravelList from "../pages/travel-list";
 import SearchResult from "../pages/user-search-result";
 import PlaceDetail from "../pages/place-detail";
 import UserProfile from "../pages/user-profile";
+import TestMap from "../pages/map";
 
 function UserRoute() {
   return (
@@ -31,6 +32,7 @@ function UserRoute() {
           <Route path="/search-result" element={<SearchResult />} />
           <Route path="/place-detail/:locationId" element={<PlaceDetail />} />
           <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="/test-map" element={<TestMap />} />
         </Routes>
       </div>
       <div>
