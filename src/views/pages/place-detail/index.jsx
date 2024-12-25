@@ -144,6 +144,11 @@ const PlaceDetail = () => {
     }
   };
 
+  const handleNavigateButton = () => {
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(locationData.address)}`;
+    window.open(googleMapsUrl, "_blank");
+  };
+  
   return (
     <div className="place-detail-container">
       <div className="ad-header">
@@ -252,6 +257,13 @@ const PlaceDetail = () => {
             </div>
           </div>
           <div className="toggle-button">
+            <button onClick={handleNavigateButton} style={{ backgroundColor: "orange", color: "white" }}>
+              <img
+                src={require('../../../assets/images/VectorFlag.png')}
+                alt="Flag"
+                style={{ width: '12px', height: '16px', objectFit: 'cover' }}
+              />
+              方向</button>
             <button
               onClick={handleLikeButton}
             >お気に入り</button>
