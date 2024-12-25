@@ -21,6 +21,7 @@ const Collection = ({
   const [itemsPerSlide, setItemsPerSlide] = useState(itemsNumber * rowNumber); // Giá trị mặc định
   const [slicedData, setSlicedData] = useState([]);
   const [totalSlides, setTotalSlides] = useState(0);
+  const [processedLocation, setProcessedLocation] = useState([])
 
   // Hàm để điều chỉnh số lượng item theo kích thước màn hình
   const updateItemsPerSlide = () => {
@@ -113,19 +114,18 @@ const sliceArray = (array, chunkSize) => {
   return result;
 };
 
-// Tách locations thành các mảng nhỏ
-
-
 const initiateFetch = async () => {
     try {
         const userInfo = await fetchUserInfo(); // Fetch user info
         const processedLocations = processCollections(collectionData, userInfo);
+        setProcessedLocation(processedLocations);
         setSlicedData(sliceArray(processedLocations, itemsPerSlide))
         setTotalSlides(Math.ceil(processedLocations.length / itemsPerSlide));
     } catch (error) {
         console.error("Error during fetching process:", error);
     }
 };
+
 
   useEffect(() => {
     updateItemsPerSlide(); // Gọi hàm khi component mount
@@ -138,6 +138,11 @@ const initiateFetch = async () => {
   useEffect(() => {
     initiateFetch();
   }, [collectionData]); // Empty dependency array to run only on mount
+
+  useEffect(() => {
+    setSlicedData(sliceArray(processedLocation, itemsPerSlide))
+    setTotalSlides(Math.ceil(processedLocation.length / itemsPerSlide));
+  }, [itemsPerSlide]); // Empty dependency array to run only on mount
 
   const goToPrevSlide = () => {
     setCurrentSlide((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));

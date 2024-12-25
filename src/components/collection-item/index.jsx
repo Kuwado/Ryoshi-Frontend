@@ -48,7 +48,7 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
     };
     
     // Khởi tạo state cho likedId và isActiveFav
-    const [goneId, setGoneId] = useState(initialLikedId);
+    const [goneId, setGoneId] = useState(initialGoneId);
     const [isActiveGone, setIsActiveGone] = useState(initialGoneId !== -1);
 
     const toggleGone = async () => {
