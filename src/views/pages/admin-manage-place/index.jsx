@@ -90,6 +90,47 @@ async function getPlaceDetail(locationId, token) {
   }
 }
 
+const ChipSelector = ({ selectedItems, options, onApply, onClose }) => {
+  const [localSelectedItems, setLocalSelectedItems] = useState([...selectedItems]);
+
+  const handleItemClick = (item) => {
+    setLocalSelectedItems((prevSelected) =>
+      prevSelected.includes(item)
+        ? prevSelected.filter((selectedItem) => selectedItem !== item)
+        : [...prevSelected, item]
+    );
+  };
+
+  return (
+    <div className="popup-overlay">
+      <div className="popup-container">
+        <h2>旅行のスタイル</h2>
+
+        <div className="chips-wrapper-container">
+          {[0, 3, 7, 10].map((start, rowIndex) => (
+            <div className="chips-row" key={rowIndex}>
+              {options.slice(start, start + (rowIndex % 2 === 0 ? 3 : 4)).map((option, index) => (
+                <div className="chips-wrapper" key={start + index}>
+                  <input
+                    type="checkbox"
+                    id={`chip-${start + index}`}
+                    checked={localSelectedItems.includes(option)}
+                    onChange={() => handleItemClick(option)}
+                  />
+                  <label htmlFor={`chip-${start + index}`}>{option}</label>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        <button className="confirm-button" onClick={() => onApply(localSelectedItems)}>
+          確認
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const AdminPlaceDetail = () => {
   const [formData, setFormData] = useState({
@@ -107,7 +148,36 @@ const AdminPlaceDetail = () => {
     dailyVisitors: '', // Số khách tham quan mỗi ngày 訪問者数
     description: '', // Mô tả
     image: null,
+    type: '', // Chuỗi lưu các chip đã chọn (ví dụ: "エコツーリズム,文化旅行")
   });
+const options = [
+  "エコツーリズム", "文化旅行", "リゾート", "レクリエーション", "スポーツ",
+  "探検", "冒険", "コンビネーション", "家族旅行", "団体旅行", "個人旅行", "ビーチ",
+  "山", "都市", "田舎",
+];
+
+const [isPopupOpen, setIsPopupOpen] = useState(false);
+const [selectedChips, setSelectedChips] = useState([]);
+const [avatarPreview, setAvatarPreview] = useState(null); // Lưu URL của preview avatar
+
+useEffect(() => {
+  if (formData.type) {
+    setSelectedChips(formData.type.split(","));
+  }
+}, [formData.type]);
+
+const handleTypeEditClick = () => {
+  setIsPopupOpen(true);
+};
+
+const handleApplyChips = (selectedItems) => {
+  setSelectedChips(selectedItems);
+  setFormData((prevData) => ({
+    ...prevData,
+    type: selectedItems.join(','), // Gộp thành chuỗi khi gửi lên backend
+  }));
+  setIsPopupOpen(false);
+};
 
   const [isEditable, setIsEditable] = useState({
     name: false,
@@ -291,51 +361,63 @@ const fetchWithRetry = async (fetchFunction, maxRetries = 3) => {
 };
 
 useEffect(() => {
-    const fetchPlaceDetail = async () => {
-      try {
-        const location = await fetchWithRetry(() => getPlaceDetail(locationId, token));
- 
-        if(location){
-          setAddress(location.address);
-          const addressArr = location.address.split(',').map(item => item.trim());
-          const selectedCityName = addressArr[addressArr.length - 1].replace("Tỉnh ", "");
-          const selectedWardName = addressArr[addressArr.length - 2].replace("Đường ", "");
-          const selectedTownName = addressArr[addressArr.length - 3];
+  const fetchPlaceDetail = async () => {
+    try {
+      const location = await fetchWithRetry(() => getPlaceDetail(locationId, token));
+      if (location) {
+        // Xử lý avatar
+        const avatarUrl = location.avatar
+          ? `http://localhost:8000/uploads/${location.avatar}` // URL đầy đủ từ backend
+          : null;
 
-          setSelectedCity(selectedCityName);
-          setSelectedWard(selectedWardName);
-          setSelectedTown(selectedTownName);
-          
-          const foundCity = cityList.find(city => city.name === selectedCityName);
-          setCity(foundCity);
-          console.log(selectedCityName, selectedWardName, selectedTownName, foundCity);
-          
-          setFormData({
-            name: location.name,
-            region: addressArr[0],
-            district: addressArr[1],
-            place: addressArr[2],
-            placeDetail: addressArr[0],
-            openTime: location.open_time,
-            closingTime: location.close_time,
-            ageGroupStart: location.age_start,
-            ageGroupEnd: location.age_end,
-            visitorsAdult: location.adult_price,
-            visitorsChild: location.child_price,
-            dailyVisitors: location.number_tourist,
-            description: location.description,
-            image: location.images,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching place detail:", error);
+        // Xử lý images (chuyển chuỗi thành mảng URL)
+        const imageUrls = location.images
+          ? location.images.split(',').map((image) => `http://localhost:8000/uploads/${image}`)
+          : [];
+
+        setAvatarPreview(avatarUrl);
+        setImages(imageUrls); // Lưu danh sách ảnh từ backend vào state
+
+        // Xử lý địa chỉ và các thông tin khác
+        const addressArr = location.address.split(',').map((item) => item.trim());
+        const selectedCityName = addressArr[addressArr.length - 1];
+        const selectedWardName = addressArr[addressArr.length - 2];
+        const selectedTownName = addressArr[addressArr.length - 3];
+
+        setSelectedCity(selectedCityName);
+        setSelectedWard(selectedWardName);
+        setSelectedTown(selectedTownName);
+
+        const foundCity = cityList.find((city) => city.name === selectedCityName);
+        setCity(foundCity);
+
+        setFormData({
+          name: location.name,
+          region: addressArr[0],
+          district: addressArr[1],
+          place: addressArr[2],
+          placeDetail: addressArr[0],
+          openTime: location.open_time,
+          closingTime: location.close_time,
+          ageGroupStart: location.age_start,
+          ageGroupEnd: location.age_end,
+          visitorsAdult: location.adult_price,
+          visitorsChild: location.child_price,
+          dailyVisitors: location.number_tourist,
+          description: location.description,
+          type: location.type || '', // Chuỗi type từ backend
+        });
+
+        setSelectedChips(location.type ? location.type.split(',') : []); // Phân tách type thành mảng
       }
-    };
-
-    if (locationId && token) {
-      fetchPlaceDetail();
+    } catch (error) {
+      console.error('Error fetching place detail:', error);
     }
-  }, [locationId, token, cityList]);
+  };
+
+  if (locationId && token) fetchPlaceDetail();
+}, [locationId, token, cityList]);
+
 
   useEffect(() => {
     const fetchWards = async () => {
@@ -372,7 +454,7 @@ useEffect(() => {
 
     if (ward) fetchTowns();
   }, [ward]);
-
+  
 
   const handleEditClick = (field) => {
     // Chuyển trạng thái của trường này thành editable
@@ -390,39 +472,94 @@ useEffect(() => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    // Xử lý khi người dùng nhấn nút tạo
-    e.preventDefault();
-    const data = {
-      name: formData.name,
-      address: `${formData.placeDetail}, ${formData.place}, ${formData.district}, ${formData.region}`,
-      open_time: formData.openTime,
-      close_time: formData.closingTime,
-      type:'',
-      age_start: formData.ageGroupStart,
-      age_end: formData.ageGroupEnd,
-      adult_price: formData.visitorsAdult,
-      child_price: formData.visitorsChild,
-      number_tourist: formData.dailyVisitors,
-      description: formData.description,
-      images: formData.image,
-    };
 
-    try {
-      const response = await axios.put(`http://localhost:8000/api/v1/locations/${locationId}`, data, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+  // Avatar Management
+const [avatar, setAvatar] = useState(null); // Avatar mới
+const [avatarUrl, setAvatarUrl] = useState(null); // URL avatar cũ
 
-      if(response.status === 200){
-        toast.success(response.data.message);
-        navigate('/admin/admin-place-list');
-      }
-    } catch (error) {
-      console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+const handleAvatarChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    setAvatar(file);
+    setAvatarUrl(null); // Xóa URL cũ khi có ảnh mới
+    setAvatarPreview(URL.createObjectURL(file)); // Hiển thị preview
+  }
+};
+
+const handleRemoveAvatar = () => {
+  setAvatar(null);
+  setAvatarUrl(null); // Xóa cả avatar mới và cũ
+  setAvatarPreview(null);
+};
+
+// Images Management
+const [images, setImages] = useState([]); // Danh sách URL ảnh cũ
+const [newImages, setNewImages] = useState([]); // File ảnh mới
+
+const handleImageChange = (e) => {
+  const files = Array.from(e.target.files);
+  const previews = files.map((file) => URL.createObjectURL(file));
+
+  setNewImages((prev) => [...prev, ...files]);
+  setImages((prev) => [...prev, ...previews]);
+};
+
+const handleRemoveImage = (index) => {
+  setImages((prev) => prev.filter((_, i) => i !== index));
+  setNewImages((prev) => prev.filter((_, i) => i !== index - images.length)); // Loại bỏ ảnh mới
+};
+
+// Submit Logic
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const data = new FormData();
+  data.append('name', formData.name);
+  data.append('address', `${formData.placeDetail}, ${formData.place}, ${formData.district}, ${formData.region}`);
+  data.append('open_time', formData.openTime);
+  data.append('close_time', formData.closingTime);
+  data.append('type', formData.type);
+  data.append('age_start', formData.ageGroupStart);
+  data.append('age_end', formData.ageGroupEnd);
+  data.append('adult_price', formData.visitorsAdult);
+  data.append('child_price', formData.visitorsChild);
+  data.append('number_tourist', formData.dailyVisitors);
+  data.append('description', formData.description);
+
+  // Avatar Handling
+  if (avatar) {
+    data.append('avatar', avatar);
+  } else if (avatarUrl) {
+    data.append('avatar', avatarUrl); // Giữ lại avatar cũ
+  }
+
+  // Images Handling
+  newImages.forEach((file) => {
+    data.append('images', file); // Gửi ảnh mới
+  });
+  data.append('existing_images', JSON.stringify(images)); // Gửi URL ảnh cũ
+
+  try {
+    const response = await axios.put(`http://localhost:8000/api/v1/locations/${locationId}`, data, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    if (response.status === 200) {
+      toast.success('更新が成功しました！');
+      navigate('/admin/admin-place-list');
     }
-  };
+  } catch (error) {
+    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
+    toast.error('エラーが発生しました！');
+  }
+};
+
+  
+  
+  
 
   const handleCancel = async (e) => {
     // Xử lý khi người dùng nhấn nút hủy
@@ -787,45 +924,135 @@ useEffect(() => {
         </div>
       </div>
           </div>
+          {/* Type Section */}
+          <div className="form-group">
+  <label className="form-label">
+    <img
+      src={require('../../../assets/images/Vector14.png')}
+      alt="Icon"
+      className="form-icon"
+    />
+    旅行のスタイル：
+  </label>
+  <div className="image-placeholder" onClick={() => setIsPopupOpen(true)}>
+    <img
+      src={require('../../../assets/images/Vector15.png')}
+      alt="Click to select"
+      className="select-image"
+    />
+  </div>
+
+  {/* Hiển thị các chip đã chọn */}
+  <div className="selected-chips">
+    {selectedChips.map((chip, index) => (
+      <div key={index} className="chips-wrapper">
+        <label>{chip}</label>
+      </div>
+    ))}
+  </div>
+
+  {/* Popup ChipSelector */}
+  {isPopupOpen && (
+    <ChipSelector
+      selectedItems={selectedChips}
+      options={options}
+      onApply={handleApplyChips}
+      onClose={() => setIsPopupOpen(false)}
+    />
+  )}
+</div>
+
+
         </div>
 
         {/* Right Side */}
         <div className="right-side">
-                    {/* Label 9: 画像をアップロード */}
-                    <div className="form-group">
-            <label className="form-label-1 image-upload-label">
-              <img
-                src={require('../../../assets/images/Vector9.png')}
-                alt="Icon"
-                className="form-icon"
-              />
-              画像をアップロード：
-            </label>
-            <div className="image-upload">
-              <input
-                type="file"
-                name="image"
-                id="image-upload"
-                className="image-input"
-              />
-              {formData.image && (
-                <div className="image-preview">
-                  <img
-                    src={formData.image}
-                    alt="Preview"
-                    className="preview-image"
-                  />
-                  <button  className="remove-image">
-                    <img
-                      src={require('../../../assets/images/Vector12.png')}
-                      alt="Remove"
-                      className="remove-icon"
-                    />
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
+{/* Avatar Upload Section */}
+<div className="form-group">
+  <label htmlFor="avatar-upload" className="form-label-1 upload-label">
+    <img
+      src={require('../../../assets/images/Vector9.png')}
+      alt="Icon"
+      className="form-icon"
+    />
+    アバター画像をアップロード：
+  </label>
+  <div className="image-upload">
+    <input
+      type="file"
+      name="avatar"
+      id="avatar-upload"
+      onChange={handleAvatarChange}
+      className="image-input"
+      style={{ display: 'none' }}
+    />
+    {avatarPreview ? (
+      <div className="image-preview">
+        <img
+          src={avatarPreview}
+          alt="Avatar Preview"
+          className="preview-image"
+        />
+        <button onClick={handleRemoveAvatar} className="remove-image">
+          <img
+            src={require('../../../assets/images/Vector13.png')}
+            alt="Remove"
+            className="remove-icon"
+          />
+        </button>
+      </div>
+    ) : (
+      <div className="image-placeholder">
+        <label htmlFor="avatar-upload" className="select-image">
+        </label>
+      </div>
+    )}
+  </div>
+</div>
+
+{/* Images Upload Section */}
+<div className="form-group">
+  <label htmlFor="images-upload" className="form-label-1 image-upload-label">
+    <img
+      src={require('../../../assets/images/Vector9.png')}
+      alt="Icon"
+      className="form-icon"
+    />
+    画像をアップロード：
+  </label>
+  <div className="image-upload">
+    <input
+      type="file"
+      name="images"
+      id="images-upload"
+      onChange={handleImageChange}
+      className="image-input"
+      multiple
+      style={{ display: 'none' }}
+    />
+    <label htmlFor="images-upload" className="select-image">
+    </label>
+    <div className="image-preview-container">
+      {images.map((image, index) => (
+        <div key={index} className="image-preview">
+          <img
+            src={image}
+            alt={`Preview ${index}`}
+            className="preview-image"
+          />
+          <button onClick={() => handleRemoveImage(index)} className="remove-image">
+            <img
+              src={require('../../../assets/images/Vector13.png')}
+              alt="Remove"
+              className="remove-icon"
+            />
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
           <div className="form-group">
             <label className="form-label">
               <img

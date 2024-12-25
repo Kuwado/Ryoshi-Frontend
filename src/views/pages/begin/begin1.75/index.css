@@ -117,7 +117,7 @@
     width: 360px;
   }
   
-  .begin2-skip-button {
+  .begin-1-75-skip-button {
     font-size: 16px;
     font-weight: bold;
     border: none;
@@ -126,10 +126,10 @@
     color: black;
     margin-top: 20px;
     margin: 5% 10%;
-    width: 52%;
+    width: 40%;
   }
   
-  .begin2-skip-button:hover {
+  .begin-1-75-skip-button:hover {
     text-decoration: underline;
     text-underline-offset: 5px;
     text-decoration-thickness: 2px;

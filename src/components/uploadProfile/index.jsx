@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Avatar from "react-avatar-edit";
 import { Dialog } from "primereact/dialog";
-import img from "../assets/images/Vector.png";
+import img from "../../assets/images/Vector.png";
 import { Button } from "primereact/button";
-import "./uploadProfile.css";
+import "./index.css";
 
 function UploadProfile({ onImageSelect }) {
   const [src, setsrc] = useState(null);
