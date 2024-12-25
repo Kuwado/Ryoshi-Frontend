@@ -313,10 +313,12 @@ const handleClosePopup = () => {
         </div>
       </div>
       <div className="user-hobby">
-        <label className="title-user">
-          <FontAwesomeIcon icon={faThumbsUp} className="color-icon" />
-          趣味
-        </label>
+        <div className="user-profile-title">
+          <FontAwesomeIcon icon={faThumbsUp} className="color-icon" style={{fontSize: "25px"}} />
+          <label className="label-title">
+            趣味
+          </label>
+        </div>
         <div className="user-hobby-button">
           <div className="user-hobby-button-item">
           {/* Các nút mặc định */}
@@ -375,10 +377,12 @@ const handleClosePopup = () => {
         </div>
       </div>
       <div class="favoritelocation">
-        <label className="favarite-title">
-          <FontAwesomeIcon icon={faHeart} className="color-icon" />
-          好きな場所
-        </label>
+        <div className="user-profile-title">
+          <FontAwesomeIcon icon={faHeart} className="color-icon" style={{fontSize: "25px"}} />
+          <label className="label-title">
+            好きな場所
+          </label>
+        </div>
         <Collection
           collectionData={formData.liked}
           itemsNumber={4}
@@ -388,10 +392,12 @@ const handleClosePopup = () => {
         ></Collection>
       </div>
       <div class="gonelocation">
-        <label className="gone-title">
-          <FontAwesomeIcon icon={faPersonHiking} className="color-icon" />
-          訪れた場所
-        </label>
+        <div className="user-profile-title">
+            <FontAwesomeIcon icon={faPersonHiking} className="color-icon" style={{fontSize: "32px"}} />
+            <label className="label-title">
+            訪れた場所
+            </label>
+        </div>
         <Collection
           collectionData={formData.gone}
           itemsNumber={4}
