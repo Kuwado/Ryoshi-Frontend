@@ -38,25 +38,6 @@
     width: 80%;
   }
   
-  .begin1-skip-button {
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: black;
-    margin-top: 20px;
-    margin: 5% 10%;
-    width: 80%;
-  }
-  
-  .begin1-skip-button:hover {
-    text-decoration: underline;
-    text-underline-offset: 5px;
-    text-decoration-thickness: 2px;
-  }
-  
-  
   .submit-button:hover {
     background-color: #0074a3;
   }
@@ -115,33 +96,6 @@
   .begin1-6-submit-button {
     margin-top: 40px;
     width: 360px;
-  }
-  
-  .begin-1-75-skip-button {
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: black;
-    margin-top: 20px;
-    margin: 5% 10%;
-    width: 40%;
-  }
-  
-  .begin-1-75-skip-button:hover {
-    text-decoration: underline;
-    text-underline-offset: 5px;
-    text-decoration-thickness: 2px;
-  }
-  
-  .begin1-6-options-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Căn giữa theo chiều ngang */
-    align-items: end; /* Căn giữa theo chiều dọc */
-    padding-right: 150px;
   }
   
   .age-options-grid {

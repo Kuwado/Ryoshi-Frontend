@@ -77,6 +77,31 @@ export default function UserHeader() {
         navigate('/user/search-result', { state: { locations: filteredLocations } }); // Truyền dữ liệu qua state
     };
 
+    const pathname = location.pathname;
+    console.log(location.pathname)
+    if(pathname.includes("begin")) {
+        return(
+            <>
+            <div id="header" className="header" style={{height: "66.22px"}}>
+                <div className="container-fluid d-flex align-items-center">
+                    {/* <!-- Logo --> */}
+                    <img src={Logo} alt="Logo" className="logo blend-effect" />
+
+                    {/* <!-- Menu --> */}
+                    <div className="menu d-flex align-items-center width-100">
+                        
+                    </div>    
+
+                    {/* <!-- User Section --> */}
+                    <div className="user-section d-flex align-items-center ad-user-section">
+                        <AvatarDropdown />
+                    </div>
+                </div>
+            </div>
+            </>
+        );
+    }
+
     return (
         <div id="header" className="header">
             <div className="container-fluid d-flex align-items-center">

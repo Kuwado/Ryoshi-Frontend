@@ -67,34 +67,32 @@ const ageRanges = [
         <BeginNavLink />
       </div>
       <div className="begin1-6-content">
-            <div className="flex-item-1">
-            <div className="begin1-6-options-section">
-                <div className="age-options-grid">
-                {ageRanges.map((ageRange, index) => (
-                    <div
-                    key={index}
-                    className={`chip-fixed-width chips-wrapper ${
-                        children_ages.includes(ageRange) ? "selected" : ""
-                    }`}
-                    onClick={() => handleChipClick(ageRange)}
-                    >
-                    <input
-                    type="checkbox"
-                    id={ageRange}
-                    className="d-none"
-                    checked={children_ages.includes(ageRange)} // Đánh dấu checkbox nếu chip được chọn
-                    readOnly
-                    />
-                    <label htmlFor={ageRange}>{ageRange}</label>
-                    </div>
-                ))}
+        <div className="begin1-6-options-section">
+            <div className="age-options-grid">
+            {ageRanges.map((ageRange, index) => (
+                <div
+                key={index}
+                className={`chip-fixed-width chips-wrapper ${
+                    children_ages.includes(ageRange) ? "selected" : ""
+                }`}
+                onClick={() => handleChipClick(ageRange)}
+                >
+                <input
+                type="checkbox"
+                id={ageRange}
+                className="d-none"
+                checked={children_ages.includes(ageRange)} // Đánh dấu checkbox nếu chip được chọn
+                readOnly
+                />
+                <label htmlFor={ageRange}>{ageRange}</label>
                 </div>
+            ))}
+            </div>
 
-                <Button label="次のステップ" className="begin1-6-submit-button" onClick={handleNextClick}>
-                </Button>
-                <button className="begin-1-75-skip-button" onClick={() => navigate("/user/begin2")}>スキップこのステップ</button>
-            </div>
-            </div>
+            <Button label="次のステップ" className="begin1-6-submit-button" onClick={handleNextClick}>
+            </Button>
+            <button className="begin1-skip-button" onClick={() => navigate("/user/begin2")}>スキップこのステップ</button>
+        </div>
         <div className="image-section">
           <img src={Begin1_1} className="begin1-image item-1" />
           <img src={Begin1_2} className="begin1-image item-2" />

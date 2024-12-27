@@ -1,5 +1,5 @@
 .begin1-container {
-  padding: 40px 70px 70px;
+  padding: 40px 70px 40px;
   font-family: Arial, sans-serif;
   height: fit-content;
 }
@@ -46,8 +46,7 @@
   cursor: pointer;
   color: black;
   margin-top: 20px;
-  margin: 5% 10%;
-  width: 80%;
+  width: 100%;
 }
 
 .begin1-skip-button:hover {

@@ -127,7 +127,7 @@ function Begin2() {
       </div> 
       <div className="flex-2cols">
         <div className="flex-col">
-          <h2 className="begin1-title" style={{ marginTop: "10px" }}>最低5つの項目を選択してください</h2>
+          <h2 className="begin1-title" style={{ marginTop: "10px" }}>(最低5つの項目を選択してください)</h2>
 
           <div className="begin1-content">
             {/* Phần form lựa chọn */}
