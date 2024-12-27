@@ -71,10 +71,11 @@ const UserProfile = () => {
         gone: user.user.gone_location,
         image: user.user.ava,
       }); // Lưu dữ liệu vào state
+      const interests = user.user.interest?.split(',').map((interest) => interest.trim());
+      setHobbies(interests) // Cập nhật state interests
     };
 
     userData();
-    console.log(formData.interest);
   }, []);
 
   const SaveButtons = async () => {
@@ -332,26 +333,15 @@ const goneDetail = () => {
         </div>
         <div className="user-hobby-button">
           <div className="user-hobby-button-item">
-          {/* Các nút mặc định */}
-          <Button
-           label={formData.interest?.split(",") || "Default Label"}
-           className="user-button-hobby"
-           type="user-submit-hobby"
-          />
-          <Button
-           label={formData.interest?.split(",") || "Default Label"}
-           className="user-button-hobby"
-           type="user-submit-hobby"
-          />
-          {/* Danh sách sở thích */}
-          {hobbies.map((hobby, index) => (
-            <Button
-              key={index}
-              label={hobby}
-              className="user-button-hobby"
-              type="user-submit-hobby"
-            ></Button>
-          ))}
+            {/* Danh sách sở thích */}
+            {hobbies?.map((hobby, index) => (
+              <Button
+                key={index}
+                label={hobby}
+                className="user-button-hobby"
+                type="user-submit-hobby"
+              ></Button>
+            ))}
           </div>
           {/* Nút thêm sở thích */}
           <div className="selected-chips">
