@@ -172,6 +172,18 @@
     font-size: 22px;
     padding: 5px 10px 5px 20px;
   }
+
+  .logo-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .logo-button .logo {
+    display: block;
+  }
+  
   
   @media (max-width: 1096px) {
     .search-bar {

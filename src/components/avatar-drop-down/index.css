@@ -23,14 +23,18 @@
     overflow: hidden;
     z-index: 1000;
     width: 200px;
+    font-weight: bold;
+    padding: 0 !important;
   }
   
   .dropdown-item {
     padding: 10px 15px;
-    display: flex;
+    display: flex !important;
     align-items: center;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    font-weight: bold !important;
+    height: 50px !important;
   }
   
   .dropdown-item:hover {
