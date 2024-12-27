@@ -158,7 +158,7 @@ const PlaceDetail = () => {
   
   return (
     <div className="place-detail-container">
-      <div className="ad-header">
+      <div className="ad-header" style={{paddingLeft: '20px', paddingTop: '20px', marginBottom: '0px'}}>
         <div className="ad-header-text">遊園地の詳細</div>
       </div>
       <div className="content-wrapper">
@@ -271,20 +271,22 @@ const PlaceDetail = () => {
                 style={{ width: '12px', height: '16px', objectFit: 'cover' }}
               />
               方向</button>
-            <button
-              onClick={handleLikeButton}
-            >
-              <div className="product-slider__fav js-fav" >
-                <span className={`heart ${isLiked ? 'is-active' : ''}`}></span>
-              </div>
-              お気に入り</button>
-            <button
-              onClick={handleVisitedButton}
-            >
-              <div className="product-slider__fav js-fav">
-                <span className={`tick ${isVisited ? 'is-active' : ''}`}></span>
-              </div>
-              行ったことがある</button>
+            <div className="toggle-button-left">
+              <button
+                onClick={handleLikeButton}
+              >
+                <div className="product-slider__fav js-fav" >
+                  <span className={`heart ${isLiked ? 'is-active' : ''}`}></span>
+                </div>
+                お気に入り</button>
+              <button
+                onClick={handleVisitedButton}
+              >
+                <div className="product-slider__fav js-fav">
+                  <span className={`tick ${isVisited ? 'is-active' : ''}`}></span>
+                </div>
+                行ったことがある</button>
+            </div>
           </div>
         </div>
       </div>

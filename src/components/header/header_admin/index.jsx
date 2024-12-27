@@ -62,11 +62,12 @@ export default function AdminHeader() {
     };
     
     const handleSelect = (location) => {
-        setSearch(location.name);
+        setSearch('');
         setFilteredLocations([]); // Xóa gợi ý sau khi chọn
         const selectedLocations = [location]; 
+        console.log(location)
         //Truyền 1 địa điểm được chọn
-        navigate('/admin/search-result', { state: { locations: selectedLocations } }); // Truyền dữ liệu qua state
+        navigate(`/admin/admin-edit-place/${location.location_id}`); // Truyền dữ liệu qua state
     };
 
     const handleEnter = () => {

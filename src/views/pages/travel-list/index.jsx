@@ -9,6 +9,9 @@ const { Option } = Select;
 
 const TravelList = () => {
   const location = useLocation();
+  const likeState = useState(location.state?.likeState || "");
+  const goneState = useState(location.state?.goneState || "");
+
   const region = location.pathname.split("/").pop();
   const [collections, setCollections] = useState([]); // Dữ liệu từ API
   const [filteredCollections, setFilteredCollections] = useState([]);
@@ -21,8 +24,8 @@ const TravelList = () => {
   const [selectedAge, setSelectedAge] = useState(undefined);
   const [selectedStyle, setSelectedStyle] = useState(undefined);
   const [selectedGone, setSelectedGone] = useState(undefined);
-  const [selectedDistance, setSelectedDistance] = useState(undefined);
-  const [selectedLiked, setSelectedLiked] = useState(undefined);
+  const [selectedDistance, setSelectedDistance] = useState(goneState);
+  const [selectedLiked, setSelectedLiked] = useState(likeState);
 
   const filterByRegion = (places) => {
     // Nếu miền được chọn là "all", trả về danh sách gốc
@@ -130,7 +133,19 @@ const TravelList = () => {
   useEffect(() => {
     fetchPlaces();
     fetchUserInfo();
+
+    likeState && (setSelectedFilters((prevFilters) => ({
+      ...prevFilters,
+      [likeState[0].key]: likeState[0].value,
+    })));
+  
+    goneState && (setSelectedFilters((prevFilters) => ({
+      ...prevFilters,
+      [goneState[0].key]: goneState[0].value,
+    })));
   }, []);
+
+
 
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prevFilters) => ({

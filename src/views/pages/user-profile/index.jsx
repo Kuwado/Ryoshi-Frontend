@@ -16,10 +16,12 @@ import "./index.css";
 import { CustomersInformation, CustomersInformationUpdate } from "./userprofileapi";
 import { format } from 'date-fns';
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 
 const UserProfile = () => {
+  const navigate = useNavigate();
   const [hobbies, setHobbies] = useState([]); // Danh sách sở thích
   const [collections, setCollections] = useState([]); // Dữ liệu từ API
   const [isButtonVisible, setIsButtonVisible] = useState(true);
@@ -204,6 +206,15 @@ const handleApply = (selectedItems) => {
 const handleClosePopup = () => {
   setIsPopupOpen(false); // Đóng pop-up
 };
+
+const likeDetail = () => {
+  navigate('/user/travel-list/all', { state: { likeState: {key: "like", value: "好き"} } });
+}
+
+const goneDetail = () => {
+  navigate('/user/travel-list/all', { state: { goneState:  {key: "visited", value: "行ってきました"} } });
+}
+
   return (
     <div className="user-profile">
       <h1 className="title-user-head">プロフィール</h1>
@@ -377,11 +388,14 @@ const handleClosePopup = () => {
         </div>
       </div>
       <div class="favoritelocation">
-        <div className="user-profile-title">
-          <FontAwesomeIcon icon={faHeart} className="color-icon" style={{fontSize: "25px"}} />
-          <label className="label-title">
-            好きな場所
-          </label>
+        <div  className="space-between">
+          <div className="user-profile-title">
+            <FontAwesomeIcon icon={faHeart} className="color-icon" style={{fontSize: "25px"}} />
+            <label className="label-title">
+              好きな場所
+            </label>
+          </div>
+          <div className="detail" onClick={likeDetail}>詳細を見る</div>
         </div>
         <Collection
           collectionData={formData.liked}
@@ -392,11 +406,14 @@ const handleClosePopup = () => {
         ></Collection>
       </div>
       <div class="gonelocation">
-        <div className="user-profile-title">
-            <FontAwesomeIcon icon={faPersonHiking} className="color-icon" style={{fontSize: "32px"}} />
-            <label className="label-title">
-            訪れた場所
-            </label>
+        <div className="space-between">
+          <div className="user-profile-title">
+              <FontAwesomeIcon icon={faPersonHiking} className="color-icon" style={{fontSize: "32px"}} />
+              <label className="label-title">
+              訪れた場所
+              </label>
+          </div>
+          <div className="detail" onClick={goneDetail}>詳細を見る</div>
         </div>
         <Collection
           collectionData={formData.gone}

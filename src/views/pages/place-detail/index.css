@@ -5,15 +5,8 @@
   align-items: flex-start; /* Căn theo đỉnh */
   width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   box-sizing: border-box;
-}
-.ad-header {
-  background-color: #f9f9f9 !important;
-}
-.ad-header-text {
-  padding-left: 66px;
-  background-color: #f9f9f9;
 }
 
 /* Phần bên trái (Carousel) */
@@ -121,9 +114,10 @@
 .toggle-button {
   display: flex;
   gap: 30px; 
-  justify-content: flex-start; 
+  justify-content: space-between; 
   align-items: center; 
-  padding-left: 30px;
+  padding: 0 20px;
+  margin-top: 40px;
 }
 
 .toggle-button button {
@@ -141,6 +135,12 @@
   color: white;
 }
 
+.toggle-button-left {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
 .toggle-button button img {
   width: 12px;
   height: 16px;
@@ -151,7 +151,6 @@
 .toggle-button button:nth-child(1) {
   background-color: orange;
   color: white;
-  margin-right: 60px;
 }
 
 .toggle-button button:nth-child(1):hover {

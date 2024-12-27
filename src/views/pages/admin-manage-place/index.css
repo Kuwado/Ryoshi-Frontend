@@ -12,6 +12,11 @@
   background-color: white;
 }
 
+.admin-header h2 {
+  font-weight: 700;
+  font-size: 36px;
+}
+
 .ad-header-text {
   font-size: 36px;
   font-weight: 700;

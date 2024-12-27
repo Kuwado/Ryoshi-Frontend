@@ -505,8 +505,11 @@ const handleImageChange = (e) => {
 };
 
 const handleRemoveImage = (index) => {
+  console.log(index, images)
+  console.log(newImages)
   setImages((prev) => prev.filter((_, i) => i !== index));
   setNewImages((prev) => prev.filter((_, i) => i !== index - images.length)); // Loại bỏ ảnh mới
+  console.log(newImages)
 };
 
 // Submit Logic
@@ -525,6 +528,13 @@ const handleSubmit = async (e) => {
   data.append('child_price', formData.visitorsChild);
   data.append('number_tourist', formData.dailyVisitors);
   data.append('description', formData.description);
+  
+  console.log(images)
+
+  const imageNames = images.map(url => {
+    const parts = url.split('/');
+    return parts[parts.length - 1]; // Lấy phần cuối cùng là tên file
+  });
 
   // Avatar Handling
   if (avatar) {
@@ -537,7 +547,7 @@ const handleSubmit = async (e) => {
   newImages.forEach((file) => {
     data.append('images', file); // Gửi ảnh mới
   });
-  data.append('existing_images', JSON.stringify(images)); // Gửi URL ảnh cũ
+  data.append('images', JSON.stringify(imageNames)); // Gửi URL ảnh cũ
 
   try {
     const response = await axios.put(`http://localhost:8000/api/v1/locations/${locationId}`, data, {
@@ -556,10 +566,6 @@ const handleSubmit = async (e) => {
     toast.error('エラーが発生しました！');
   }
 };
-
-  
-  
-  
 
   const handleCancel = async (e) => {
     // Xử lý khi người dùng nhấn nút hủy

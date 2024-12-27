@@ -63,11 +63,11 @@ export default function UserHeader() {
     };
     
     const handleSelect = (location) => {
-        setSearch(location.name);
+        setSearch('');
         setFilteredLocations([]); // Xóa gợi ý sau khi chọn
         const selectedLocations = [location]; 
         //Truyền 1 địa điểm được chọn
-        navigate('/user/search-result', { state: { locations: selectedLocations } }); // Truyền dữ liệu qua state
+        navigate(`/user/place-detail/${location.location_id}`); // Truyền dữ liệu qua state
     };
 
     const handleEnter = () => {
@@ -79,12 +79,12 @@ export default function UserHeader() {
 
     return (
         <div id="header" className="header">
-            <div className="container-fluid d-flex align-items-center justify-content-between">
+            <div className="container-fluid d-flex align-items-center">
                 {/* <!-- Logo --> */}
                 <img src={Logo} alt="Logo" className="logo blend-effect" />
 
                 {/* <!-- Menu --> */}
-                <div className="menu d-flex align-items-center">
+                <div className="menu d-flex align-items-center width-100">
                     <NavLink />
                 </div>
 
@@ -121,7 +121,7 @@ export default function UserHeader() {
                 </div>     
 
                 {/* <!-- User Section --> */}
-                <div className="user-section d-flex align-items-center">
+                <div className="user-section d-flex align-items-center ad-user-section">
                     <AvatarDropdown />
                 </div>
             </div>

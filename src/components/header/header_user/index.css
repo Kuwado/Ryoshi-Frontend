@@ -21,6 +21,10 @@
     gap: 0;
     height: 100%;
   }
+
+  .width-100 {
+    width: 100%;
+  }
   
   .menu-item {
     display: flex;
@@ -102,6 +106,8 @@
   .search-container {
     position: relative;
     transition: all 0.3s ease;
+    width: 100%;
+    max-width: 500px;
   }
   
   .search-bar {
