@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.css"; // File CSS chung
 import Avatar from "../../assets/images/avatar.png"; // Avatar image
+import { LogoutOutlined , UserOutlined} from "@ant-design/icons"; // Icon
 
 export default function AvatarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,15 @@ export default function AvatarDropdown() {
   const handleNavigation = (path) => {
     setIsOpen(false); // Đóng dropdown khi click
     navigate(path);
+  };
+
+  const handleLogout = () => {
+    // Xóa token và dữ liệu người dùng khỏi sessionStorage
+    sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("auth");
+
+    // Chuyển hướng về trang đăng nhập
+    navigate("/landing");
   };
 
   return (
@@ -31,13 +41,11 @@ export default function AvatarDropdown() {
       {isOpen && (
         <div className="dropdown-menu">
           <div className="dropdown-item" onClick={() => handleNavigation("/user/user-profile")}>
-            <span className="icon">👤</span> プロフィール
+            <span className="icon"><UserOutlined /></span> プロフィール
           </div>
-          <div className="dropdown-item" onClick={() => handleNavigation("user/visited-places")}>
-            <span className="icon">📍</span> 行った観光地
-          </div>
-          <div className="dropdown-item" onClick={() => handleNavigation("user/logout")}>
-            <span className="icon">↩️</span> ログアウト
+          
+          <div className="dropdown-item" onClick={() => handleLogout()}>
+            <span className="icon"><LogoutOutlined /></span> ログアウト
           </div>
         </div>
       )}

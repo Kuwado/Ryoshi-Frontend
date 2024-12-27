@@ -106,7 +106,14 @@ export default function UserHeader() {
         <div id="header" className="header">
             <div className="container-fluid d-flex align-items-center">
                 {/* <!-- Logo --> */}
-                <img src={Logo} alt="Logo" className="logo blend-effect" />
+                <button
+                    className="logo-btn blend-effect"
+                    onClick={() => {
+                        navigate('/user/home');
+                    }}
+                    >
+                    <img src={Logo} alt="Logo" className="logo blend-effect" />
+                </button>
 
                 {/* <!-- Menu --> */}
                 <div className="menu d-flex align-items-center width-100">
