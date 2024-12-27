@@ -426,7 +426,7 @@ const AdminCreatePlace = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="input-field"
+              className="input-field-form"
             />
           </div>
 
@@ -506,7 +506,7 @@ const AdminCreatePlace = () => {
               name="placeDetail"
               value={formData.placeDetail}
               onChange={handleChange}
-              className="input-field"
+              className="input-field-form"
             />
           </div>
 
@@ -525,7 +525,7 @@ const AdminCreatePlace = () => {
               name="openTime"
               value={formData.openTime}
               onChange={handleChange}
-              className="input-field"
+              className="input-field-form"
             />
           </div>
 
@@ -544,7 +544,7 @@ const AdminCreatePlace = () => {
               name="closingTime"
               value={formData.closingTime}
               onChange={handleChange}
-              className="input-field"
+              className="input-field-form"
             />
           </div>
           {/* Label 6: 適齢期 với 2 ô */}
@@ -563,7 +563,7 @@ const AdminCreatePlace = () => {
                 name="ageGroupStart"
                 value={formData.ageGroupStart}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field-form"
                 placeholder="開始年齢"
               />
               <div className="age-text">から</div>
@@ -572,7 +572,7 @@ const AdminCreatePlace = () => {
                 name="ageGroupEnd"
                 value={formData.ageGroupEnd}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field-form"
                 placeholder="終了年齢"
               />
               <div className="age-text">まで</div>
@@ -596,7 +596,7 @@ const AdminCreatePlace = () => {
                 name="visitorsAdult"
                 value={formData.visitorsAdult}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field-form"
               />
             </div>
             <div className="visit-group">
@@ -606,7 +606,7 @@ const AdminCreatePlace = () => {
                 name="visitorsChild"
                 value={formData.visitorsChild}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field-form"
               />
             </div>
           </div>
@@ -628,7 +628,7 @@ const AdminCreatePlace = () => {
                 name="dailyVisitors"
                 value={formData.dailyVisitors}
                 onChange={handleChange}
-                className="input-field daily-input"
+                className="input-field-form daily-input"
               />
             </div>
           </div>

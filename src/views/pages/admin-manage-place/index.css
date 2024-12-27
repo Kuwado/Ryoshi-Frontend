@@ -45,7 +45,7 @@
   margin-bottom: 20px;
 }
 .form-label {
-  width: 180px;
+  width: 230px;
   font-size: 16px;
   font-weight: 700;
   color: #0094da;
@@ -64,12 +64,12 @@
 }
 .form-icon {
   width: auto;
-  height: 28px;
+  height: 20px;
   max-width: 28px;
   margin-right: 10px;
 }
 
-.input-field {
+.input-field-form {
   width: 490px;
   height: 52px;
   border-radius: 8px;
@@ -81,6 +81,7 @@
 .age-group {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .age-group .age-text {
@@ -187,7 +188,7 @@
 }
 
 /* Input cho 訪問者数 */
-.visit-group .input-field {
+.visit-group .input-field-form {
   width: 100%;  /* Chiều rộng của input */
   height: 52px;
   border-radius: 8px;
@@ -255,7 +256,7 @@
   width: 100%;
 }
 
-.input-field {
+.input-field-form {
   width: 100%; /* Đảm bảo input chiếm hết chiều rộng */
   height: 52px;
   border-radius: 8px;
@@ -273,7 +274,14 @@
   border: none;
   cursor: pointer;
 }
-
+.edit-btn1 {
+  position: absolute;
+  right: 10px; /* Đảm bảo nút nằm sát lề phải */
+  transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
 .edit-icon {
   width: 20px; /* Kích thước biểu tượng */
   height: 20px;
@@ -306,17 +314,17 @@
 /* Khi màn hình nhỏ hơn 500px, chỉnh sửa một chút các thành phần khác */
 @media (max-width: 500px) {
   .form-label,
-  .input-field,
+  .input-field-form,
   .visit-text,
   .daily-input {
     font-size: 14px; /* Giảm kích thước font khi màn hình nhỏ */
   }
   
-  .input-field {
+  .input-field-form {
     width: 100%;  /* Đảm bảo input chiếm toàn bộ chiều rộng khi màn hình nhỏ */
   }
 
-  .age-group .input-field {
+  .age-group .input-field-form {
     width: 100%; /* Input của age-group cũng chiếm toàn bộ chiều rộng */
   }
 

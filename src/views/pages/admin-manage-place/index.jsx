@@ -592,7 +592,7 @@ const handleSubmit = async (e) => {
                 value={formData.name}
                 onChange={handleChange}
                 readOnly={!isEditable.name}
-                className="input-field"
+                className="input-field-form"
               />
               <button
                 onClick={() => handleEditClick('name')}
@@ -691,7 +691,7 @@ const handleSubmit = async (e) => {
                 value={formData.placeDetail}
                 onChange={handleChange}
                 readOnly={!isEditable.placeDetail}
-                className="input-field"
+                className="input-field-form"
               />
               <button
                 onClick={() => handleEditClick('placeDetail')}
@@ -723,7 +723,7 @@ const handleSubmit = async (e) => {
                 value={formData.openTime}
                 onChange={handleChange}
                 readOnly={!isEditable.openTime}
-                className="input-field"
+                className="input-field-form"
               />
               <button
                 onClick={() => handleEditClick('openTime')}
@@ -755,7 +755,7 @@ const handleSubmit = async (e) => {
                 value={formData.closingTime}
                 onChange={handleChange}
                 readOnly={!isEditable.closingTime}
-                className="input-field"
+                className="input-field-form"
               />
               <button
                 onClick={() => handleEditClick('closingTime')}
@@ -788,7 +788,7 @@ const handleSubmit = async (e) => {
                   value={formData.ageGroupStart}
                   onChange={handleChange}
                   readOnly={!isEditable.ageGroupStart}
-                  className="input-field"
+                  className="input-field-form"
                   placeholder=""
                 />
                 <button
@@ -810,7 +810,7 @@ const handleSubmit = async (e) => {
                   value={formData.ageGroupEnd}
                   onChange={handleChange}
                   readOnly={!isEditable.ageGroupEnd}
-                  className="input-field"
+                  className="input-field-form"
                   placeholder=""
                 />
                 <button
@@ -848,12 +848,12 @@ const handleSubmit = async (e) => {
             value={formData.visitorsAdult}
             onChange={handleChange}
             readOnly={!isEditable.visitorsAdult}
-            className="input-field"
+            className="input-field-form"
             placeholder=""
           />
           <button
             onClick={() => handleEditClick('visitorsAdult')}
-            className="edit-btn"
+            className="edit-btn1"
           >
             <img
               src={require('../../../assets/images/edit.png')}
@@ -872,12 +872,12 @@ const handleSubmit = async (e) => {
             value={formData.visitorsChild}
             onChange={handleChange}
             readOnly={!isEditable.visitorsChild}
-            className="input-field"
+            className="input-field-form"
             placeholder=""
           />
           <button
             onClick={() => handleEditClick('visitorsChild')}
-            className="edit-btn"
+            className="edit-btn1"
           >
             <img
               src={require('../../../assets/images/edit.png')}
@@ -908,12 +908,12 @@ const handleSubmit = async (e) => {
             value={formData.dailyVisitors}
             onChange={handleChange}
             readOnly={!isEditable.dailyVisitors}
-            className="input-field"
+            className="input-field-form"
             placeholder=""
           />
           <button
             onClick={() => handleEditClick('dailyVisitors')}
-            className="edit-btn"
+            className="edit-btn1"
           >
             <img
               src={require('../../../assets/images/edit.png')}
