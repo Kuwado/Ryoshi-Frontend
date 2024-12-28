@@ -5,10 +5,10 @@ import img from "../../assets/images/Vector.png";
 import { Button } from "primereact/button";
 import "./index.css";
 
-function UploadProfile({ onImageSelect }) {
+function UploadProfile({ onImageSelect, defaultImage }) {
   const [src, setsrc] = useState(null);
   const [imagecrop, setimagecrop] = useState(false);
-  const [pview, setpview] = useState(null);
+  const [pview, setpview] = useState(defaultImage);
 
   const onCrop = (view) => {
     setpview(view);

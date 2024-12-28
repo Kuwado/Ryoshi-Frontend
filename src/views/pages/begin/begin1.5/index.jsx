@@ -80,7 +80,7 @@ function Begin1_5() {
       <div className="begin1-content">
         <div className="begin1-form-section">
           <form>
-            <UploadProfile onImageSelect={setSelectedImage} />
+            <UploadProfile onImageSelect={setSelectedImage} defaultImage={null} />
             <Button label="次のステップ" className="begin1-submit-button" onClick={handleNextClick}>
             </Button>
             <button className="begin1-5-skip-button" onClick={() => navigate("/user/begin1.6")}>スキップこのステップ</button>
