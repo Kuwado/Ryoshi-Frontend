@@ -22,6 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const UserProfile = () => {
   const navigate = useNavigate();
+  const [showAddButton, setShowAddButton] = useState(false);
   const [hobbies, setHobbies] = useState([]); // Danh sách sở thích
   const [selectedImage, setSelectedImage] = useState([]); // Dữ liệu từ API
   const [isButtonVisible, setIsButtonVisible] = useState(true);
@@ -57,24 +58,24 @@ const UserProfile = () => {
   const token = sessionStorage.getItem("authToken");
   const id = JSON.parse(sessionStorage.getItem("auth")).id;
 
-  useEffect(() => {
-    const userData = async () => {
-      const user = await CustomersInformation(token, id);
-      setFormData({
-        name: user.user.name,
-        birthday: format(new Date(user.user.dob), 'yyyy-MM-dd'),
-        phone: user.user.phone,
-        email: user.user.email,
-        location: user.user.address,
-        interest: user.user.interest,
-        liked: user.user.liked_location,
-        gone: user.user.gone_location,
-        image: user.user.ava,
-      }); // Lưu dữ liệu vào state
-      const interests = user.user.interest?.split(',').map((interest) => interest.trim());
-      setHobbies(interests) // Cập nhật state interests
-    };
+  const userData = async () => {
+    const user = await CustomersInformation(token, id);
+    setFormData({
+      name: user.user.name,
+      birthday: format(new Date(user.user.dob), 'yyyy-MM-dd'),
+      phone: user.user.phone,
+      email: user.user.email,
+      location: user.user.address,
+      interest: user.user.interest,
+      liked: user.user.liked_location,
+      gone: user.user.gone_location,
+      image: user.user.ava,
+    }); // Lưu dữ liệu vào state
+    const interests = user.user.interest?.split(',').map((interest) => interest.trim());
+    setHobbies(interests) // Cập nhật state interests
+  };
 
+  useEffect(() => {
     userData();
   }, []);
 
@@ -100,6 +101,7 @@ const UserProfile = () => {
     
   }
   const handleToggleButtons = () => {
+    setShowAddButton(prev => !prev); // Chuyển đổi trạng thái hiển thị của nút +
     setIsButtonVisible(!isButtonVisible);
     setIsEditing(!isEditing); // Bật/tắt chế độ chỉnh sửa
   };
@@ -221,6 +223,14 @@ const likeDetail = () => {
 
 const goneDetail = () => {
   navigate('/user/travel-list/all', { state: { goneState:  {key: "visited", value: "行ってきました"} } });
+}
+
+const favItemUpdate = () => {
+  userData();
+}
+
+const goneItemUpdate = () => {
+  userData();
 }
 
   return (
@@ -363,12 +373,14 @@ const goneDetail = () => {
                 </div>
               ))}
             </div>
-          <Button
-            label="+"
-            className="user-button-addhobby"
-            type="user-submit-addhobby"
-            onClick={handleImageClick}
-          ></Button>
+            {showAddButton && (
+                <Button
+                    label="+"
+                    className="user-button-addhobby"
+                    type="user-submit-addhobby"
+                    onClick={handleImageClick}
+                ></Button>
+            )}
            {/* Hiển thị các chip đã chọn */}
            <div className="selected-chips">
 
@@ -400,6 +412,7 @@ const goneDetail = () => {
           showIndicator={false}
           showPagination={false}
           rowNumber={1}
+          onItemUpdate={favItemUpdate}
         ></Collection>
       </div>
       <div class="gonelocation">
@@ -418,6 +431,7 @@ const goneDetail = () => {
           showIndicator={false}
           showPagination={false}
           rowNumber={1}
+          onItemUpdate={goneItemUpdate}
         ></Collection>
       </div>
       <div className="user-button">
