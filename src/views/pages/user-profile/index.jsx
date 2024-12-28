@@ -23,7 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 const UserProfile = () => {
   const navigate = useNavigate();
   const [hobbies, setHobbies] = useState([]); // Danh sách sở thích
-  const [collections, setCollections] = useState([]); // Dữ liệu từ API
+  const [selectedImage, setSelectedImage] = useState([]); // Dữ liệu từ API
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -228,7 +228,7 @@ const goneDetail = () => {
       <h1 className="title-user-head">プロフィール</h1>
       <div className="user-profile-wrap">
         <div className="user-profile-image">
-          <UploadProfile />
+          <UploadProfile onImageSelect={setSelectedImage}/>
         </div>
         <div className="user-profile-info">
           <div className="user-profile-info-item">
