@@ -197,10 +197,15 @@ const handleImageClick = () => {
 
 const handleApply = (selectedItems) => {
   setSelectedChips(selectedItems);
-  setFormData((prevData) => ({
-    ...prevData,
-    type: selectedItems.join(","), // Lưu selectedChips vào formData.type
-  }));
+  setFormData((prevData) => {
+    // Chuyển interest từ chuỗi sang mảng, gộp với selectedItems, rồi loại trùng lặp
+    const currentInterest = prevData.interest ? prevData.interest.split(",") : [];
+    const updatedInterest = Array.from(new Set([...currentInterest, ...selectedItems])).join(",");
+    return {
+      ...prevData,
+      interest: updatedInterest,
+    };
+  });
   setIsPopupOpen(false); // Đóng pop-up
 };
 
