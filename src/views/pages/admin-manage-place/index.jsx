@@ -615,70 +615,53 @@ const handleSubmit = async (e) => {
 
           {/* Thành phố, Quận, Phường */}
           <div className="form-group">
-            <label className="form-label">
-              <img
-                src={require('../../../assets/images/Vector2.png')}
-                alt="Icon"
-                className="form-icon"
-              />
-              場所：
-            </label>
-            <div className="selectors-container">
-              <div className="input-with-edit">
-                <select
-                  name="region"
-                  value={city ? city.id : ''}
-                  onChange={handleChange}
-                  //disabled={!isEditable.region}
-                  //readOnly
-                  className="select-field"
-                >
-                  <option value="" disabled>市</option>
-                  {cityList.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+  <label className="form-label">
+    <img
+      src={require("../../../assets/images/Vector2.png")}
+      alt="Icon"
+      className="form-icon"
+    />
+    場所：
+  </label>
+  <div className="selectors-container">
+    {/* Input cho Thành phố */}
+    <input
+      type="text"
+      name="city"
+      value={city ? city.name : ""}
+      onChange={(e) =>
+        setCity({ id: null, name: e.target.value }) // Cập nhật giá trị city
+      }
+      className="select-field"
+      placeholder="市"
+    />
 
-              <div className="input-with-edit">
-                <select
-                  name="district"
-                  value={ward ? ward.id : ''}
-                  onChange={handleChange}
-                  // disabled={!isEditable.district}
-                  // readOnly
-                  className="select-field"
-                >
-                  <option value="" disabled>地区</option>
-                  {wardList.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+    {/* Input cho Quận/Huyện */}
+    <input
+      type="text"
+      name="ward"
+      value={ward ? ward.name : ""}
+      onChange={(e) =>
+        setWard({ id: null, name: e.target.value }) // Cập nhật giá trị ward
+      }
+      className="select-field"
+      placeholder="地区"
+    />
 
-              <div className="input-with-edit">
-                <select
-                  name="place"
-                  value={town ? town.id : ''}
-                  onChange={handleChange}
-                  disabled={!isEditable.place}
-                  readOnly
-                  className="select-field"
-                >
-                  <option value="" disabled>区</option>
-                  {townList.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
+    {/* Input cho Phường/Xã */}
+    <input
+      type="text"
+      name="town"
+      value={town ? town.name : ""}
+      onChange={(e) =>
+        setTown({ id: null, name: e.target.value }) // Cập nhật giá trị town
+      }
+      className="select-field"
+      placeholder="区"
+    />
+  </div>
+</div>
+
 
           {/* Chi tiết vị trí */}
           <div className="form-group">

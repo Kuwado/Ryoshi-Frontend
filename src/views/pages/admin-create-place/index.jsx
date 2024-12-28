@@ -432,64 +432,54 @@ const AdminCreatePlace = () => {
 
           {/* Label 2: Các ô selector */}
           <div className="form-group">
-            <label className="form-label">
-              <img
-                src={require("../../../assets/images/Vector2.png")}
-                alt="Icon"
-                className="form-icon"
-              />
-              場所：
-            </label>
-            <div className="selectors-container">
-              <select
-                name="city"
-                value={city ? city.id : ""}
-                onChange={handleCityChange}
-                className="select-field"
-              >
-                <option value="" disabled>
-                  市
-                </option>
-                {cityList.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
+  <label className="form-label">
+    <img
+      src={require("../../../assets/images/Vector2.png")}
+      alt="Icon"
+      className="form-icon"
+    />
+    場所：
+  </label>
+  <div className="selectors-container">
+    {/* Input cho Thành phố */}
+    <input
+      type="text"
+      name="city"
+      value={city ? city.name : ""}
+      onChange={(e) =>
+        setCity({ id: null, name: e.target.value }) // Cập nhật giá trị city
+      }
+      className="select-field"
+      placeholder="市"
+    />
 
-              <select
-                name="ward"
-                value={ward ? ward.id : ""}
-                onChange={handleWardChange}
-                className="select-field"
-              >
-                <option value="" disabled>
-                  地区
-                </option>
-                {wardList.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
+    {/* Input cho Quận/Huyện */}
+    <input
+      type="text"
+      name="ward"
+      value={ward ? ward.name : ""}
+      onChange={(e) =>
+        setWard({ id: null, name: e.target.value }) // Cập nhật giá trị ward
+      }
+      className="select-field"
+      placeholder="地区"
+    />
 
-              <select
-                name="town"
-                value={town ? town.id : ""}
-                onChange={handleTownChange}
-                className="select-field"
-              >
-                <option value="" disabled>
-                  区
-                </option>
-                {townList.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+    {/* Input cho Phường/Xã */}
+    <input
+      type="text"
+      name="town"
+      value={town ? town.name : ""}
+      onChange={(e) =>
+        setTown({ id: null, name: e.target.value }) // Cập nhật giá trị town
+      }
+      className="select-field"
+      placeholder="区"
+    />
+  </div>
+</div>
+
+
 
           {/* Label 3: 場所の詳細 */}
           <div className="form-group">
