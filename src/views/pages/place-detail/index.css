@@ -13,7 +13,7 @@
 .left-content {
   flex: 1; /* Chiếm 1 nửa màn hình */
   max-width: 50%; /* Giới hạn tối đa 50% */
-  padding-right: 10px;
+  /*padding-right: 10px;*/
   box-sizing: border-box;
 }
 

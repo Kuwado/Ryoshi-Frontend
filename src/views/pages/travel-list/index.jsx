@@ -70,10 +70,11 @@ const TravelList = () => {
   }, [region]);
       
   const fetchPlaces = async () => {
+    const userId = JSON.parse(sessionStorage.getItem("auth")).id;
     try {
       const token = sessionStorage.getItem("authToken");
       const response = await axios.get(
-        "http://localhost:8000/api/v1/locations",
+        `http://localhost:8000/api/v1/users/distance/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -82,7 +83,7 @@ const TravelList = () => {
       );
 
       if (response.status === 200) {
-        const { location } = response.data;
+        const location = response.data.distances;
         setCollections(filterByRegion(location)); // Lưu danh sách địa điểm vào state
         setFilteredCollections(location); // Mặc định hiển thị tất cả địa điểm
       } else {
@@ -130,22 +131,37 @@ const TravelList = () => {
     }
   };
   
+  const fetchData = async () => {
+    await fetchPlaces();
+    await fetchUserInfo();
+  };
+
   useEffect(() => {
-    fetchPlaces();
-    fetchUserInfo();
+    fetchData();
 
-    likeState && (setSelectedFilters((prevFilters) => ({
-      ...prevFilters,
-      [likeState[0].key]: likeState[0].value,
-    })));
-  
-    goneState && (setSelectedFilters((prevFilters) => ({
-      ...prevFilters,
-      [goneState[0].key]: goneState[0].value,
-    })));
-  }, []);
+    if (likeState) {
+        setSelectedFilters((prevFilters) => ({
+            ...prevFilters,
+            [likeState[0].key]: likeState[0].value,
+        }));
+    }
 
+    if (goneState) {
+        setSelectedFilters((prevFilters) => ({
+            ...prevFilters,
+            [goneState[0].key]: goneState[0].value,
+        }));
+    }
+  }, []); // Chạy effect chỉ khi component mount
 
+  const fetchUpdate = async () => {
+    await fetchData();
+    await applyFilters();
+  };
+
+  const itemUpdate = () => {
+    fetchUpdate();
+  }
 
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prevFilters) => ({
@@ -203,96 +219,112 @@ const TravelList = () => {
     }
   };
 
-  useEffect(() => {
-    const applyFilters = async () => {
-      let filtered = collections;
+  const applyFilters = async () => {
+    let filtered = collections;
 
-      // Áp dụng lọc theo độ tuổi
-      if (selectedFilters.age && selectedFilters.age !== "すべて") {
+    // Áp dụng lọc theo độ tuổi
+    if (selectedFilters.age && selectedFilters.age !== "すべて") {
+      
+      if(selectedFilters.age.includes("+")) {
+        const [start] = selectedFilters.age.split("+").map(Number);
+        filtered = filtered.filter(
+          (place) => place.age_end > start
+        );
+      }
+      else {
         const [start, end] = selectedFilters.age.split("-").map(Number);
         filtered = filtered.filter(
-          (place) => place.age_start <= start && place.age_end >= end
+          (place) => place.age_start >= start && place.age_end <= end
         );
       }
+    }
 
-      // Áp dụng lọc theo loại hình du lịch
-      if (selectedFilters.style && selectedFilters.style !== "すべて") {
-        filtered = filtered.filter(
-          (place) => place.type === selectedFilters.style
-        );
+    // Áp dụng lọc theo loại hình du lịch
+    if (selectedFilters.style && selectedFilters.style !== "すべて") {
+      filtered = filtered.filter(
+        (place) => place.type.includes(selectedFilters.style)
+      );
+    }
+
+    // Áp dụng lọc theo trạng thái đã đi
+    //Lấy ra danh sách kết hợp với danh sách địa điểm đã đi và danh sách địa điểm hiện tại
+    if (selectedFilters.visited && selectedFilters.visited === "行ってきました") {
+      if (userInfo && goneCollections) {
+        const goneIds = goneCollections.map(location => location.location_id);  
+        filtered = filtered.filter(place => goneIds.includes(place.location_id));
       }
+    }
 
-      // Áp dụng lọc theo trạng thái đã đi
-      //Lấy ra danh sách kết hợp với danh sách địa điểm đã đi và danh sách địa điểm hiện tại
-      if (selectedFilters.visited && selectedFilters.visited === "行ってきました") {
-        if (userInfo && goneCollections) {
-          const goneIds = goneCollections.map(location => location.location_id);  
-          filtered = filtered.filter(place => goneIds.includes(place.location_id));
-        }
+    //
+    if (selectedFilters.visited && selectedFilters.visited === "行っていない") {
+      if (userInfo && goneCollections) {
+        const goneIds = goneCollections.map(location => location.location_id);  
+        filtered = filtered.filter(place => !goneIds.includes(place.location_id));
       }
+    }
 
-      //
-      if (selectedFilters.visited && selectedFilters.visited === "行っていない") {
-        if (userInfo && goneCollections) {
-          const goneIds = goneCollections.map(location => location.location_id);  
-          filtered = filtered.filter(place => !goneIds.includes(place.location_id));
-        }
+    // Áp dụng lọc theo trạng thái thích
+    if (selectedFilters.like && selectedFilters.like === "好き") {
+      console.log(likedCollections)
+      if (userInfo && likedCollections) {
+        const likedIds = likedCollections.map(location => location.location_id);  
+        filtered = filtered.filter(place => likedIds.includes(place.location_id));
       }
+    }
 
-      // Áp dụng lọc theo trạng thái thích
-      if (selectedFilters.like && selectedFilters.like === "好き") {
-        console.log(likedCollections)
-        if (userInfo && likedCollections) {
-          const likedIds = likedCollections.map(location => location.location_id);  
-          filtered = filtered.filter(place => likedIds.includes(place.location_id));
-        }
+    //
+    if (selectedFilters.like && selectedFilters.like === "好きじゃない") {
+      console.log(likedCollections)
+      if (userInfo && likedCollections) {
+        const likedIds = likedCollections.map(location => location.location_id);  
+        filtered = filtered.filter(place => !likedIds.includes(place.location_id));
       }
+    }
 
-      //
-      if (selectedFilters.like && selectedFilters.like === "好きじゃない") {
-        console.log(likedCollections)
-        if (userInfo && likedCollections) {
-          const likedIds = likedCollections.map(location => location.location_id);  
-          filtered = filtered.filter(place => !likedIds.includes(place.location_id));
-        }
-      }
+    // Áp dụng lọc theo khoảng cách
+    if (selectedFilters.distance && selectedFilters.distance !== "すべて") {
+      if(selectedFilters.distance.includes('+')) {
+        const [min] = selectedFilters.distance.split("+").map(Number);
+        // Lọc filtered để chỉ chứa các địa điểm có distance trong khoảng từ min đến min
+        filtered = filtered.filter((place) => {
+          const distance = place.distance; // Sử dụng distance của từng place
+          return distance > min; // Kiểm tra khoảng cách
+        });
+      } else {
+        const [min, max] = selectedFilters.distance.split("-").map(Number);
+        // Lọc filtered để chỉ chứa các địa điểm có distance trong khoảng từ min đến max
+        filtered = filtered.filter((place) => {
+          const distance = place.distance; // Sử dụng distance của từng place
+          return distance >= min && distance <= max; // Kiểm tra khoảng cách
+        });
+      }    
+    }
 
-      // Áp dụng lọc theo khoảng cách
-      if (selectedFilters.distance && selectedFilters.distance !== "すべて") {
-        try {
-          const token = sessionStorage.getItem("authToken");
-          const [min, max] = selectedFilters.distance.split("-").map(Number);
+    setFilteredCollections(filtered);
+  };
 
-          for (const place of filtered) {
-            const response = await axios.get(
-              `http://localhost:8000/api/v1/users/distance/${place.id}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-
-            const distance = response.data.distance;
-            if (distance < min || distance > max) {
-              filtered = filtered.filter((p) => p.id !== place.id);
-            }
-          }
-        } catch (error) {
-          console.error("Error fetching distances:", error);
-        }
-      }
-
-      setFilteredCollections(filtered);
-    };
-
+  useEffect(() => {
     applyFilters();
   }, [selectedFilters, collections]);
 
   return (
     <div className="travel-list">
       <header className="admin-header">
-        <h2>北部の観光地</h2>
+        <h2>
+          {(() => {
+            if (region === "all") {
+              return "三地域の観光地";
+            } else if (region === "north") {
+              return "北部の観光地";
+            } else if (region === "central") {
+              return "中央部の観光地"; // Sửa lại để phản ánh đúng khu vực
+            } else if (region === "south") {
+              return "南部の観光地"; // Sửa lại để phản ánh đúng khu vực
+            } else {
+              return ""; // Trả về chuỗi rỗng nếu không khớp với bất kỳ điều kiện nào
+            }
+          })()}
+        </h2>
         <div className="header-filters-actions">
           <div className="header-filters">
             <Space size="middle">
@@ -356,7 +388,7 @@ const TravelList = () => {
                 <Option value="10-20">10 - 20km</Option>
                 <Option value="20-30">20 - 30km</Option>
                 <Option value="30-40">30 - 40km</Option>
-                <Option value="40-100">40+km</Option>
+                <Option value="40+">40+km</Option>
               </Select>
               <Select
                 value={selectedLiked}
@@ -407,6 +439,7 @@ const TravelList = () => {
           showIndicator={false}
           showPagination={true}
           rowNumber={2}
+          onItemUpdate={itemUpdate}
         ></Collection>
       </div>
     </div>

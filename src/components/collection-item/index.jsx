@@ -3,7 +3,7 @@ import "./index.css";
 import ItemImg from "../../assets/images/item.png";
 import { useNavigate } from "react-router-dom";
 
-export default function CollectionItem({locationId, name, place, initialLikedId, initialGoneId, imageName}) {
+export default function CollectionItem({locationId, name, place, initialLikedId, initialGoneId, imageName, onUpdate}) {
     const token = sessionStorage.getItem("authToken");
     const userId = JSON.parse(sessionStorage.getItem("auth")).id
     const navigate = useNavigate();
@@ -14,9 +14,7 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
     const [isActiveFav, setIsActiveFav] = useState(initialLikedId !== -1);
 
     const toggleFavorite = async () => {
-        // Calculate new state based on previous state
         const newState = !isActiveFav;
-
         const url = `http://localhost:8000/api/v1/liked${newState ? '' : `/${likedId}`}`;
         const options = {
             method: newState ? 'POST' : 'DELETE',
@@ -24,7 +22,7 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            ...(newState && { body: JSON.stringify({ user_id: userId, location_id: locationId }) }), // Include body only for POST
+            ...(newState && { body: JSON.stringify({ user_id: userId, location_id: locationId }) }),
         };
     
         try {
@@ -34,14 +32,14 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
             }
             if (newState) {
                 const data = await response.json();
-                setLikedId(data.like.id); // Cập nhật likedId mới
+                setLikedId(data.like.id);
+                // Gọi hàm cập nhật từ props
+                onUpdate();
             } else {
-                setLikedId(-1); // Đặt likedId về -1 khi xóa
+                setLikedId(-1);
+                onUpdate();
             }
-            
-            // Update state only if the API call is successful
             setIsActiveFav(newState);
-
         } catch (error) {
             console.error("Error updating favorite status:", error);
         }
@@ -52,9 +50,7 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
     const [isActiveGone, setIsActiveGone] = useState(initialGoneId !== -1);
 
     const toggleGone = async () => {
-        // Calculate new state based on previous state
         const newState = !isActiveGone;
-    
         const url = `http://localhost:8000/api/v1/gone${newState ? '' : `/${goneId}`}`;
         const options = {
             method: newState ? 'POST' : 'DELETE',
@@ -62,7 +58,7 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            ...(newState && { body: JSON.stringify({ user_id: userId, location_id: locationId }) }), // Include body only for POST
+            ...(newState && { body: JSON.stringify({ user_id: userId, location_id: locationId }) }),
         };
     
         try {
@@ -72,13 +68,12 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
             }
             if (newState) {
                 const data = await response.json();
-                setGoneId(data.gone.id); 
+                setGoneId(data.gone.id);
+                onUpdate();
             } else {
                 setGoneId(-1);
+                onUpdate();
             }
-            
-            
-            // Update state only if the API call is successful
             setIsActiveGone(newState);
         } catch (error) {
             console.error("Error updating gone status:", error);

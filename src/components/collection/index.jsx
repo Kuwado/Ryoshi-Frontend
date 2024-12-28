@@ -13,7 +13,8 @@ const Collection = ({
   rowNumber,
   showIndicator,
   showPagination,
-  showLeftRight
+  showLeftRight,
+  onItemUpdate
 }) => {
   const token = sessionStorage.getItem("authToken");
   const userId = JSON.parse(sessionStorage.getItem("auth")).id
@@ -156,6 +157,10 @@ const initiateFetch = async () => {
     setCurrentSlide(index);
   };
 
+  const updateItemState = () => {
+    onItemUpdate();
+  };
+
   return (
     <div className="collection-container">
       <div className="collection">
@@ -185,6 +190,7 @@ const initiateFetch = async () => {
                     initialLikedId={item.likedId}
                     initialGoneId={item.goneId}
                     imageName={item.images ? item.images.split(",")[0] : "./assets/images/avatar.png"}
+                    onUpdate={updateItemState} // Truyền hàm cập nhật
                   />
                 ) : (
                   <div style={{ width: "250px" }}></div>

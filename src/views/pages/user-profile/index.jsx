@@ -138,6 +138,7 @@ const UserProfile = () => {
   };
 
   const handleToggleButtons = () => {
+    setShowAddButton(prev => !prev); // Chuyển đổi trạng thái hiển thị của nút +
     setIsButtonVisible(!isButtonVisible);
     setIsEditing(!isEditing);
   };
