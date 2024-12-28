@@ -88,14 +88,16 @@ const UserProfile = () => {
       interest: formData.interest,
     };
     const response = await CustomersInformationUpdate(data, token, id);
-    console.log(response.data);
+    console.log(response.status);
 
     if (response.status === 200) {
       toast.success(response.data.message);
+      setIsButtonVisible(!isButtonVisible);
     } else {
       toast.error(response.data.message);
       console.error("Error fetching customer:", response.data.message);
     }
+    
   }
   const handleToggleButtons = () => {
     setIsButtonVisible(!isButtonVisible);
@@ -448,6 +450,7 @@ const goneDetail = () => {
           </div>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 };
