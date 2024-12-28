@@ -27,6 +27,7 @@ export const CustomersInformation = async (token,id) => {
 export const CustomersInformationUpdate = async (data, token, id) => {
     try {
         console.log(id);
+        console.log(data);
         const response = await axios.put(
             `http://localhost:8000/api/v1/users/${id}`,
             data, // Dữ liệu cần update
