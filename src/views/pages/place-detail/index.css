@@ -148,23 +148,21 @@
 }
 
 
-.toggle-button button:nth-child(1) {
+.toggle-button button {
   background-color: orange;
   color: white;
 }
 
-.toggle-button button:nth-child(1):hover {
+.toggle-button button:hover {
   background-color: #e69500; 
 }
 
-.toggle-button button:nth-child(2),
-.toggle-button button:nth-child(3) {
+.toggle-button-left button {
   background-color: #007bff;
   color: white;
 }
 
-.toggle-button button:nth-child(2):hover,
-.toggle-button button:nth-child(3):hover {
+.toggle-button-left button:hover {
   background-color: #0056b3;
 }
 

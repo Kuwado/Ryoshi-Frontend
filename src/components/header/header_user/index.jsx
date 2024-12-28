@@ -78,7 +78,6 @@ export default function UserHeader() {
     };
 
     const pathname = location.pathname;
-    console.log(location.pathname)
     if(pathname.includes("begin")) {
         return(
             <>

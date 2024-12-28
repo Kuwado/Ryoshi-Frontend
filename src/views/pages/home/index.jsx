@@ -83,7 +83,6 @@ function Home() {
     const recommendLocations = async (collections) => {
         try {
             const { children_ages, interest } = userInfoForRecom;
-
             const filteredCollections = [];
 
             // If both children_ages and interest are empty

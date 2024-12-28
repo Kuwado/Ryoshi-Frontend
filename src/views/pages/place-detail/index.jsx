@@ -30,6 +30,7 @@ const PlaceDetail = () => {
       );
       const location = response.data.location;
       setLocationData(location);
+      console.log(locationData)
       if (location.images) {
         const imageNames = location.images.split(",");
         const slideData = imageNames.map((imageName, index) => ({
