@@ -3,76 +3,6 @@ import "./index.css";
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { type } from '@testing-library/user-event/dist/type';
-
-async function getCityList() {
-  try {
-    // Gửi yêu cầu POST đến API
-    const response = await fetch('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1', {
-      method: 'GET',
-    });
-
-    // Kiểm tra phản hồi từ server
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    // Nếu gửi thành công, trả về danh sách
-    return data.data.data.map(city => ({
-      name: city.name,
-      id: city.code,
-    }));
-  } catch (error) {
-    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
-    return null;
-  }
-}
-
-async function getWardList(cityId) {
-  try {
-    // Gửi yêu cầu POST đến API
-    const response = await fetch(`https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${cityId}&limit=-1`, {
-      method: 'GET',
-    });
-
-    // Kiểm tra phản hồi từ server
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    // Nếu gửi thành công, trả về danh sách
-    return data.data.data.map(ward => ({
-      name: ward.name,
-      id: ward.code,
-    }));
-  } catch (error) {
-    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
-    return null;
-  }
-}
-
-async function getTownList(wardId) {
-  try {
-    // Gửi yêu cầu POST đến API
-    const response = await fetch(`https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${wardId}&limit=-1`, {
-      method: 'GET',
-    });
-
-    // Kiểm tra phản hồi từ server
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    // Nếu gửi thành công, trả về danh sách
-    return data.data.data.map(town => ({
-      name: town.name,
-      id: town.code,
-    }));
-  } catch (error) {
-    console.error('Có lỗi xảy ra khi gửi dữ liệu:', error);
-    return null;
-  }
-}
 
 async function getPlaceDetail(locationId, token) {
   try{
@@ -198,172 +128,14 @@ const handleApplyChips = (selectedItems) => {
   const location = useLocation();
   const navigate = useNavigate();
   const locationId = location.pathname.split('/').pop();
-  const token = sessionStorage.getItem('authToken');
-
-  const [city, setCity] = useState(null); 
-  const [ward, setWard] = useState(null); 
-  const [town, setTown] = useState(null); 
+  const token = sessionStorage.getItem('authToken'); 
 
   const [cityList, setCityList] = useState([]);
-  const [wardList, setWardList] = useState([]);
-  const [townList, setTownList] = useState([]);
-  const [cityId, setCityId] = useState('');
-
-  const [address, setAddress] = useState(null);
-  const [selectedCity, setSelectedCity] = useState(null);
-  const [selectedWard, setSelectedWard] = useState(null);
-  const [selectedTown, setSelectedTown] = useState(null);
-
-  // Lấy danh sách thành phố khi component được render
-  useEffect(() => {
-    const fetchCityList = async () => {
-      const cities = await getCityList();
-      if (cities) {
-        setCityList(cities);
-      }
-    };
-    fetchCityList();
-  }, []);
-
-  const handleCityChange = async (e) => {
-    const selectedId = e.target.value;
-    const selectedCity = cityList.find((city) => city.id === selectedId);
-
-    setCity(selectedCity);
-    setCityId(selectedId);
-  };
-
-  // Lấy danh sách quận huyện khi cityId thay đổi
-  useEffect(() => {
-    const fetchWardList = async () => {
-      if (cityId) {
-        const wards = await getWardList(cityId);
-        if (wards) {
-          setWardList(wards);
-        }
-      }
-    };
-
-    fetchWardList();
-  }, [cityId]);
-
-  const handleWardChange = async (e) => {
-    const selectedId = e.target.value;
-    const selectedWard = wardList.find((ward) => ward.id === selectedId);
-
-    setWard(selectedWard);
-  };
-
-  // Lấy danh sách phường/xã khi wardId thay đổi
-  useEffect(() => {
-    const fetchTownList = async () => {
-      if (ward) {
-        const towns = await getTownList(ward.id);
-        if (towns) {
-          setTownList(towns);
-        }
-      }
-    };
-
-    fetchTownList();
-  }, [ward]);
-
-  const handleTownChange = (e) => {
-    const selectedId = e.target.value;
-    const selectedTown = townList.find((town) => town.id === selectedId);
-
-    setTown(selectedTown);
-  };
-
-/*
-  useEffect(() => {
-    const fetchPlaceDetail = async () => {
-      const location = await getPlaceDetail(locationId, token);
-      if(location){
-        setAddress(location.address);
-        const addressArr = location.address.split(',').map(item => item.trim());
-        setSelectedCity(addressArr[addressArr.length - 1]);
-        setSelectedWard(addressArr[addressArr.length - 2]);
-        setSelectedTown(addressArr[addressArr.length - 3]);
-        setCity(cityList.find(city => city.name === selectedCity));
-        console.log(selectedCity, selectedWard, selectedTown, city);
-        setFormData({
-          name: location.name,
-          region: location.address.split(',')[0],
-          district: location.address.split(',')[1],
-          place: location.address.split(',')[2],
-          placeDetail: location.address.split(',')[0],
-          openTime: location.open_time,
-          closingTime: location.close_time,
-          ageGroupStart: location.age_start,
-          ageGroupEnd: location.age_end,
-          visitorsAdult: location.adult_price,
-          visitorsChild: location.child_price,
-          dailyVisitors: location.number_tourist,
-          description: location.description,
-          image: location.images,
-        });
-      }
-    };
-
-    fetchPlaceDetail();
-  }, [cityList]);
-
-  useEffect(() => {
-    const fetchWards = async () => {
-      if(city){
-        const wards = await getWardList(city.id);
-        if(wards){
-          setWardList(wards);
-          console.log(wardList, selectedWard);
-          const findWard = wardList.find(ward => ward.name === selectedWard);
-          console.log(findWard);
-          setWard(findWard);
-        }
-      }
-    }
-    fetchWards();
-    }, [city]
-  );
-
-  useEffect(() => {
-    const fetchTowns = async () => {
-    console.log(ward);
-
-      if(ward){
-        const towns = await getTownList(ward.id);
-        if(towns){
-          setTownList(towns);
-        }
-      }
-    }
-    fetchTowns();
-    setTown(townList.find(town => town.name === selectedTown));
-    console.log(townList);
-  }, [ward]);
-*/
-
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-const fetchWithRetry = async (fetchFunction, maxRetries = 3) => {
-  let retries = 0;
-  while (retries < maxRetries) {
-    try {
-      return await fetchFunction();
-    } catch (error) {
-      if (error.response?.status === 429 && retries < maxRetries) {
-        retries++;
-        await sleep(1000); // Nghỉ 1 giây trước khi thử lại
-      } else {
-        throw error;
-      }
-    }
-  }
-};
 
 useEffect(() => {
   const fetchPlaceDetail = async () => {
     try {
-      const location = await fetchWithRetry(() => getPlaceDetail(locationId, token));
+      const location = await getPlaceDetail(locationId, token);
       if (location) {
         // Xử lý avatar
         const avatarUrl = location.avatar
@@ -380,22 +152,12 @@ useEffect(() => {
 
         // Xử lý địa chỉ và các thông tin khác
         const addressArr = location.address.split(',').map((item) => item.trim());
-        const selectedCityName = addressArr[addressArr.length - 1];
-        const selectedWardName = addressArr[addressArr.length - 2];
-        const selectedTownName = addressArr[addressArr.length - 3];
-
-        setSelectedCity(selectedCityName);
-        setSelectedWard(selectedWardName);
-        setSelectedTown(selectedTownName);
-
-        const foundCity = cityList.find((city) => city.name === selectedCityName);
-        setCity(foundCity);
 
         setFormData({
           name: location.name,
-          region: addressArr[0],
-          district: addressArr[1],
-          place: addressArr[2],
+          region: addressArr[addressArr.length - 1],
+          district: addressArr[addressArr.length - 2],
+          place: addressArr[addressArr.length - 3],
           placeDetail: addressArr[0],
           openTime: location.open_time,
           closingTime: location.close_time,
@@ -417,44 +179,6 @@ useEffect(() => {
 
   if (locationId && token) fetchPlaceDetail();
 }, [locationId, token, cityList]);
-
-
-  useEffect(() => {
-    const fetchWards = async () => {
-      if(city){
-        try {
-          const wards = await fetchWithRetry(() => getWardList(city.id));
-          if(wards){
-            setWardList(wards);
-            setWard(wards.find(ward => ward.name === selectedWard));
-          }
-        } catch (error) {
-          console.error("Error fetching wards:", error);
-        }
-      }
-    };
-
-    if (city) fetchWards();
-  }, [city]);
-
-  useEffect(() => {
-    const fetchTowns = async () => {
-      if(ward){
-        try {
-          const towns = await fetchWithRetry(() => getTownList(ward.id));
-          if(towns){
-            setTownList(towns);
-            setTown(towns.find(town => town.name === selectedTown));
-          }
-        } catch (error) {
-          console.error("Error fetching towns:", error);
-        }
-      }
-    };
-
-    if (ward) fetchTowns();
-  }, [ward]);
-  
 
   const handleEditClick = (field) => {
     // Chuyển trạng thái của trường này thành editable
@@ -628,10 +352,8 @@ const handleSubmit = async (e) => {
     <input
       type="text"
       name="city"
-      value={city ? city.name : ""}
-      onChange={(e) =>
-        setCity({ id: null, name: e.target.value }) // Cập nhật giá trị city
-      }
+      value={formData.region}
+      onChange={(e) => setFormData({ ...formData, region: e.target.value })} // Cập nhật giá trị cho region
       className="select-field"
       placeholder="市"
     />
@@ -640,10 +362,8 @@ const handleSubmit = async (e) => {
     <input
       type="text"
       name="ward"
-      value={ward ? ward.name : ""}
-      onChange={(e) =>
-        setWard({ id: null, name: e.target.value }) // Cập nhật giá trị ward
-      }
+      value={formData.district}
+      onChange={(e) => setFormData({ ...formData, district: e.target.value })} // Cập nhật giá trị cho district
       className="select-field"
       placeholder="地区"
     />
@@ -652,10 +372,8 @@ const handleSubmit = async (e) => {
     <input
       type="text"
       name="town"
-      value={town ? town.name : ""}
-      onChange={(e) =>
-        setTown({ id: null, name: e.target.value }) // Cập nhật giá trị town
-      }
+      value={formData.place}
+      onChange={(e) => setFormData({ ...formData, place: e.target.value })} // Cập nhật giá trị cho place
       className="select-field"
       placeholder="区"
     />

@@ -27,6 +27,7 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedChips, setSelectedChips] = useState([]);
+  const [showAddButton, setShowAddButton] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     birthday: "",
@@ -135,6 +136,8 @@ const UserProfile = () => {
     }
 
     await handleChangeInfo();
+
+    handleToggleButtons();
   };
 
   const handleToggleButtons = () => {
