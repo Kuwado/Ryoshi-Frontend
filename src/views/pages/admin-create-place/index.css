@@ -94,27 +94,26 @@
   width: 85px;
 }
 
-.selectors-container {
-  display: flex;
-  gap: 10px;
-}
-
-.selectors-container {
-  display: flex;
-  gap: 10px;
-  width: 100%; /* Đảm bảo chiếm hết chiều rộng */
-}
-
 .select-field {
-  flex: 1; /* Điều chỉnh chiều rộng tự động */
+  width: 100%; /* Đảm bảo chiều rộng 100% */
   height: 40px;
   border-radius: 10px;
   background: #fafafa;
   border: 1px solid #00000080;
   text-align: center;
-  font-size: 16px; /* Điều chỉnh kích thước font cho đồng nhất */
-  padding: 0 10px;
+  font-size: 16px;
+  padding: 0 10px; /* Khoảng cách giữa nội dung và viền */
+  appearance: none; /* Loại bỏ kiểu mặc định của trình duyệt */
+  box-sizing: border-box; /* Đảm bảo padding không làm ảnh hưởng chiều rộng tổng */
 }
+
+/* Đảm bảo selectors-container không bị thụt ra ngoài */
+.selectors-container {
+  display: flex;
+  gap: 10px; /* Khoảng cách giữa các input */
+  width: 100%;
+}
+
 
 @media (max-width: 1090px) {
   .selectors-container {
