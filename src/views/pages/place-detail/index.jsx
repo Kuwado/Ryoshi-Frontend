@@ -111,6 +111,8 @@ const PlaceDetail = () => {
     return <div>Loading...</div>; // Hiển thị khi đang fetch dữ liệu
   }
 
+  const collectionUpdate = () => { }
+
   const handleLikeButton = async () => {
     // Xử lý khi click vào nút Like
     try {
@@ -317,7 +319,7 @@ const PlaceDetail = () => {
       {/* Phần danh sách địa điểm tương tự */}
       <div className="similar-places">
         <h2>似たような場所</h2>
-        <Collection collectionData={similarCollections} itemsNumber={5} showIndicator={true} rowNumber={1}></Collection>
+        <Collection onItemUpdate={collectionUpdate} collectionData={similarCollections} itemsNumber={5} showIndicator={true} rowNumber={1}></Collection>
       </div>
     </div>
   );
