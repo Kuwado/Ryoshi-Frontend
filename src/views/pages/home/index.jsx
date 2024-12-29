@@ -148,6 +148,8 @@ function Home() {
         initiateFetch();
   }, []); // Empty dependency array to run only on mount
 
+  const collectionUpdate = () => { }
+  
 return (
     <div className="home-content">
         <div className="home-content-1">
@@ -158,13 +160,13 @@ return (
                 <div className="title-collection">
                     <span>あなたに合った観光地</span>
                 </div>
-                <Collection collectionData={recomcollections} itemsNumber={5} showIndicator={true} showLeftRight={true} rowNumber={1}></Collection>
+                <Collection onItemUpdate={collectionUpdate} collectionData={recomcollections} itemsNumber={5} showIndicator={true} showLeftRight={true} rowNumber={1}></Collection>
             </div>
             <div className="hot-collection">
                 <div className="title-collection">
                     <span>最も人気のある観光地</span>
                 </div>
-                <Collection collectionData={hotCollections} itemsNumber={5} showIndicator={true} showLeftRight={true} rowNumber={1}></Collection>
+                <Collection onItemUpdate={collectionUpdate} collectionData={hotCollections} itemsNumber={5} showIndicator={true} showLeftRight={true} rowNumber={1}></Collection>
             </div>
         </div>
     </div>

@@ -59,34 +59,35 @@ const UserProfile = () => {
   const token = sessionStorage.getItem("authToken");
   const id = JSON.parse(sessionStorage.getItem("auth")).id;
 
+  const fetchUserData = async () => {
+    try {
+      setLoading(true);
+      const user = await CustomersInformation(token, id);
+      
+      setFormData({
+        image: user.user.ava,
+        name: user.user.name,
+        birthday: format(new Date(user.user.dob), 'yyyy-MM-dd'),
+        phone: user.user.phone,
+        email: user.user.email,
+        location: user.user.address,
+        interest: user.user.interest,
+        liked: user.user.liked_location,
+        gone: user.user.gone_location,
+      });
+
+      const interests = user.user.interest?.split(',').map((interest) => interest.trim());
+      setHobbies(interests);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      toast.error("ユーザーデータの取得に失敗しました");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        setLoading(true);
-        const user = await CustomersInformation(token, id);
-        
-        setFormData({
-          image: user.user.ava,
-          name: user.user.name,
-          birthday: format(new Date(user.user.dob), 'yyyy-MM-dd'),
-          phone: user.user.phone,
-          email: user.user.email,
-          location: user.user.address,
-          interest: user.user.interest,
-          liked: user.user.liked_location,
-          gone: user.user.gone_location,
-        });
-
-        const interests = user.user.interest?.split(',').map((interest) => interest.trim());
-        setHobbies(interests);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        toast.error("ユーザーデータの取得に失敗しました");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUserData();
   }, [token, id]);
 
@@ -145,7 +146,14 @@ const UserProfile = () => {
     setIsButtonVisible(!isButtonVisible);
     setIsEditing(!isEditing);
   };
-
+  
+  const favItemUpdate = () => {
+    fetchUserData();
+  }
+  const goneItemUpdate = () => {
+    fetchUserData();
+  }
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -228,7 +236,7 @@ const UserProfile = () => {
   const handleImageClick = () => {
     setIsPopupOpen(true);
   };
-
+  
   const handleApply = (selectedItems) => {
     setSelectedChips(selectedItems);
     setFormData((prevData) => {
@@ -399,12 +407,14 @@ const UserProfile = () => {
               </div>
             ))}
           </div>
-          <Button
-            label="+"
-            className="user-button-addhobby"
-            type="user-submit-addhobby"
-            onClick={handleImageClick}
-          />
+          {showAddButton && (
+            <Button
+                label="+"
+                className="user-button-addhobby"
+                type="user-submit-addhobby"
+                onClick={handleImageClick}
+            ></Button>
+          )}
           <div className="selected-chips">
             {isPopupOpen && (
               <ChipSelector
@@ -433,6 +443,7 @@ const UserProfile = () => {
           showIndicator={false}
           showPagination={false}
           rowNumber={1}
+          onItemUpdate={favItemUpdate}
         />
       </div>
       <div className="gonelocation">
@@ -451,6 +462,7 @@ const UserProfile = () => {
           showIndicator={false}
           showPagination={false}
           rowNumber={1}
+          onItemUpdate={goneItemUpdate}
         />
       </div>
       <div className="user-button">
