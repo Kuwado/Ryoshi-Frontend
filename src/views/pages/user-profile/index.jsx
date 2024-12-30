@@ -131,12 +131,40 @@ const UserProfile = () => {
     }
   };
 
+  const fetchDistance = async () => {
+    const token = sessionStorage.getItem("authToken");
+    const userId = JSON.parse(sessionStorage.getItem("auth")).id
+    try {
+        const response = await fetch(`http://localhost:8000/api/v1/users/distance/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+        }
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch locations");
+        }
+        const data = await response.json(); // Giả sử data là một object chứa thuộc tính distances
+        const distances = data.distances; // Lấy mảng distances
+
+        console.log(distances)
+        localStorage.setItem('distance', JSON.stringify(distances));
+        return distances; // Return the locations for further processing
+    } catch (error) {
+        throw error; // Re-throw the error for further handling
+    }
+  }
+  
   const SaveButtons = async () => {
     if (selectedImage) {
       await handleChangedImage();
     }
 
     await handleChangeInfo();
+
+    fetchDistance();
 
     handleToggleButtons();
   };
