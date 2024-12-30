@@ -54,7 +54,6 @@ const TravelList = () => {
         ],
     };
 
-    console.log(places)
     return places.filter((place) => {
         const addressParts = place.address.split(",").map((part) => part.trim());
         const province = addressParts[addressParts.length - 1].toLowerCase();
@@ -68,22 +67,36 @@ const TravelList = () => {
   useEffect(() => {
     setFilteredCollections(filterByRegion(collections));
   }, [region]);
-      
+  
   const fetchPlaces = async () => {
     const userId = JSON.parse(sessionStorage.getItem("auth")).id;
     try {
       const token = sessionStorage.getItem("authToken");
-      const response = await axios.get(
-        `http://localhost:8000/api/v1/users/distance/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch("http://localhost:8000/api/v1/locations", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
         }
-      );
+      });
+
+      const data = await response.json();
 
       if (response.status === 200) {
-        const location = response.data.distances;
+        
+        const storedDistances = localStorage.getItem('distance');
+        const distance = JSON.parse(storedDistances);
+        
+        const location = data.location.map(locationItem => {
+          // Tìm kiếm trong mảng distance
+          const foundDistance = distance.find(distItem => distItem.location_id === locationItem.location_id);
+          
+          return {
+            ...locationItem, // Giữ nguyên tất cả các thuộc tính ban đầu
+            distance: foundDistance ? foundDistance.distance : null // Thêm thuộc tính distance
+          };
+        });
+
         setCollections(filterByRegion(location)); // Lưu danh sách địa điểm vào state
         setFilteredCollections(location); // Mặc định hiển thị tất cả địa điểm
       } else {
@@ -101,7 +114,7 @@ const TravelList = () => {
     try {
       const token = sessionStorage.getItem("authToken");
       const userId = JSON.parse(sessionStorage.getItem("auth")).id;
-  
+      
       if (userId) {
         const response = await axios.get(
           `http://localhost:8000/api/v1/users/${userId}`,
@@ -154,13 +167,24 @@ const TravelList = () => {
     }
   }, []); // Chạy effect chỉ khi component mount
 
-  const fetchUpdate = async () => {
-    await fetchData();
-    await applyFilters();
-  };
-
-  const itemUpdate = () => {
-    fetchUpdate();
+  const itemUpdate = (type, locationId) => {
+    console.log(type, locationId)
+    if (type === "fav") {
+      // Thêm locationId vào likedCollections
+      const findLocationById = collections.find(distItem => distItem.location_id === locationId);
+      setLikedCollections(prevCollections => [...prevCollections, findLocationById]);
+    } else if (type === "rev-fav") {
+      // Loại bỏ locationId khỏi goneCollections
+      setLikedCollections(prevCollections => prevCollections.filter(location => location.location_id !== locationId));
+      console.log(likedCollections)
+    } else if (type === "gone") {
+      // Thêm locationId vào goneCollections
+      const findLocationById = collections.find(distItem => distItem.location_id === locationId);
+      setGoneCollections(prevCollections => [...prevCollections, findLocationById]);
+    } else if (type === "rev-gone") {
+      // Loại bỏ locationId khỏi goneCollections
+      setGoneCollections(prevCollections => prevCollections.filter(location => location.location_id !== locationId));
+    }
   }
 
   const handleFilterChange = (filterKey, value) => {
@@ -305,7 +329,7 @@ const TravelList = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [selectedFilters, collections]);
+  }, [selectedFilters, collections, likedCollections, goneCollections]);
 
   return (
     <div className="travel-list">

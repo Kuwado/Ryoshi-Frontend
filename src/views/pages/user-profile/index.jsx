@@ -147,10 +147,10 @@ const UserProfile = () => {
     setIsEditing(!isEditing);
   };
   
-  const favItemUpdate = () => {
+  const favItemUpdate = (type, locationId) => {
     fetchUserData();
   }
-  const goneItemUpdate = () => {
+  const goneItemUpdate = (type, locationId) => {
     fetchUserData();
   }
   

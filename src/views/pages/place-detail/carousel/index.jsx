@@ -8,10 +8,6 @@ const Carousel = ({ slideData }) => {
   const [extraWidth, setExtraWidth] = useState(0);
   const imageRef = useRef(null);
 
-  console.log(extraWidth);
-  console.log(width);
-  console.log(windowWidth);
-
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);

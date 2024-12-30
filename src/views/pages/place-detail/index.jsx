@@ -25,19 +25,24 @@ const PlaceDetail = () => {
   // Hàm fetch dữ liệu API
   const fetchLocationData = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:8000/api/v1/locations/${locationId}/withDistance`,
-        { user_id: id },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/locations/${locationId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+
       const location = response.data.location;
+
+      const storedDistances = localStorage.getItem('distance');
+      const distance = JSON.parse(storedDistances);
+      
+      // Tìm kiếm distance cho location_id trong distances
+      const foundDistance = distance.find(distItem => distItem.location_id === location.location_id);
+
+      // Thêm thuộc tính distance vào data
+      location.distance = foundDistance ? foundDistance.distance : null;
+
       setLocationData(location);
-      setDistance(response.data.distance);
-      console.log(location)
+      setDistance(location.distance);
       if (location.images) {
         const imageNames = location.images.split(",");
         const slideData = imageNames.map((imageName, index) => ({
@@ -111,7 +116,7 @@ const PlaceDetail = () => {
     return <div>Loading...</div>; // Hiển thị khi đang fetch dữ liệu
   }
 
-  const collectionUpdate = () => { }
+  const collectionUpdate = (type, locationId) => { }
 
   const handleLikeButton = async () => {
     // Xử lý khi click vào nút Like
@@ -211,7 +216,7 @@ const PlaceDetail = () => {
               />
               <span className="info-label">距離：</span>
               <span className="info-value">
-                {distance ? `${distance} キロメートル` : `3.5 キロメートル`}
+                {distance ? `${distance} キロメートル` : `未定`}
               </span>
             </div>
 

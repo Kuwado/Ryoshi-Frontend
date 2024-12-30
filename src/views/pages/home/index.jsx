@@ -4,6 +4,7 @@ import Carousel from "../../../components/carousel";
 import Collection from "../../../components/collection";
 import HomeImg from "../../../assets/images/home.png";
 import ItemImg from "../../../assets/images/item.png";
+import axios from "axios";
 
 function Home() {
     const token = sessionStorage.getItem("authToken");
@@ -148,7 +149,7 @@ function Home() {
         initiateFetch();
   }, []); // Empty dependency array to run only on mount
 
-  const collectionUpdate = () => { }
+  const collectionUpdate = (type, locationId) => { }
   
 return (
     <div className="home-content">

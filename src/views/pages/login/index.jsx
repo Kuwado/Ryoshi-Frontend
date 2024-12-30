@@ -51,6 +51,32 @@ function Login() {
     setValues({ ...values, password: password }); // Cập nhật trường password
   };
 
+  const fetchDistance = async () => {
+    const token = sessionStorage.getItem("authToken");
+    const userId = JSON.parse(sessionStorage.getItem("auth")).id
+    try {
+        const response = await fetch(`http://localhost:8000/api/v1/users/distance/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+        }
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch locations");
+        }
+        const data = await response.json(); // Giả sử data là một object chứa thuộc tính distances
+        const distances = data.distances; // Lấy mảng distances
+
+        console.log(distances)
+        localStorage.setItem('distance', JSON.stringify(distances));
+        return distances; // Return the locations for further processing
+    } catch (error) {
+        throw error; // Re-throw the error for further handling
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Ngăn chặn hành vi mặc định của form
     try {
@@ -72,7 +98,8 @@ function Login() {
         sessionStorage.setItem("auth", JSON.stringify(decodedPayload));
         const role = decodedPayload.role;
         if (role === "user") {
-          setTimeout(() => {
+          fetchDistance();
+          setTimeout(() => {    
             navigate("/user/home");
           }, 3000);
         } else if (role === "admin") {

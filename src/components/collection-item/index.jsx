@@ -33,11 +33,10 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
             if (newState) {
                 const data = await response.json();
                 setLikedId(data.like.id);
-                // Gọi hàm cập nhật từ props
-                onUpdate();
+                onUpdate("fav", locationId);
             } else {
                 setLikedId(-1);
-                onUpdate();
+                onUpdate("rev-fav", locationId);
             }
             setIsActiveFav(newState);
         } catch (error) {
@@ -69,10 +68,10 @@ export default function CollectionItem({locationId, name, place, initialLikedId,
             if (newState) {
                 const data = await response.json();
                 setGoneId(data.gone.id);
-                onUpdate();
+                onUpdate("gone", locationId);
             } else {
                 setGoneId(-1);
-                onUpdate();
+                onUpdate("rev-gone", locationId);
             }
             setIsActiveGone(newState);
         } catch (error) {

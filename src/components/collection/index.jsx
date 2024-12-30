@@ -157,8 +157,8 @@ const initiateFetch = async () => {
     setCurrentSlide(index);
   };
 
-  const updateItemState = () => {
-    onItemUpdate();
+  const updateItemState = (type, locationId) => {
+    onItemUpdate(type, locationId);
   };
 
   return (
